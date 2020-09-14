@@ -43,7 +43,7 @@ class CameraViewController: UIViewController {
         super.viewDidLoad()
         // TODO: 초기 설정 2: UI요소들이 메모리에 올라왔을 때 해야할 것들
         
-        previewView.session = captureSession // TODO 1에서 초기화한 캡쳐세션을 프리뷰로
+        previewView.session = captureSession // TODO 1에서 초기화한 캡쳐세션 -> 프리뷰.세션
         
         // AVCaptureSession을 구성하는건 세션큐에서 할거임
         sessionQueue.async {
