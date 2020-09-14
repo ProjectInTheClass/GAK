@@ -26,7 +26,7 @@ class CameraViewController: UIViewController {
     let videoDeviceDiscoverySession = AVCaptureDevice.DiscoverySession(
         deviceTypes: [.builtInDualCamera, .builtInWideAngleCamera, .builtInTrueDepthCamera],
         mediaType: .video,
-        position: .back
+        position: .unspecified
     )
     
 
@@ -109,22 +109,32 @@ class CameraViewController: UIViewController {
                     }
                     self.captureSession.commitConfiguration()
                     
-                    // 토글 버튼 업데이트
+                    // 카메라 전환 토글 버튼 업데이트
+                    // UI관련 작업은 Main Queue에서 수행되어야 함
                     
-                } catch {
+                    DispatchQueue.main.async {
+                        self.updateSwitchCameraIcon(position: preferredPosition)
+                    }
                     
+                } catch let error {
+                    print("error occured while creating device input: \(error.localizedDescription)")
                 }
             }
-            
-            
         }
-        
-        
     }
     
     func updateSwitchCameraIcon(position: AVCaptureDevice.Position) {
         // TODO: Update ICON
-        
+        switch position {
+        case .front:
+            let image = #imageLiteral(resourceName: "ic_camera_front")
+            switchButton.setImage(image, for: .normal)
+        case .back:
+            let image = #imageLiteral(resourceName: "ic_camera_rear")
+            switchButton.setImage(image, for: .normal)
+        default:
+            break
+        }
         
     }
     
@@ -165,6 +175,7 @@ extension CameraViewController {
             
             if captureSession.canAddInput(videoDeviceInput) {
                 captureSession.addInput(videoDeviceInput)
+                self.videoDeviceInput = videoDeviceInput
             } else {
                 captureSession.commitConfiguration()
                 return

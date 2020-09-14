@@ -59,7 +59,7 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" image="camera.rotate.fill" catalog="system"/>
+                                <state key="normal" image="ic_camera_front"/>
                                 <connections>
                                     <action selector="switchCameraWithSender:" destination="Su1-Ld-wf4" eventType="touchUpInside" id="eME-am-9Fp"/>
                                 </connections>
@@ -71,7 +71,7 @@
                                     <constraint firstAttribute="width" constant="40" id="fl6-oJ-l72"/>
                                 </constraints>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" image="camera.fill" catalog="system"/>
+                                <state key="normal" image="ic_photo_camera"/>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -107,7 +107,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="camera.fill" catalog="system" width="128" height="96"/>
-        <image name="camera.rotate.fill" catalog="system" width="128" height="96"/>
+        <image name="ic_camera_front" width="24" height="24"/>
+        <image name="ic_photo_camera" width="24" height="24"/>
     </resources>
 </document>
