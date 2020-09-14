@@ -26,7 +26,7 @@ class CameraViewController: UIViewController {
     let videoDeviceDiscoverySession = AVCaptureDevice.DiscoverySession(
         deviceTypes: [.builtInDualCamera, .builtInWideAngleCamera, .builtInTrueDepthCamera],
         mediaType: .video,
-        position: .unspecified
+        position: .back
     )
     
 
@@ -105,21 +105,64 @@ extension CameraViewController {
         // - Add Photo Output
         // - commitConfiguration
         
-
+        captureSession.sessionPreset = .photo
+        captureSession.beginConfiguration()
         
+        // Add video input //
+        guard let camera = videoDeviceDiscoverySession.devices.first else {
+            captureSession.commitConfiguration()
+            return
+        }
         
+        do {
+            let videoDeviceInput = try AVCaptureDeviceInput(device: camera)
+            
+            if captureSession.canAddInput(videoDeviceInput) {
+                captureSession.addInput(videoDeviceInput)
+            } else {
+                captureSession.commitConfiguration()
+                return
+            }
+            
+        } catch let error {
+            captureSession.commitConfiguration()
+            return
+        }
+        
+        // Add output //
+        photoOutput.setPreparedPhotoSettingsArray(
+            [AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])],
+            completionHandler: nil
+        )
+        if captureSession.canAddOutput(photoOutput){
+            captureSession.addOutput(photoOutput)
+        } else {
+            captureSession.commitConfiguration()
+            return
+        }
+        captureSession.commitConfiguration()
     }
     
     
     
     func startSession() {
         // TODO: session Start
-
+        // 특정 쓰레드에서 작업을 수행할거임
+        sessionQueue.async {
+            if !self.captureSession.isRunning {
+                self.captureSession.startRunning()
+            }
+        }
     }
     
     func stopSession() {
         // TODO: session Stop
-        
+        // 특정 쓰레드에서 작업을 수행할거임
+        sessionQueue.async {
+            if self.captureSession.isRunning {
+                self.captureSession.stopRunning()
+            }
+        }
     }
 }
 
