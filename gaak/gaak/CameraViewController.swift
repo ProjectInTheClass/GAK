@@ -69,10 +69,56 @@ class CameraViewController: UIViewController {
     
     
     @IBAction func switchCamera(sender: Any) {
-        // TODO: 카메라는 1개 이상이어야함
-        
+        // TODO: 카메라는 2개 이상이어야함
+        guard videoDeviceDiscoverySession.devices.count > 1 else { return }
         
         // TODO: 반대 카메라 찾아서 재설정
+        // - 반대 카메라 찾고
+        // - 새로운 디바이스를 가지고 세션을 업데이트
+        // - 카메라 전환 토글 버튼 업데이트
+        
+        sessionQueue.async {
+            let currentVideoDevice = self.videoDeviceInput.device
+            let currentPosition = currentVideoDevice.position
+            let isFront = currentPosition == .front
+            // isFront이면 back에 있는걸, front가 아니면 front를 -> prefferedPosition
+            let preferredPosition: AVCaptureDevice.Position = isFront ? .back : .front
+            
+            let devices = self.videoDeviceDiscoverySession.devices
+            var newVideoDevice: AVCaptureDevice?
+            
+            newVideoDevice = devices.first(where: { device in
+                return preferredPosition == device.position
+            })
+            // -> 지금까지는 새로운 카메라를 찾음.
+            
+            // update capture session
+            if let newDevice = newVideoDevice {
+                
+                do {
+                    let videoDeviceInput = try AVCaptureDeviceInput(device: newDevice)
+                    self.captureSession.beginConfiguration()
+                    self.captureSession.removeInput(self.videoDeviceInput)
+                    
+                    // 새로 찾은 videoDeviceInput을 넣을 수 있으면 // 새로운 디바이스 인풋을 넣음
+                    if self.captureSession.canAddInput(videoDeviceInput) {
+                        self.captureSession.addInput(videoDeviceInput)
+                        self.videoDeviceInput = videoDeviceInput
+                    } else { // 아니면 그냥 원래 있던거 다시 넣고
+                        self.captureSession.addInput(self.videoDeviceInput) // 이 조건문 다시보기
+                    }
+                    self.captureSession.commitConfiguration()
+                    
+                    // 토글 버튼 업데이트
+                    
+                } catch {
+                    
+                }
+            }
+            
+            
+        }
+        
         
     }
     
