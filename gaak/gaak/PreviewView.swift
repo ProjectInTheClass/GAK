@@ -5,6 +5,8 @@
 //  Created by Ted Kim on 2020/09/14.
 //  Copyright © 2020 Ted Kim. All rights reserved.
 //
+// 이 소스는 Apple Docs Sample Code 에서 가져옴
+/* https://developer.apple.com/documentation/avfoundation/cameras_and_media_capture/avcam_building_a_camera_app */
 
 import UIKit
 import AVFoundation
