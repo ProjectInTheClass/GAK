@@ -28,7 +28,6 @@ class CameraViewController: UIViewController {
         mediaType: .video,
         position: .unspecified
     )
-    
 
     @IBOutlet weak var photoLibraryButton: UIButton!
     @IBOutlet weak var previewView: PreviewView!
@@ -140,13 +139,40 @@ class CameraViewController: UIViewController {
     
     @IBAction func capturePhoto(_ sender: UIButton) {
         // TODO: photoOutput의 capturePhoto 메소드
-
-
+        // orientation
+        // photooutput
+        
+        let videoPreviewLayerOrientation = self.previewView.videoPreviewLayer.connection?.videoOrientation
+        sessionQueue.async {
+            let connection = self.photoOutput.connection(with: .video)
+            connection?.videoOrientation = videoPreviewLayerOrientation!
+            
+            // 캡쳐 세션에 요청하는것
+            let setting = AVCapturePhotoSettings()
+            self.photoOutput.capturePhoto(with: setting, delegate: self)
+        }
     }
     
     
     func savePhotoLibrary(image: UIImage) {
         // TODO: capture한 이미지 포토라이브러리에 저장
+        
+        PHPhotoLibrary.requestAuthorization { status in
+            if status == .authorized {
+                // save !
+                PHPhotoLibrary.shared().performChanges({
+                    PHAssetChangeRequest.creationRequestForAsset(from: image)
+                }) { (_, error) in
+                    DispatchQueue.main.async {
+                        self.photoLibraryButton.setImage(image, for: .normal)
+                    }
+                }
+            } else {
+                print(" error to save photo library")
+                // 다시 요청할 수도 있음 !
+            }
+        }
+        
     }
 }
 
@@ -165,12 +191,21 @@ extension CameraViewController {
         captureSession.beginConfiguration()
         
         // Add video input //
-        guard let camera = videoDeviceDiscoverySession.devices.first else {
-            captureSession.commitConfiguration()
-            return
-        }
-        
         do {
+            var defaultVideoDevice: AVCaptureDevice?
+            if let dualCameraDevice = AVCaptureDevice.default(.builtInDualCamera, for: .video, position: .back) {
+                defaultVideoDevice = dualCameraDevice
+            } else if let backCameraDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) {
+                defaultVideoDevice = backCameraDevice
+            } else if let frontCameraDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front) {
+                defaultVideoDevice = frontCameraDevice
+            }
+            
+            guard let camera = defaultVideoDevice else {
+                captureSession.commitConfiguration()
+                return
+            }
+            
             let videoDeviceInput = try AVCaptureDeviceInput(device: camera)
             
             if captureSession.canAddInput(videoDeviceInput) {
@@ -180,13 +215,12 @@ extension CameraViewController {
                 captureSession.commitConfiguration()
                 return
             }
-            
-        } catch let error {
+        } catch {
             captureSession.commitConfiguration()
             return
         }
         
-        // Add output //
+        // Add photo output //
         photoOutput.setPreparedPhotoSettingsArray(
             [AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])],
             completionHandler: nil
@@ -199,8 +233,6 @@ extension CameraViewController {
         }
         captureSession.commitConfiguration()
     }
-    
-    
     
     func startSession() {
         // TODO: session Start
@@ -226,7 +258,10 @@ extension CameraViewController {
 extension CameraViewController: AVCapturePhotoCaptureDelegate {
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         // TODO: capturePhoto delegate method 구현
-        
+        guard error == nil else { return }
+        guard let imageData = photo.fileDataRepresentation() else { return }
+        guard let image = UIImage(data: imageData) else { return }
+        self.savePhotoLibrary(image: image)
         
     }
 }
