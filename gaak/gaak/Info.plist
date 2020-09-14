@@ -20,6 +20,10 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>gaak caamera app uses the camera to take photos and video</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>gaak camera app saves captured photos and videos to your photo library</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -60,9 +64,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSCameraUsageDescription</key>
-	<string>gaak caamera app uses the camera to take photos and video</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>gaak camera app saves captured photos and videos to your photo library</string>
 </dict>
 </plist>
