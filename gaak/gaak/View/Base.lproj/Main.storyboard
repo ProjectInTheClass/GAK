@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Su1-Ld-wf4">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Su1-Ld-wf4">
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -19,6 +21,22 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SBv-cb-p7s" userLabel="Setting Toolbar">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <items>
+                                    <barButtonItem title="Item" image="xmark.rectangle" catalog="system" id="Ukx-kN-rca">
+                                        <color key="tintColor" systemColor="labelColor"/>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="qfn-AO-cmk"/>
+                                    <barButtonItem title="Item" image="screen_ratio_1_1" id="UHj-Dn-6Br" userLabel="Screen Ratio Switch Bar Button Item">
+                                        <connections>
+                                            <action selector="switchScreenRatio:" destination="Su1-Ld-wf4" id="1jT-TG-use"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="XpA-R0-AWa"/>
+                                </items>
+                            </toolbar>
                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vSk-eY-7OZ">
                                 <rect key="frame" x="164.66666666666666" y="621" width="85" height="85"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="wxf-ia-MDl">
@@ -40,7 +58,7 @@
                                 </view>
                                 <blurEffect style="light"/>
                             </visualEffectView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2bV-oP-2Ud">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2bV-oP-2Ud">
                                 <rect key="frame" x="174.66666666666666" y="631" width="65" height="65"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -52,13 +70,13 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="stH-Um-tRG">
-                                <rect key="frame" x="349" y="20" width="45" height="45"/>
+                                <rect key="frame" x="359" y="0.0" width="45" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="45" id="EMf-8e-olF"/>
                                     <constraint firstAttribute="height" constant="45" id="zt2-zv-qqs"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" image="ic_camera_front"/>
                                 <connections>
                                     <action selector="switchCameraWithSender:" destination="Su1-Ld-wf4" eventType="touchUpInside" id="eME-am-9Fp"/>
@@ -74,30 +92,35 @@
                                 <state key="normal" image="ic_photo_camera"/>
                             </button>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="gyi-7X-ag4"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="vSk-eY-7OZ" firstAttribute="centerX" secondItem="2bV-oP-2Ud" secondAttribute="centerX" id="0mO-Am-GHc"/>
                             <constraint firstItem="gyi-7X-ag4" firstAttribute="bottom" secondItem="2bV-oP-2Ud" secondAttribute="bottom" constant="40" id="3mH-91-6be"/>
                             <constraint firstAttribute="bottom" secondItem="QNI-Ja-PV0" secondAttribute="bottom" id="4Cy-OR-xdd"/>
-                            <constraint firstItem="gyi-7X-ag4" firstAttribute="trailing" secondItem="stH-Um-tRG" secondAttribute="trailing" constant="20" id="6Gw-ZO-fex"/>
+                            <constraint firstItem="gyi-7X-ag4" firstAttribute="trailing" secondItem="stH-Um-tRG" secondAttribute="trailing" constant="10" id="6Gw-ZO-fex"/>
                             <constraint firstItem="ra3-NV-Evq" firstAttribute="centerY" secondItem="2bV-oP-2Ud" secondAttribute="centerY" id="BiT-yM-Bet"/>
                             <constraint firstItem="QNI-Ja-PV0" firstAttribute="top" secondItem="Uwy-qp-8IM" secondAttribute="top" id="EHp-wC-veV"/>
                             <constraint firstItem="vSk-eY-7OZ" firstAttribute="centerY" secondItem="2bV-oP-2Ud" secondAttribute="centerY" id="YmF-zM-sVa"/>
+                            <constraint firstItem="SBv-cb-p7s" firstAttribute="top" secondItem="gyi-7X-ag4" secondAttribute="top" id="iLv-Vi-khk"/>
                             <constraint firstAttribute="trailing" secondItem="QNI-Ja-PV0" secondAttribute="trailing" id="kEZ-a8-Grd"/>
                             <constraint firstItem="QNI-Ja-PV0" firstAttribute="leading" secondItem="Uwy-qp-8IM" secondAttribute="leading" id="ka3-lh-v0o"/>
                             <constraint firstItem="2bV-oP-2Ud" firstAttribute="leading" secondItem="ra3-NV-Evq" secondAttribute="trailing" constant="50" id="ohI-i8-LbA"/>
                             <constraint firstItem="vSk-eY-7OZ" firstAttribute="width" secondItem="2bV-oP-2Ud" secondAttribute="width" constant="20" id="pyL-qU-Zuf"/>
+                            <constraint firstItem="gyi-7X-ag4" firstAttribute="trailing" secondItem="SBv-cb-p7s" secondAttribute="trailing" id="s9j-np-GlA"/>
                             <constraint firstItem="2bV-oP-2Ud" firstAttribute="centerX" secondItem="gyi-7X-ag4" secondAttribute="centerX" id="wZb-8u-TLO"/>
                             <constraint firstItem="vSk-eY-7OZ" firstAttribute="height" secondItem="2bV-oP-2Ud" secondAttribute="height" constant="20" id="wet-q6-5O0"/>
-                            <constraint firstItem="stH-Um-tRG" firstAttribute="top" secondItem="gyi-7X-ag4" secondAttribute="top" constant="20" id="zBY-Vv-26J"/>
+                            <constraint firstItem="stH-Um-tRG" firstAttribute="top" secondItem="gyi-7X-ag4" secondAttribute="top" id="zBY-Vv-26J"/>
+                            <constraint firstItem="SBv-cb-p7s" firstAttribute="leading" secondItem="gyi-7X-ag4" secondAttribute="leading" id="zHv-1H-Uew"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="gyi-7X-ag4"/>
                     </view>
                     <connections>
                         <outlet property="blurBGView" destination="vSk-eY-7OZ" id="lDO-BM-apD"/>
                         <outlet property="captureButton" destination="2bV-oP-2Ud" id="Vs1-eN-zGx"/>
                         <outlet property="photoLibraryButton" destination="ra3-NV-Evq" id="IDT-S9-wJp"/>
                         <outlet property="previewView" destination="QNI-Ja-PV0" id="MZM-R8-vbV"/>
+                        <outlet property="screenRatioBarButtonItem" destination="UHj-Dn-6Br" id="kvg-Dk-MsE"/>
+                        <outlet property="settingToolbar" destination="SBv-cb-p7s" id="lIC-SQ-k0t"/>
                         <outlet property="switchButton" destination="stH-Um-tRG" id="zpT-ry-ru9"/>
                     </connections>
                 </viewController>
@@ -109,5 +132,10 @@
     <resources>
         <image name="ic_camera_front" width="24" height="24"/>
         <image name="ic_photo_camera" width="24" height="24"/>
+        <image name="screen_ratio_1_1" width="22" height="22"/>
+        <image name="xmark.rectangle" catalog="system" width="128" height="93"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>
