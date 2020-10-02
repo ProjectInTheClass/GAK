@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 import Photos
 
-class CameraViewController: UIViewController {
+class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     // TODO: 초기 설정 1: 카메라 만드는데 필요한 객체들
     // - captureSession
     // - AVCaptureDeviceInput
@@ -21,14 +21,12 @@ class CameraViewController: UIViewController {
     let captureSession = AVCaptureSession() // 캡쳐세션을 만들었고
     var videoDeviceInput: AVCaptureDeviceInput! // 디바이스 인풋(을 담을 변수 생성, but 아직 카메라가 연결되지는 않음.)
     let photoOutput = AVCapturePhotoOutput()
-    
     let sessionQueue = DispatchQueue(label: "session Queue")
     let videoDeviceDiscoverySession = AVCaptureDevice.DiscoverySession(
         deviceTypes: [.builtInDualCamera, .builtInWideAngleCamera, .builtInTrueDepthCamera],
         mediaType: .video,
         position: .unspecified
     )
-    
     
     var screenRatioSwitchedStatus: Int = 0 // 화면 비율 구분을 위한 저장 프로퍼티
     var currentPosition: AVCaptureDevice.Position? // 카메라 포지션을 저장할 프로퍼티
@@ -37,16 +35,16 @@ class CameraViewController: UIViewController {
 
 
     @IBOutlet weak var settingToolbar: UIToolbar! // 화면 비율 버튼이 있는 툴바
+    @IBOutlet weak var screenRatioBarButtonItem: UIBarButtonItem! // 스크린 비율을 위한 버튼 (1:1, 3:4, 9:16)
     
-
+    var cameraRelatedCoreImageResource: CameraRelatedCoreImageResource? // Video Data Output, Sample Data struct
+    
     @IBOutlet weak var photoLibraryButton: UIButton! // 사진앨범 버튼
     @IBOutlet weak var previewView: PreviewView! //
     @IBOutlet weak var captureButton: UIButton!
     @IBOutlet weak var blurBGView: UIVisualEffectView!
     @IBOutlet weak var switchButton: UIButton!
 
-    @IBOutlet weak var screenRatioBarButtonItem: UIBarButtonItem! // 스크린 비율을 위한 버튼 (1:1, 3:4, 9:16)
-    
     
     override var prefersStatusBarHidden: Bool {
         return true
@@ -67,13 +65,14 @@ class CameraViewController: UIViewController {
         
         previewView.session = captureSession // TODO 1에서 초기화한 캡쳐세션 -> 프리뷰.세션
         
-        // AVCaptureSession을 구성하는건 세션큐에서 할거임
-        sessionQueue.async {
-            self.setupSession() // 아래의 extension CameraViewController 에서 구현
+        sessionQueue.async { // AVCaptureSession을 구성하는건 세션큐에서 할거임
+            self.setupSession() // 아래의 extension class 에서 구현
+            
+
             self.startSession()
         }
         setupUI()
-
+        
         
     }
     
@@ -134,7 +133,7 @@ class CameraViewController: UIViewController {
                     
                     // 카메라 전환 토글 버튼 업데이트
                     // UI관련 작업은 Main Queue에서 수행되어야 함
-                    
+                    // 카메라 기능과 충돌이 생기면 안 되기 때문
                     DispatchQueue.main.async {
                         self.updateSwitchCameraIcon(position: preferredPosition)
                     }
@@ -166,16 +165,18 @@ class CameraViewController: UIViewController {
         // photooutput
         
         let videoPreviewLayerOrientation = self.previewView.videoPreviewLayer.connection?.videoOrientation
+        
         sessionQueue.async {
             let connection = self.photoOutput.connection(with: .video)
+           
             connection?.videoOrientation = videoPreviewLayerOrientation!
             
             // 캡쳐 세션에 요청하는것
             let setting = AVCapturePhotoSettings()
+            
             self.photoOutput.capturePhoto(with: setting, delegate: self)
         }
     }
-    
     
     func savePhotoLibrary(image: UIImage) {
         // TODO: capture한 이미지 포토라이브러리에 저장
@@ -198,10 +199,25 @@ class CameraViewController: UIViewController {
         }
     }
 
+
+    @IBOutlet weak var previewConstraints: NSLayoutConstraint!
+    
     //MARK: 화면비 변경 버튼
+    /*
+     previewView에 image를 넣는 변수를 찾아서
+     사이즈 변경해주면 될 듯
+     이 함수에서 화면비 아이콘도 변경하고 previewView의 사이즈도 변경함.
+     !!To do!!
+        - preview 사이즈는 변경했는데 실제로 저장되는 사진의 사이즈는 변경하지 못했음.
+            -> 화면비 status 상수를 이용해서 저장하기 전에 사이즈 변경해서 저장하는거 해야됨
+        - preview 사이즈 변경할 때 지금은 일일이 작성되어있는데
+            -> 함수로 묶어서 extention에서 관리하는것도 좋을 것 같음.
+     */
+
     @IBAction func switchScreenRatio(_ sender: Any) {
         print("switchScreenRatio func has called")
         // 0 == 1:1 || 1 == 3:4 || 2 == 9:16
+        
         screenRatioSwitchedStatus += 1
         screenRatioSwitchedStatus %= ScreenType.numberOfRatioType()
         if let currentPosition = self.currentPosition {
@@ -209,19 +225,28 @@ class CameraViewController: UIViewController {
             case ScreenType.Ratio.square.rawValue :
                 print("-> screen_ratio_1_1")
                 screenRatioBarButtonItem.image = UIImage(named: "screen_ratio_1_1")
+                previewConstraints.constant
+                    = UIScreen.main.bounds.height - UIScreen.main.bounds.width
+
             case ScreenType.Ratio.retangle.rawValue :
                 print("-> screen_ratio_3_4")
                 screenRatioBarButtonItem.image = UIImage(named: "screen_ratio_3_4")
+                previewConstraints.constant
+                    = UIScreen.main.bounds.height - (UIScreen.main.bounds.width) * 4.0 / 3.0
             
             case ScreenType.Ratio.full.rawValue :
                 print("-> screen_ratio_9_16")
                 screenRatioBarButtonItem.image = UIImage(named: "screen_ratio_9_16")
+                previewConstraints.constant = 0
                 
             default:
                 break;
             }
             // 전후면 카메라 스위칭 될 때, 화면 비율을 넘기기 위함.
+            // 이거 필요없으면 나중에 삭제하는게 좋음
             getSizeByScreenRatio(with: currentPosition, at: screenRatioSwitchedStatus)
+
+            
         }
     }
     
@@ -325,35 +350,43 @@ extension CameraViewController {
     }
 }
 
-extension CameraViewController: AVCapturePhotoCaptureDelegate {
+extension CameraViewController {
     // MARK: - Save Photo -> Library
-
+    /* 지금은 너무 코드가 더러움... 보기좋게 Constants를 만들고 함수도 extension으로 빼고... 수정할 것!! */
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         // TODO: capturePhoto delegate method 구현
         guard error == nil else { return }
         guard let imageData = photo.fileDataRepresentation() else { return }
         guard let image = UIImage(data: imageData) else { return }
         
-        // 여기서 촬영될 때 화면비대로 잘라줘야할 것 같음.
-        // 아래의 self.savePhotoLibrary 에 들어가는 파라미터 image를 잘라주면 될 듯
-//
-//        let rect = CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 1080, height: 1920))
-//        let cgImgae = image.cgImage
-//        guard let croppedCGImage = cgImgae?.cropping(to: rect) else {return}
-//        self.savePhotoLibrary(image: UIImage(cgImage: croppedCGImage))
-//
-//        let rect = CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 1080, height: 1920))
-//        //let scale = .frame.width/image.size.width
-//
-//        guard let croppedimage = cropImage2(image: image, rect: rect, scale: 1.0) else { return }
-//        self.savePhotoLibrary(image: croppedimage)
+        // 여기부터 // 더러워지기 시작 // 아랫부분 수정할 것
+        var croppedImage: UIImage = image
         
+        if( screenRatioSwitchedStatus == 0 ) {
+            
+            let rectRatio = CGRect(x: 0, y: image.size.height - image.size.width, width: image.size.width, height: image.size.width)
+                        
+            croppedImage = cropImage2(image: image, rect: rectRatio, scale: 1.0) ?? image
+        }
+        else if( screenRatioSwitchedStatus == 1 ) {
+            
+            let rectRatio = CGRect(x: 0, y: 0, width: image.size.width, height: image.size.width*4.0/3.0)
+                        
+            croppedImage = cropImage2(image: image, rect: rectRatio, scale: 1.0) ?? image
+        }
+        else {
+            
+            let rectRatio = CGRect(x: (image.size.width)/(4.0)/(2.0), y: 0, width: (image.size.height)*(9.0)/(16.0), height: image.size.height)
+            
+            croppedImage = cropImage2(image: image, rect: rectRatio, scale: 1.0) ?? image
+        }
+        // 여기까지 // 정리할 것
         
-        self.savePhotoLibrary(image: image)
+        //
+        self.savePhotoLibrary(image: croppedImage)
         
     }
     
-// test cropping
     func cropImage2 (image : UIImage, rect : CGRect, scale : CGFloat)-> UIImage? {
         UIGraphicsBeginImageContextWithOptions (
             CGSize (width : rect.size.width / scale, height : rect.size.height / scale), true, 0.0)
@@ -362,18 +395,4 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
         UIGraphicsEndImageContext ()
         return croppedImage
     }
-}
-
-extension UIImage {
-       func crop( rect: CGRect) -> UIImage {
-           var rect = rect
-           rect.origin.x*=self.scale
-           rect.origin.y*=self.scale
-           rect.size.width*=self.scale
-           rect.size.height*=self.scale
-
-           let imageRef = self.cgImage!.cropping(to: rect)
-           let image = UIImage(cgImage: imageRef!, scale: self.scale, orientation: self.imageOrientation)
-           return image
-       }
 }

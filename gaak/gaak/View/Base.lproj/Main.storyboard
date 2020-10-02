@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Su1-Ld-wf4">
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -82,6 +81,12 @@
                                     <action selector="switchCameraWithSender:" destination="Su1-Ld-wf4" eventType="touchUpInside" id="eME-am-9Fp"/>
                                 </connections>
                             </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fWp-7B-TuG" userLabel="bottom_area">
+                                <rect key="frame" x="0.0" y="586" width="414" height="150"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="150" id="Xfa-hI-5fE"/>
+                                </constraints>
+                            </imageView>
                             <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ra3-NV-Evq">
                                 <rect key="frame" x="84.666666666666671" y="643.66666666666663" width="40" height="40"/>
                                 <constraints>
@@ -101,12 +106,15 @@
                             <constraint firstItem="gyi-7X-ag4" firstAttribute="trailing" secondItem="stH-Um-tRG" secondAttribute="trailing" constant="10" id="6Gw-ZO-fex"/>
                             <constraint firstItem="ra3-NV-Evq" firstAttribute="centerY" secondItem="2bV-oP-2Ud" secondAttribute="centerY" id="BiT-yM-Bet"/>
                             <constraint firstItem="QNI-Ja-PV0" firstAttribute="top" secondItem="Uwy-qp-8IM" secondAttribute="top" id="EHp-wC-veV"/>
+                            <constraint firstItem="gyi-7X-ag4" firstAttribute="bottom" secondItem="fWp-7B-TuG" secondAttribute="bottom" id="UrG-QL-CzO"/>
                             <constraint firstItem="vSk-eY-7OZ" firstAttribute="centerY" secondItem="2bV-oP-2Ud" secondAttribute="centerY" id="YmF-zM-sVa"/>
                             <constraint firstItem="SBv-cb-p7s" firstAttribute="top" secondItem="gyi-7X-ag4" secondAttribute="top" id="iLv-Vi-khk"/>
+                            <constraint firstItem="fWp-7B-TuG" firstAttribute="leading" secondItem="gyi-7X-ag4" secondAttribute="leading" id="j6k-gM-7Un"/>
                             <constraint firstAttribute="trailing" secondItem="QNI-Ja-PV0" secondAttribute="trailing" id="kEZ-a8-Grd"/>
                             <constraint firstItem="QNI-Ja-PV0" firstAttribute="leading" secondItem="Uwy-qp-8IM" secondAttribute="leading" id="ka3-lh-v0o"/>
                             <constraint firstItem="2bV-oP-2Ud" firstAttribute="leading" secondItem="ra3-NV-Evq" secondAttribute="trailing" constant="50" id="ohI-i8-LbA"/>
                             <constraint firstItem="vSk-eY-7OZ" firstAttribute="width" secondItem="2bV-oP-2Ud" secondAttribute="width" constant="20" id="pyL-qU-Zuf"/>
+                            <constraint firstItem="gyi-7X-ag4" firstAttribute="trailing" secondItem="fWp-7B-TuG" secondAttribute="trailing" id="rcX-Os-HNf"/>
                             <constraint firstItem="gyi-7X-ag4" firstAttribute="trailing" secondItem="SBv-cb-p7s" secondAttribute="trailing" id="s9j-np-GlA"/>
                             <constraint firstItem="2bV-oP-2Ud" firstAttribute="centerX" secondItem="gyi-7X-ag4" secondAttribute="centerX" id="wZb-8u-TLO"/>
                             <constraint firstItem="vSk-eY-7OZ" firstAttribute="height" secondItem="2bV-oP-2Ud" secondAttribute="height" constant="20" id="wet-q6-5O0"/>
@@ -118,6 +126,7 @@
                         <outlet property="blurBGView" destination="vSk-eY-7OZ" id="lDO-BM-apD"/>
                         <outlet property="captureButton" destination="2bV-oP-2Ud" id="Vs1-eN-zGx"/>
                         <outlet property="photoLibraryButton" destination="ra3-NV-Evq" id="IDT-S9-wJp"/>
+                        <outlet property="previewConstraints" destination="4Cy-OR-xdd" id="kg7-vF-GuM"/>
                         <outlet property="previewView" destination="QNI-Ja-PV0" id="MZM-R8-vbV"/>
                         <outlet property="screenRatioBarButtonItem" destination="UHj-Dn-6Br" id="kvg-Dk-MsE"/>
                         <outlet property="settingToolbar" destination="SBv-cb-p7s" id="lIC-SQ-k0t"/>
