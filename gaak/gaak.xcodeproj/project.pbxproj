@@ -15,6 +15,7 @@
 		9F5ACF96250F4AA200516A9B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F5ACF94250F4AA200516A9B /* LaunchScreen.storyboard */; };
 		9F5ACF9E250F508A00516A9B /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F5ACF9D250F508A00516A9B /* CameraViewController.swift */; };
 		9F5ACFA1250F518600516A9B /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F5ACFA0250F518600516A9B /* PreviewView.swift */; };
+		9FBCA82A252349CD0066D9A9 /* CameraViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FBCA829252349CD0066D9A9 /* CameraViewControllerExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		9F5ACF97250F4AA200516A9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9F5ACF9D250F508A00516A9B /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		9F5ACFA0250F518600516A9B /* PreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewView.swift; sourceTree = "<group>"; };
+		9FBCA829252349CD0066D9A9 /* CameraViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewControllerExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				9F5ACF9D250F508A00516A9B /* CameraViewController.swift */,
+				9FBCA829252349CD0066D9A9 /* CameraViewControllerExtension.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -187,6 +190,7 @@
 				9F2A2A96251C81F3002147A8 /* Constants.swift in Sources */,
 				9F5ACF8A250F4AA000516A9B /* AppDelegate.swift in Sources */,
 				9F5ACFA1250F518600516A9B /* PreviewView.swift in Sources */,
+				9FBCA82A252349CD0066D9A9 /* CameraViewControllerExtension.swift in Sources */,
 				9F5ACF8C250F4AA000516A9B /* SceneDelegate.swift in Sources */,
 				9F5ACF9E250F508A00516A9B /* CameraViewController.swift in Sources */,
 			);

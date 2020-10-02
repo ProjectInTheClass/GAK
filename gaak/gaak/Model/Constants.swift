@@ -9,6 +9,25 @@
 import Foundation
 import UIKit
 
+enum FlashModeConstant: Int {
+    case off = 0
+    case on
+    case auto
+}
+
+enum SettingType: Int {
+    case camera = 0
+    case photo
+    case location
+}
+
+struct AlertContentConstant{
+    static let titles: [String?] = ["카메라 사용 권한", "사진 앨범 사용 권한", "위치 정보 사용 권한"]
+    static let messages: [String?] = ["설정 - DailyMoments에서 카메라 설정을 허가해주세요.", "설정 - DailyMoments에서 사진 설정을 허가해주세요.", "설정 - DailyMoments에서 위치 설정을 허가해주세요."]
+    static let cancel: String = "취소"
+    static let setting: String = "설정"
+}
+
 enum DeviceInputType: Int {
     case back = 1
     case front
