@@ -32,24 +32,24 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     var currentPosition: AVCaptureDevice.Position? // 카메라 포지션을 저장할 프로퍼티
     var rectOfpreviewImage: CGRect? // previewImage의 CGRect
     var cameraViewPhotoSize: CameraViewPhotoSize? // 카메라 뷰에 담길 촬영 포토 사이즈를 위한 프로퍼티
+    var cameraRelatedCoreImageResource: CameraRelatedCoreImageResource? // Video Data Output, Sample Data struct
+
+    @IBOutlet weak var previewView: PreviewView! //
 
 
     @IBOutlet weak var settingToolbar: UIToolbar! // 화면 비율 버튼이 있는 툴바
     @IBOutlet weak var screenRatioBarButtonItem: UIBarButtonItem! // 스크린 비율을 위한 버튼 (1:1, 3:4, 9:16)
     
-    var cameraRelatedCoreImageResource: CameraRelatedCoreImageResource? // Video Data Output, Sample Data struct
-    
-    @IBOutlet weak var photoLibraryButton: UIButton! // 사진앨범 버튼
-    @IBOutlet weak var previewView: PreviewView! //
-    @IBOutlet weak var captureButton: UIButton!
-    @IBOutlet weak var blurBGView: UIVisualEffectView!
     @IBOutlet weak var switchButton: UIButton!
 
+    @IBOutlet weak var photoLibraryButton: UIButton! // 사진앨범 버튼
+    @IBOutlet weak var captureButton: UIButton!
+    
     
     override var prefersStatusBarHidden: Bool {
         return true
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -57,6 +57,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         
         settingToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
         settingToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
+        settingToolbar.isTranslucent = true
     }
     
     // UI요소들이 메모리에 올라왔을 때 해야할 것들
@@ -84,8 +85,6 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         
         captureButton.layer.cornerRadius = captureButton.bounds.height/2
         captureButton.layer.masksToBounds = true
-        blurBGView.layer.cornerRadius = captureButton.bounds.height/2
-        blurBGView.layer.masksToBounds = true
         
     }
     
@@ -203,17 +202,13 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     @IBOutlet weak var previewConstraints: NSLayoutConstraint!
     
     //MARK: 화면비 변경 버튼
-    /*
-     previewView에 image를 넣는 변수를 찾아서
-     사이즈 변경해주면 될 듯
+    /* @IBAction func switchScreenRatio()
+     previewView에 image를 넣는 변수를 찾아서 사이즈 변경해주면 될 듯
      이 함수에서 화면비 아이콘도 변경하고 previewView의 사이즈도 변경함.
      !!To do!!
-        - preview 사이즈는 변경했는데 실제로 저장되는 사진의 사이즈는 변경하지 못했음.
-            -> 화면비 status 상수를 이용해서 저장하기 전에 사이즈 변경해서 저장하는거 해야됨
         - preview 사이즈 변경할 때 지금은 일일이 작성되어있는데
             -> 함수로 묶어서 extention에서 관리하는것도 좋을 것 같음.
      */
-
     @IBAction func switchScreenRatio(_ sender: Any) {
         print("switchScreenRatio func has called")
         // 0 == 1:1 || 1 == 3:4 || 2 == 9:16
