@@ -38,6 +38,8 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
 
 
     @IBOutlet weak var settingToolbar: UIToolbar! // 화면 비율 버튼이 있는 툴바
+    @IBOutlet weak var cameraToolbar: UIToolbar! // 화면 하단의 툴 바
+    
     @IBOutlet weak var screenRatioBarButtonItem: UIBarButtonItem! // 스크린 비율을 위한 버튼 (1:1, 3:4, 9:16)
     
     @IBOutlet weak var switchButton: UIButton!
@@ -222,6 +224,9 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
                 screenRatioBarButtonItem.image = UIImage(named: "screen_ratio_1_1")
                 previewConstraints.constant
                     = UIScreen.main.bounds.height - UIScreen.main.bounds.width
+                cameraToolbar.setBackgroundImage(UIImage().withTintColor(UIColor.red), forToolbarPosition: .any, barMetrics: .default)
+                cameraToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
+                cameraToolbar.isTranslucent = false
 
             case ScreenType.Ratio.retangle.rawValue :
                 print("-> screen_ratio_3_4")
@@ -233,7 +238,12 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
                 print("-> screen_ratio_9_16")
                 screenRatioBarButtonItem.image = UIImage(named: "screen_ratio_9_16")
                 previewConstraints.constant = 0
-                
+                cameraToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
+                cameraToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
+                cameraToolbar.isTranslucent = true
+//                settingToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
+//                settingToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
+//                settingToolbar.isTranslucent = true
             default:
                 break;
             }
