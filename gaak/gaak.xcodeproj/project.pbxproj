@@ -15,8 +15,11 @@
 		9F5ACF96250F4AA200516A9B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F5ACF94250F4AA200516A9B /* LaunchScreen.storyboard */; };
 		9F5ACF9E250F508A00516A9B /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F5ACF9D250F508A00516A9B /* CameraViewController.swift */; };
 		9F5ACFA1250F518600516A9B /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F5ACFA0250F518600516A9B /* PreviewView.swift */; };
+		9FD322C4252C94CE000B611D /* PhotoAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD322C3252C94CE000B611D /* PhotoAlbumViewController.swift */; };
 		9FD87EC525273C62001FF3F9 /* CameraViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD87EC425273C62001FF3F9 /* CameraViewControllerExtension.swift */; };
 		9FD87EC925273ED6001FF3F9 /* ImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD87EC825273ED6001FF3F9 /* ImageExtension.swift */; };
+		9FE00E50252C95F5000E6F9A /* PhotoAlbumItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE00E4F252C95F5000E6F9A /* PhotoAlbumItemCollectionViewCell.swift */; };
+		9FE00E53252CA5FD000E6F9A /* ImageZoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE00E52252CA5FD000E6F9A /* ImageZoomViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,8 +33,11 @@
 		9F5ACF97250F4AA200516A9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9F5ACF9D250F508A00516A9B /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		9F5ACFA0250F518600516A9B /* PreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewView.swift; sourceTree = "<group>"; };
+		9FD322C3252C94CE000B611D /* PhotoAlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumViewController.swift; sourceTree = "<group>"; };
 		9FD87EC425273C62001FF3F9 /* CameraViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewControllerExtension.swift; sourceTree = "<group>"; };
 		9FD87EC825273ED6001FF3F9 /* ImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageExtension.swift; sourceTree = "<group>"; };
+		9FE00E4F252C95F5000E6F9A /* PhotoAlbumItemCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumItemCollectionViewCell.swift; sourceTree = "<group>"; };
+		9FE00E52252CA5FD000E6F9A /* ImageZoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageZoomViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +65,7 @@
 				9F5ACF8F250F4AA000516A9B /* Main.storyboard */,
 				9F5ACF94250F4AA200516A9B /* LaunchScreen.storyboard */,
 				9F5ACFA0250F518600516A9B /* PreviewView.swift */,
+				9FE00E4F252C95F5000E6F9A /* PhotoAlbumItemCollectionViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -68,6 +75,8 @@
 			children = (
 				9F5ACF9D250F508A00516A9B /* CameraViewController.swift */,
 				9FD87EC425273C62001FF3F9 /* CameraViewControllerExtension.swift */,
+				9FD322C3252C94CE000B611D /* PhotoAlbumViewController.swift */,
+				9FE00E52252CA5FD000E6F9A /* ImageZoomViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -199,10 +208,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				9F2A2A96251C81F3002147A8 /* Constants.swift in Sources */,
+				9FE00E50252C95F5000E6F9A /* PhotoAlbumItemCollectionViewCell.swift in Sources */,
 				9F5ACF8A250F4AA000516A9B /* AppDelegate.swift in Sources */,
 				9F5ACFA1250F518600516A9B /* PreviewView.swift in Sources */,
+				9FD322C4252C94CE000B611D /* PhotoAlbumViewController.swift in Sources */,
 				9FD87EC925273ED6001FF3F9 /* ImageExtension.swift in Sources */,
 				9FD87EC525273C62001FF3F9 /* CameraViewControllerExtension.swift in Sources */,
+				9FE00E53252CA5FD000E6F9A /* ImageZoomViewController.swift in Sources */,
 				9F5ACF8C250F4AA000516A9B /* SceneDelegate.swift in Sources */,
 				9F5ACF9E250F508A00516A9B /* CameraViewController.swift in Sources */,
 			);

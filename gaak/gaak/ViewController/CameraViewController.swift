@@ -56,10 +56,8 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         super.viewWillAppear(animated)
         
         print("viewWillAppear in CameraViewController")
+        //navigationController?.isNavigationBarHidden = true
         
-        settingToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
-        settingToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
-        settingToolbar.isTranslucent = true
     }
     
     // UI요소들이 메모리에 올라왔을 때 해야할 것들
@@ -80,6 +78,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     }
     
     func setupUI() {
+        
         photoLibraryButton.layer.cornerRadius = 10
         photoLibraryButton.layer.masksToBounds = true
         photoLibraryButton.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
@@ -87,7 +86,13 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         
         captureButton.layer.cornerRadius = captureButton.bounds.height/2
         captureButton.layer.masksToBounds = true
+
+        settingToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
+        settingToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
+        settingToolbar.isTranslucent = true
         
+        cameraToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
+
     }
     
     
@@ -224,8 +229,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
                 screenRatioBarButtonItem.image = UIImage(named: "screen_ratio_1_1")
                 previewConstraints.constant
                     = UIScreen.main.bounds.height - UIScreen.main.bounds.width
-                cameraToolbar.setBackgroundImage(UIImage().withTintColor(UIColor.red), forToolbarPosition: .any, barMetrics: .default)
-                cameraToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
+                
                 cameraToolbar.isTranslucent = false
 
             case ScreenType.Ratio.retangle.rawValue :
@@ -238,12 +242,10 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
                 print("-> screen_ratio_9_16")
                 screenRatioBarButtonItem.image = UIImage(named: "screen_ratio_9_16")
                 previewConstraints.constant = 0
+                
+                
                 cameraToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
-                cameraToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
                 cameraToolbar.isTranslucent = true
-//                settingToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
-//                settingToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
-//                settingToolbar.isTranslucent = true
             default:
                 break;
             }
