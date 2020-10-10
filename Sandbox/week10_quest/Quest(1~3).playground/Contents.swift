@@ -11,6 +11,13 @@ for item in oddNumber {
 print(oddNumber)
 
 
+//ans1
+func makeEven(arg: Int) -> Int {
+    return arg + 1
+}
+let evenNumber = oddNumber.map(makeEven)
+print (evenNumber)
+
 
 /* 문제 2
  문자로 출력하기
@@ -26,7 +33,12 @@ for item in array3 {
 
 retArray3
 
-
+// 답 2
+var answer2: [String] = []
+answer2 = array3.map( { (arg: Double) -> String in
+    return String(arg)
+})
+print(answer2)
 
 
 
@@ -45,6 +57,13 @@ for item in array4 {
     var squared: Int
     squared = Int(round(item * item))
     retArray4.append( squared );
+}
+
+
+let ans3 = array4.map({round($0*$0)})
+print("ans3")
+for num in ans3{
+    print(num)
 }
 
 retArray4
@@ -68,4 +87,17 @@ for item in array5 {
     retArray5.append(sum);
 }
 
-retArray5
+func getSumOfDivisor(num: Int) -> Int{
+    var nums: [Int] = []
+    for i in 1 ... num{
+        nums.append(i)
+    }
+    
+    return nums.reduce(0, {num % $1 == 0 ? $0 + $1 : $0})
+}
+
+
+let ans5 = array5.map({getSumOfDivisor(num: $0)})
+
+print("ans5")
+print(ans5)
