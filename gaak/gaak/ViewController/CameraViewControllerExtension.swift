@@ -13,8 +13,10 @@ import Photos
 extension CameraViewController {
     
     // MARK:- Get Screen Ratio
-    // 이 함수는 extention으로 따로 관리될 수 있음.
     // AVCaptureDevice 종류와 선택한 스크린 사이즈 비율에 맞게 PreviewImageView Frame 변경
+    /// 이 함수는 호출되지만, 함수에서 변경된 contants는 사용되지 않음.
+    /// 나중에 시간있으면 코드정리할 때, 이 함수를 사용해여 객체지향프로그래밍을 구현할 것.
+    /// -> 귀찮아서 사용 안 하는중...
     func getSizeByScreenRatio(with currentPosition: AVCaptureDevice.Position, at screenRatioStatus: Int){
         var photoWidth: CGFloat?
         var photoHeight: CGFloat?

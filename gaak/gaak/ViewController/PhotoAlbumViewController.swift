@@ -163,14 +163,15 @@ extension PhotoAlbumViewController: UICollectionViewDelegate {
         
         print("--> \(indexPath.item)")
         performSegue(withIdentifier: "showDetail", sender: indexPath.item)
-        // performSegue는 원준방식임.
+        // performSegue를 사용해서 넘기는건 내 방식
         
-        currentSelectedIndex = indexPath.item
-        pickPhotoImageBarButton.isEnabled = true
+        // currentSelectedIndex = indexPath.item
+        // currentSelectedIndex 이 변수는 나중에 선택, 삭제 기능구현할 때 사용할 수 있음.
+        // pickPhotoImageBarButton.isEnabled = true
     }
     
     // MARK: - 데이터 넘기기
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    // ImageZoomViewController 로 데이터를 넘기는 함수
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let nextViewController: ImageZoomViewController = segue.destination as? ImageZoomViewController else { return }
         
