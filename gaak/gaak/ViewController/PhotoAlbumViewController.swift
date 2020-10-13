@@ -122,10 +122,13 @@ override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 // MARK: UICollectionViewDataSource
 extension PhotoAlbumViewController: UICollectionViewDataSource {
     
+    // 몇 개를 보여줄지?
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return (self.assetsFetchResults?.count)!
     }
     
+    // 셀은 어덯게 표현할지?
+    // 재사용가능한 셀을 가져와서, 셀을 업데이트 -> 넘겨줌
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         //configure the cell
@@ -145,9 +148,17 @@ extension PhotoAlbumViewController: UICollectionViewDataSource {
 
 // MARK: UICollectionViewDelegate
 extension PhotoAlbumViewController: UICollectionViewDelegate {
+    //셀이 터치됐을 때 어떻게 할지?
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        print("--> \(indexPath.item)")
+        //performSegue(withIdentifier: "showDetail", sender: indexPath.item)
+        // performSegue는 원준방식임.
         
         currentSelectedIndex = indexPath.item
         pickPhotoImageBarButton.isEnabled = true
     }
 }
+
+
+ 
