@@ -33,7 +33,7 @@ extension CameraViewController {
     
     // MARK: - 라이브러리에 저장
     // 사진 저장할 때 화면비에 맞게 잘라서 저장해주는 함수
-    /* 지금은 너무 코드가 더러움... 보기좋게 Constants를 만들것!! */
+    /* 지금은 너무 코드가 더러움... 보기좋게 Constants를 만듥 것!! */
     
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         // TODO: capturePhoto delegate method 구현

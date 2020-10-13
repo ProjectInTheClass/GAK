@@ -16,32 +16,51 @@ protocol pickedImageSentDelegate {
 private let reuseIdentifier = "ImageCell"
 
 
-class PhotoAlbumViewController: UIViewController {
-        
+class PhotoAlbumViewController: UIViewController, PHPhotoLibraryChangeObserver {
+    
+    
     @IBOutlet weak var pickPhotoImageBarButton: UIBarButtonItem!
-    
     @IBOutlet weak var photoAlbumCollectionView: UICollectionView!
-    
     @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
     
     var delegate: pickedImageSentDelegate? = nil
     var sizeOfImage:CGSize? // PrevieImageView의 CGSzie
-    var assetsFetchResults: PHFetchResult<PHAsset>?
+    var assetsFetchResults: PHFetchResult<PHAsset>!
     var imageManger: PHCachingImageManager?
     var authorizationStatus: PHAuthorizationStatus?
     var currentSelectedIndex: Int? // Fetch Results의 인덱스, assets.
     
+    // test lines
+    func collectionView(_ collectionView: UICollectionView, canEditItemAt indexPath: IndexPath) -> Bool {
+        return true
+    } // <- 사용자가 직접 편집할 수 있게 함
+    
+    // editing style을 설정하는 함수가 table view 함수에는 있는데 collection view 함수는 없음.. 혹시 에디팅을 추가하게 된다면 이 부분에 넣는게 좋을듯.
+    
+    func photoLibraryDidChange(_ changeInstance: PHChange) {
+        guard let changes = changeInstance.changeDetails(for: assetsFetchResults) else { return }
+        
+        assetsFetchResults = changes.fetchResultAfterChanges
+        
+        OperationQueue.main.addOperation {
+            self.photoAlbumCollectionView.reloadSections(IndexSet(0...))
+        }
+    }
+    
+    
+    // test lines end
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // delegate, datasource set
-        self.photoAlbumCollectionView.delegate = self
-        self.photoAlbumCollectionView.dataSource = self
+        //self.photoAlbumCollectionView.delegate = self
+        //self.photoAlbumCollectionView.dataSource = self
         
         //Init value
         pickPhotoImageBarButton.isEnabled = false
         
+        // Init Flow Layout !
         setFlowLayout()
         
         PHPhotoLibrary.authorizationStatus()
@@ -109,15 +128,6 @@ class PhotoAlbumViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
 }
-/*
-// MARK: - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    // Get the new view controller using segue.destination.
-    // Pass the selected object to the new view controller.
-}
-*/
 
 // MARK: UICollectionViewDataSource
 extension PhotoAlbumViewController: UICollectionViewDataSource {
@@ -152,13 +162,24 @@ extension PhotoAlbumViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         print("--> \(indexPath.item)")
-        //performSegue(withIdentifier: "showDetail", sender: indexPath.item)
+        performSegue(withIdentifier: "showDetail", sender: indexPath.item)
         // performSegue는 원준방식임.
         
         currentSelectedIndex = indexPath.item
         pickPhotoImageBarButton.isEnabled = true
     }
+    
+    // MARK: - 데이터 넘기기
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let nextViewController: ImageZoomViewController = segue.destination as? ImageZoomViewController else { return }
+        
+        guard let cell: UICollectionViewCell = sender as? UICollectionViewCell else { return }
+        
+        guard  let index: IndexPath = self.photoAlbumCollectionView.indexPath(for: cell) else { return }
+        
+        nextViewController.asset = self.assetsFetchResults[index.item]
+        // ImageZoomViewController에 있는 asset으로 데이터를 넘겨줌.
+    }
+
 }
-
-
- 

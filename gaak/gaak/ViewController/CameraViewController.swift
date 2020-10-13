@@ -72,8 +72,6 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
             self.startSession()
         }
         setupUI()
-        
-        
     }
     
     
@@ -178,7 +176,9 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
                     PHAssetChangeRequest.creationRequestForAsset(from: image)
                 }) { (_, error) in
                     DispatchQueue.main.async {
-                        self.photoLibraryButton.setImage(image, for: .normal)
+                        //self.photoLibraryButton.setImage(image, for: .normal)
+                        // 주석이유: 사진촬영->앨범탐색->다시촬영모드로돌아왔을때
+                        // 앨범버튼의 width가 view.width와 동일해짐.
                     }
                 }
             } else {

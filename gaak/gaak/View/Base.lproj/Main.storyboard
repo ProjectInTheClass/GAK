@@ -59,7 +59,7 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="R8M-Gt-hz2"/>
                                     <barButtonItem style="plain" id="DvI-n9-Cuh" userLabel="PhotoAlbumButton">
                                         <button key="customView" opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ra3-NV-Evq">
-                                            <rect key="frame" x="70" y="53" width="44" height="44"/>
+                                            <rect key="frame" x="70.5" y="53" width="44" height="44"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <color key="tintColor" systemColor="labelColor"/>
                                             <state key="normal" image="photo" catalog="system"/>
@@ -82,7 +82,7 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="5BY-qS-GRs"/>
                                     <barButtonItem style="plain" id="mfx-Qb-VOn">
                                         <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="UN5-HA-TGe">
-                                            <rect key="frame" x="299" y="53" width="44" height="44"/>
+                                            <rect key="frame" x="299.5" y="53" width="44" height="44"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <state key="normal" image="pin" catalog="system"/>
                                         </button>
@@ -161,9 +161,10 @@
                                                 <constraint firstItem="TWZ-4U-Xd8" firstAttribute="leading" secondItem="aM8-nD-0Pi" secondAttribute="leading" id="zt7-0E-bES"/>
                                             </constraints>
                                         </collectionViewCellContentView>
+                                        <size key="customSize" width="128" height="128"/>
                                         <connections>
                                             <outlet property="photoImageView" destination="TWZ-4U-Xd8" id="G5P-xD-6XK"/>
-                                            <segue destination="pxD-3Y-tRK" kind="presentation" id="DDX-xl-wJE"/>
+                                            <segue destination="pxD-3Y-tRK" kind="presentation" identifier="showDetail" id="DDX-xl-wJE"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>

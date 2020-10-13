@@ -22,7 +22,8 @@ class ImageZoomViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        // optional error is occured !
         imageManager.requestImage(for: asset,
                                   targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight),
                                   contentMode: .aspectFill,
@@ -30,7 +31,6 @@ class ImageZoomViewController: UIViewController {
                                     self.imageView.image = image
                                   }) // 에셋에서 image를 호출해달라!
     }
-    
 
     /*
     // MARK: - Navigation
