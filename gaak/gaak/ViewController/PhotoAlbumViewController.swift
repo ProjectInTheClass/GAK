@@ -30,13 +30,14 @@ class PhotoAlbumViewController: UIViewController, PHPhotoLibraryChangeObserver {
     var authorizationStatus: PHAuthorizationStatus?
     var currentSelectedIndex: Int? // Fetch Results의 인덱스, assets.
     
-    // test lines
+    // about PHPhotoLibraryChangeObserver
     func collectionView(_ collectionView: UICollectionView, canEditItemAt indexPath: IndexPath) -> Bool {
         return true
     } // <- 사용자가 직접 편집할 수 있게 함
     
     // editing style을 설정하는 함수가 table view 함수에는 있는데 collection view 함수는 없음.. 혹시 에디팅을 추가하게 된다면 이 부분에 넣는게 좋을듯.
     
+    // about PHPhotoLibraryChangeObserver
     func photoLibraryDidChange(_ changeInstance: PHChange) {
         guard let changes = changeInstance.changeDetails(for: assetsFetchResults) else { return }
         
@@ -46,9 +47,6 @@ class PhotoAlbumViewController: UIViewController, PHPhotoLibraryChangeObserver {
             self.photoAlbumCollectionView.reloadSections(IndexSet(0...))
         }
     }
-    
-    
-    // test lines end
     
     override func viewDidLoad() {
         super.viewDidLoad()

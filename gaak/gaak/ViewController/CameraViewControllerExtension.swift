@@ -12,25 +12,7 @@ import Photos
 
 extension CameraViewController {
     
-    // MARK:- Get Screen Ratio
-    // AVCaptureDevice 종류와 선택한 스크린 사이즈 비율에 맞게 PreviewImageView Frame 변경
-    /// 이 함수는 호출되지만, 함수에서 변경된 contants는 사용되지 않음.
-    /// 나중에 시간있으면 코드정리할 때, 이 함수를 사용해여 객체지향프로그래밍을 구현할 것.
-    /// -> 귀찮아서 사용 안 하는중...
-    func getSizeByScreenRatio(with currentPosition: AVCaptureDevice.Position, at screenRatioStatus: Int){
-        var photoWidth: CGFloat?
-        var photoHeight: CGFloat?
-        
-        photoWidth = ScreenType.photoWidthByDeviceInput(type: currentPosition.rawValue)
-        photoHeight = ScreenType.photoHeightByAspectScreenRatio(currentPosition.rawValue, ratioType: screenRatioStatus)
-        
-        rectOfpreviewImage = ScreenType.getCGRectPreiewImageView(target: UIScreen.main.bounds, yMargin: settingToolbar.frame.height, ratioType: screenRatioStatus)
-        
-        
-        if let photoWidth = photoWidth, let photoHeight = photoHeight{
-            cameraViewPhotoSize = CameraViewPhotoSize(width: photoWidth, height: photoHeight)
-        }
-    }
+    
     
     
     // MARK: - 라이브러리에 저장
@@ -78,5 +60,73 @@ extension CameraViewController {
     }
     
     
-    
+    //MARK: 카메라 전후 전환 아이콘 part
+    func updateSwitchCameraIcon(position: AVCaptureDevice.Position) {
+        // TODO: Update ICON
+        switch position {
+        case .front:
+            let image = #imageLiteral(resourceName: "ic_camera_front")
+            switchButton.setImage(image, for: .normal)
+        case .back:
+            let image = #imageLiteral(resourceName: "ic_camera_rear")
+            switchButton.setImage(image, for: .normal)
+        default:
+            break
+        }
+    }
+    //MARK: 카메라 전후 전환 기능 part
+    @IBAction func switchCamera(sender: Any) {
+        // TODO: 카메라는 2개 이상이어야함
+        guard videoDeviceDiscoverySession.devices.count > 1 else { return }
+        
+        // TODO: 반대 카메라 찾아서 재설정
+        // - 반대 카메라 찾고
+        // - 새로운 디바이스를 가지고 세션을 업데이트
+        // - 카메라 전환 토글 버튼 업데이트
+        
+        sessionQueue.async {
+            let currentVideoDevice = self.videoDeviceInput.device
+            self.currentPosition = currentVideoDevice.position
+            let isFront = self.currentPosition == .front
+            // isFront이면 back에 있는걸, front가 아니면 front를 -> prefferedPosition
+            let preferredPosition: AVCaptureDevice.Position = isFront ? .back : .front
+            
+            let devices = self.videoDeviceDiscoverySession.devices
+            var newVideoDevice: AVCaptureDevice?
+            
+            newVideoDevice = devices.first(where: { device in
+                return preferredPosition == device.position
+            })
+            // -> 지금까지는 새로운 카메라를 찾음.
+            
+            // update capture session
+            if let newDevice = newVideoDevice {
+                
+                do {
+                    let videoDeviceInput = try AVCaptureDeviceInput(device: newDevice)
+                    self.captureSession.beginConfiguration()
+                    self.captureSession.removeInput(self.videoDeviceInput)
+                    
+                    // 새로 찾은 videoDeviceInput을 넣을 수 있으면 // 새로운 디바이스 인풋을 넣음
+                    if self.captureSession.canAddInput(videoDeviceInput) {
+                        self.captureSession.addInput(videoDeviceInput)
+                        self.videoDeviceInput = videoDeviceInput
+                    } else { // 아니면 그냥 원래 있던거 다시 넣고
+                        self.captureSession.addInput(self.videoDeviceInput) // 이 조건문 다시보기
+                    }
+                    self.captureSession.commitConfiguration()
+                    
+                    // 카메라 전환 토글 버튼 업데이트
+                    // UI관련 작업은 Main Queue에서 수행되어야 함
+                    // 카메라 기능과 충돌이 생기면 안 되기 때문
+                    DispatchQueue.main.async {
+                        self.updateSwitchCameraIcon(position: preferredPosition)
+                    }
+                    
+                } catch let error {
+                    print("error occured while creating device input: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
 }
