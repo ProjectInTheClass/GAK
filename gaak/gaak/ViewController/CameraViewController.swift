@@ -11,6 +11,7 @@ import AVFoundation
 import Photos
 
 class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
+
     // TODO: 초기 설정 1: 카메라 만드는데 필요한 객체들
     // - captureSession
     // - AVCaptureDeviceInput
@@ -34,17 +35,16 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     var cameraViewPhotoSize: CameraViewPhotoSize? // 카메라 뷰에 담길 촬영 포토 사이즈를 위한 프로퍼티
     var cameraRelatedCoreImageResource: CameraRelatedCoreImageResource? // Video Data Output, Sample Data struct
 
-    @IBOutlet weak var previewView: PreviewView! //
+    @IBOutlet weak var previewView: PreviewView! 
 
     @IBOutlet weak var settingToolbar: UIToolbar! // 화면 비율 버튼이 있는 툴바
-    @IBOutlet weak var cameraToolbar: UIToolbar! // 화면 하단의 툴 바
-    
+    @IBOutlet weak var moreView: UIView! // 더보기 뷰(활성화/비활성화)
     @IBOutlet weak var screenRatioBarButtonItem: UIBarButtonItem! // 스크린 비율을 위한 버튼 (1:1, 3:4, 9:16)
-    
-    @IBOutlet weak var switchButton: UIButton!
+    @IBOutlet weak var switchButton: UIButton! // 카메라 전환 버튼
 
+    @IBOutlet weak var cameraToolbar: UIToolbar! // 화면 하단의 툴 바
     @IBOutlet weak var photoLibraryButton: UIButton! // 사진앨범 버튼
-    @IBOutlet weak var captureButton: UIButton!
+    @IBOutlet weak var captureButton: UIButton!// 사진촬영 버튼
     
     
     override var prefersStatusBarHidden: Bool {
@@ -53,21 +53,15 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        //print("viewWillAppear in CameraViewController")
-        //navigationController?.isNavigationBarHidden = true
-        
     }
     
-    // UI요소들이 메모리에 올라왔을 때 해야할 것들
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        previewView.session = captureSession // TODO 1에서 초기화한 캡쳐세션 -> 프리뷰.세션
+                
+        previewView.session = captureSession
         
         sessionQueue.async { // AVCaptureSession을 구성하는건 세션큐에서 할거임
-            self.setupSession() // 아래의 extension class 에서 구현
-            
+            self.setupSession()
             self.startSession()
         }
         setupUI()
@@ -161,11 +155,12 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     }
     
     //MARK: 툴바 크기 셋업
-    @IBOutlet weak var previewViewTop: NSLayoutConstraint!
-    @IBOutlet weak var cameraToolBarHeight: NSLayoutConstraint!
+    @IBOutlet weak var cameraToolBarHeight: NSLayoutConstraint! // 카메라 툴바 height조 셋업
     
-    // @IBOutlet weak var previewConstraints: NSLayoutConstraint!
     func setToolbarsUI(){
+        
+        
+        // 화면비에 따른 상, 하단 툴바 상태 조절
         switch screenRatioSwitchedStatus {
         case ScreenType.Ratio.square.rawValue :
             print("-> UI setup: screen_ratio 1_1")
@@ -205,12 +200,11 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     // setupUI()
     func setupUI() {
         
+        // 상, 하단 툴 바 설정
         setToolbarsUI()
         
-        // 상단 툴바
-        
-        // settingToolbar.isTranslucent = true
-        
+        // 더보기(상단바) 버튼 UI 설정
+        moreView.isHidden = true // 안 보이게 해놓고
         
         // 하단 툴바
         cameraToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
