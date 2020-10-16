@@ -60,7 +60,7 @@ extension CameraViewController {
     }
     
     
-    //MARK: 카메라 전후 전환 아이콘 part
+    //MARK: 카메라 전후 전환 icon
     func updateSwitchCameraIcon(position: AVCaptureDevice.Position) {
         // TODO: Update ICON
         switch position {
@@ -74,7 +74,7 @@ extension CameraViewController {
             break
         }
     }
-    //MARK: 카메라 전후 전환 기능 part
+    //MARK: 카메라 전후 전환 func
     @IBAction func switchCamera(sender: Any) {
         // TODO: 카메라는 2개 이상이어야함
         guard videoDeviceDiscoverySession.devices.count > 1 else { return }
@@ -128,5 +128,28 @@ extension CameraViewController {
                 }
             }
         }
+    }
+    
+    
+    //MARK: 더보기 func
+    @IBAction func seeMore(_ sender: Any) {
+        // 시작할 땐 히든 -> setupUI()
+        // 이 버튼 누르면 다시 보임.
+        if(moreView.isHidden) {
+            // 가려져있으면, 켜주고
+            moreView.isHidden = false
+            moreView.alpha = 1
+        }
+        // + 아무데나 다른 곳을 누르면 사라짐. -> view tap gesture recognizer에서 구현해야함.
+    }
+    
+    
+    @IBAction func returnToMain(_ sender: Any) {
+        // 더보기 창 꺼주기
+        if (!moreView.isHidden) {
+            // 켜져있으면, 꺼주고
+            moreView.isHidden = true
+        }
+        
     }
 }
