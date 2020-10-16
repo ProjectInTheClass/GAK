@@ -36,7 +36,6 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
 
     @IBOutlet weak var previewView: PreviewView! //
 
-
     @IBOutlet weak var settingToolbar: UIToolbar! // 화면 비율 버튼이 있는 툴바
     @IBOutlet weak var cameraToolbar: UIToolbar! // 화면 하단의 툴 바
     
@@ -330,6 +329,9 @@ extension CameraViewController {
             }
         }
     }
+}
+
+extension CameraViewController {
     
     
     

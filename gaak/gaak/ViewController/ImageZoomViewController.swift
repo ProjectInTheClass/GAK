@@ -9,11 +9,12 @@
 import UIKit
 import Photos
 
-class ImageZoomViewController: UIViewController {
+class ImageZoomViewController: UIViewController, UIScrollViewDelegate {
 
     var asset: PHAsset!
     let imageManager: PHCachingImageManager = PHCachingImageManager()
     
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var imageView: UIImageView!
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
@@ -22,6 +23,14 @@ class ImageZoomViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        scrollView.alwaysBounceVertical = false
+        scrollView.alwaysBounceHorizontal = false
+        
+        scrollView.minimumZoomScale = 1.0
+        scrollView.maximumZoomScale = 3.0
+        scrollView.delegate = self
+        
         
         // optional error is occured !
         imageManager.requestImage(for: asset,

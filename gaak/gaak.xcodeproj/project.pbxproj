@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9F2A2A96251C81F3002147A8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2A2A95251C81F3002147A8 /* Constants.swift */; };
+		9F36D84125383F0C000EDCCD /* EllipsisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F36D84025383F0C000EDCCD /* EllipsisView.swift */; };
 		9F5ACF8A250F4AA000516A9B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F5ACF89250F4AA000516A9B /* AppDelegate.swift */; };
 		9F5ACF8C250F4AA000516A9B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F5ACF8B250F4AA000516A9B /* SceneDelegate.swift */; };
 		9F5ACF91250F4AA000516A9B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F5ACF8F250F4AA000516A9B /* Main.storyboard */; };
@@ -24,6 +25,7 @@
 
 /* Begin PBXFileReference section */
 		9F2A2A95251C81F3002147A8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		9F36D84025383F0C000EDCCD /* EllipsisView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EllipsisView.swift; sourceTree = "<group>"; };
 		9F5ACF86250F4AA000516A9B /* gaak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gaak.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F5ACF89250F4AA000516A9B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9F5ACF8B250F4AA000516A9B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -66,6 +68,7 @@
 				9F5ACF94250F4AA200516A9B /* LaunchScreen.storyboard */,
 				9F5ACFA0250F518600516A9B /* PreviewView.swift */,
 				9FE00E4F252C95F5000E6F9A /* PhotoAlbumItemCollectionViewCell.swift */,
+				9F36D84025383F0C000EDCCD /* EllipsisView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -211,6 +214,7 @@
 				9FE00E50252C95F5000E6F9A /* PhotoAlbumItemCollectionViewCell.swift in Sources */,
 				9F5ACF8A250F4AA000516A9B /* AppDelegate.swift in Sources */,
 				9F5ACFA1250F518600516A9B /* PreviewView.swift in Sources */,
+				9F36D84125383F0C000EDCCD /* EllipsisView.swift in Sources */,
 				9FD322C4252C94CE000B611D /* PhotoAlbumViewController.swift in Sources */,
 				9FD87EC925273ED6001FF3F9 /* ImageExtension.swift in Sources */,
 				9FD87EC525273C62001FF3F9 /* CameraViewControllerExtension.swift in Sources */,
