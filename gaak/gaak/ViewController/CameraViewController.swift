@@ -12,6 +12,7 @@ import Photos
 
 class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
 
+
     // TODO: 초기 설정 1: 카메라 만드는데 필요한 객체들
     // - captureSession
     // - AVCaptureDeviceInput
@@ -33,7 +34,12 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     var currentPosition: AVCaptureDevice.Position? // 카메라 포지션을 저장할 프로퍼티
     var rectOfpreviewImage: CGRect? // previewImage의 CGRect
     var cameraViewPhotoSize: CameraViewPhotoSize? // 카메라 뷰에 담길 촬영 포토 사이즈를 위한 프로퍼티
-    var cameraRelatedCoreImageResource: CameraRelatedCoreImageResource? // Video Data Output, Sample Data struct
+    // var cameraRelatedCoreImageResource: CameraRelatedCoreImageResource? // Video Data Output, Sample Data struct
+    
+    var assetsFetchResults: PHFetchResult<PHAsset>! // 포토앨범 썸네일 1장 불러오기 위한 프로퍼티 3종 세트-1
+    var imageManger: PHCachingImageManager? // 포토앨범 썸네일 1장 불러오기 위한 프로퍼티 3종 세트-2
+    var authorizationStatus: PHAuthorizationStatus? // 포토앨범 썸네일 1장 불러오기 위한 프로퍼티 3종 세트-3
+
 
     @IBOutlet weak var previewView: PreviewView! 
 
@@ -42,11 +48,11 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     @IBOutlet weak var screenRatioBarButtonItem: UIBarButtonItem! // 스크린 비율을 위한 버튼 (1:1, 3:4, 9:16)
     @IBOutlet weak var switchButton: UIButton! // 카메라 전환 버튼
 
+    @IBOutlet weak var cameraToolBarHeight: NSLayoutConstraint! // 카메라 툴바 height 셋업
     @IBOutlet weak var cameraToolbar: UIToolbar! // 화면 하단의 툴 바
     @IBOutlet weak var photoLibraryButton: UIButton! // 사진앨범 버튼
     @IBOutlet weak var captureButton: UIButton!// 사진촬영 버튼
-    
-    
+        
     override var prefersStatusBarHidden: Bool {
         return true // 아이폰 상단 정보 (시간, 배터리 등)을 숨겨줌
     }
@@ -65,8 +71,9 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
             self.startSession()
         }
         setupUI()
+        
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
@@ -75,140 +82,23 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         super.viewDidDisappear(animated)
     }
     
-    //MARK: 사진 촬영
-    @IBAction func capturePhoto(_ sender: UIButton) {
-        // TODO: photoOutput의 capturePhoto 메소드
-        // orientation
-        // photooutput
-        
-        let videoPreviewLayerOrientation = self.previewView.videoPreviewLayer.connection?.videoOrientation
-        
-        sessionQueue.async {
-            let connection = self.photoOutput.connection(with: .video)
-           
-            connection?.videoOrientation = videoPreviewLayerOrientation!
-            
-            // 캡쳐 세션에 요청하는것
-            let setting = AVCapturePhotoSettings()
-            
-            self.photoOutput.capturePhoto(with: setting, delegate: self)
-        }
-    }
-    
-    //MARK: 사진 저장
-    func savePhotoLibrary(image: UIImage) {
-        // TODO: capture한 이미지 포토라이브러리에 저장
-        
-        PHPhotoLibrary.requestAuthorization { status in
-            if status == .authorized {
-                // save !
-                PHPhotoLibrary.shared().performChanges({
-                    PHAssetChangeRequest.creationRequestForAsset(from: image)
-                }) { (_, error) in
-                    DispatchQueue.main.async {
-                        //self.photoLibraryButton.setImage(image, for: .normal)
-                        // 주석이유(bug): 사진촬영->앨범탐색->다시촬영모드로돌아왔을때
-                        // 앨범버튼의 width가 view.width와 동일해짐.
-                    }
-                }
-            } else {
-                print(" error to save photo library")
-                // 다시 요청할 수도 있음
-                // ...
-            }
-        }
-    }
     
     
-    //MARK: 화면비 변경 버튼
-    /*
-     이 함수에서 화면비 아이콘도 변경하고 previewView의 사이즈도 변경함.
-     !!To do!!
-        - preview 사이즈 변경할 때 지금은 previewConstraints.constant가
-           지저분하게 작성되어있는데, 깔끔하게 정리할 필요가 있음.
-     */
-    @IBAction func switchScreenRatio(_ sender: Any) {
-        // 0 == 1:1 || 1 == 3:4 || 2 == 9:16
-        
-        screenRatioSwitchedStatus += 1
-        screenRatioSwitchedStatus %= ScreenType.numberOfRatioType()
-        if let currentPosition = self.currentPosition {
-            switch screenRatioSwitchedStatus {
-            case ScreenType.Ratio.square.rawValue :
-                screenRatioBarButtonItem.image = UIImage(named: "screen_ratio_1_1")
 
-            case ScreenType.Ratio.retangle.rawValue :
-                screenRatioBarButtonItem.image = UIImage(named: "screen_ratio_3_4")
-            
-            case ScreenType.Ratio.full.rawValue :
-                screenRatioBarButtonItem.image = UIImage(named: "screen_ratio_9_16")
-
-            default:
-                break;
-            }
-            // 전후면 카메라 스위칭 될 때, 화면 비율을 넘기기 위함.
-            // 이거 필요없으면 나중에 삭제하는게 좋음
-            // extension으로 빼놨음.
-            setToolbarsUI()
-            getSizeByScreenRatio(with: currentPosition, at: screenRatioSwitchedStatus)
-        }
-    }
-    
-    //MARK: 툴바 크기 셋업
-    @IBOutlet weak var cameraToolBarHeight: NSLayoutConstraint! // 카메라 툴바 height조 셋업
-    
-    func setToolbarsUI(){
-        
-        
-        // 화면비에 따른 상, 하단 툴바 상태 조절
-        switch screenRatioSwitchedStatus {
-        case ScreenType.Ratio.square.rawValue :
-            print("-> UI setup: screen_ratio 1_1")
-            
-            // setToolbarsUI // tool bar UI 설정하는 부분
-            settingToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
-            settingToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
-            settingToolbar.isTranslucent = false
-            cameraToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
-            cameraToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
-            cameraToolbar.isTranslucent = false
-            
-            cameraToolBarHeight.constant = view.frame.size.height - (view.frame.size.width + settingToolbar.frame.size.height)
-        
-        case ScreenType.Ratio.retangle.rawValue :
-            print("-> UI setup: screen_ratio 3_4")
-            
-            settingToolbar.isTranslucent = true
-            cameraToolbar.isTranslucent = false
-            
-            cameraToolBarHeight.constant = view.frame.size.height - ((view.frame.size.width)*(4.0/3.0))
-            
-        case ScreenType.Ratio.full.rawValue :
-            print("-> UI setup: screen_ratio 9:16")
-
-            settingToolbar.isTranslucent = true
-            cameraToolbar.isTranslucent = true
-            
-            cameraToolBarHeight.constant = view.frame.size.height - ((view.frame.size.width)*(4.0/3.0))
-
-
-        default:
-            print("--> screenRatioSwitchedStatus: default")
-        }
-    }
-    
-    // setupUI()
+    //MARK: setupUI()
     func setupUI() {
         
-        // 상, 하단 툴 바 설정
-        setToolbarsUI()
+        
+        setToolbarsUI() // 상, 하단 툴 바 설정
+        setLatestPhoto() // 앨범버튼 썸네일 설정
         
         // 더보기(상단바) 버튼 UI 설정
         moreView.isHidden = true // 안 보이게 해놓고
         
         // 하단 툴바
         cameraToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
-
+        
+        //photoLibraryButton.setImage(UIImage(named: "?"), for: .normal) // image
         photoLibraryButton.layer.cornerRadius = 10
         photoLibraryButton.layer.masksToBounds = true
         photoLibraryButton.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
@@ -216,6 +106,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         
         captureButton.layer.cornerRadius = captureButton.bounds.height/2
         captureButton.layer.masksToBounds = true
+        
     }
     
     // MARK:- Get Screen Ratio

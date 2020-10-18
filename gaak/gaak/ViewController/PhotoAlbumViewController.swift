@@ -15,7 +15,6 @@ protocol pickedImageSentDelegate {
 
 private let reuseIdentifier = "ImageCell"
 
-
 class PhotoAlbumViewController: UIViewController, PHPhotoLibraryChangeObserver {
     
     
@@ -146,6 +145,7 @@ extension PhotoAlbumViewController: UICollectionViewDataSource {
         let asset: PHAsset = self.assetsFetchResults![indexPath.item]
         self.imageManger?.requestImage(for: asset,
                                        targetSize: cell.frame.size,
+                                       //targetSize: CGSize(width: cell.pixelWidth, height: asset.pixelHeight),
                                        contentMode: PHImageContentMode.aspectFit,
                                        options: nil,
                                        resultHandler: { (result : UIImage?, info) in cell.photoImageView.image = result
@@ -158,14 +158,8 @@ extension PhotoAlbumViewController: UICollectionViewDataSource {
 extension PhotoAlbumViewController: UICollectionViewDelegate {
     //셀이 터치됐을 때 어떻게 할지?
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
         print("--> \(indexPath.item)")
         performSegue(withIdentifier: "showDetail", sender: indexPath.item)
-        // performSegue를 사용해서 넘기는건 내 방식
-        
-        // currentSelectedIndex = indexPath.item
-        // currentSelectedIndex 이 변수는 나중에 선택, 삭제 기능구현할 때 사용할 수 있음.
-        // pickPhotoImageBarButton.isEnabled = true
     }
     
     // MARK: - 데이터 넘기기
@@ -180,5 +174,4 @@ extension PhotoAlbumViewController: UICollectionViewDelegate {
         nextViewController.asset = self.assetsFetchResults[index.item]
         // ImageZoomViewController에 있는 asset으로 데이터를 넘겨줌.
     }
-
 }

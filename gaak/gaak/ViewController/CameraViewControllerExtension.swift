@@ -14,6 +14,45 @@ extension CameraViewController {
     
     
     
+    //MARK: 사진 촬영
+    @IBAction func capturePhoto(_ sender: UIButton) {
+        // TODO: photoOutput의 capturePhoto 메소드
+        // orientation
+        // photooutput
+        
+        let videoPreviewLayerOrientation = self.previewView.videoPreviewLayer.connection?.videoOrientation
+        
+        sessionQueue.async {
+            let connection = self.photoOutput.connection(with: .video)
+           
+            connection?.videoOrientation = videoPreviewLayerOrientation!
+            
+            // 캡쳐 세션에 요청하는것
+            let setting = AVCapturePhotoSettings()
+            
+            self.photoOutput.capturePhoto(with: setting, delegate: self)
+        }
+    }
+    
+    //MARK: 사진 저장
+    func savePhotoLibrary(image: UIImage) {
+        // TODO: capture한 이미지 포토라이브러리에 저장
+        
+        PHPhotoLibrary.requestAuthorization { status in
+            if status == .authorized {
+                // save !
+                PHPhotoLibrary.shared().performChanges({
+                    PHAssetChangeRequest.creationRequestForAsset(from: image)
+                }) { (_, error) in
+                    self.setLatestPhoto()
+                }
+            } else {
+                print(" error to save photo library")
+                // 다시 요청할 수도 있음
+                // ...
+            }
+        }
+    }
     
     // MARK: - 라이브러리에 저장
     // 사진 저장할 때 화면비에 맞게 잘라서 저장해주는 함수
@@ -133,23 +172,136 @@ extension CameraViewController {
     
     //MARK: 더보기 func
     @IBAction func seeMore(_ sender: Any) {
-        // 시작할 땐 히든 -> setupUI()
-        // 이 버튼 누르면 다시 보임.
         if(moreView.isHidden) {
-            // 가려져있으면, 켜주고
             moreView.isHidden = false
             moreView.alpha = 1
         }
-        // + 아무데나 다른 곳을 누르면 사라짐. -> view tap gesture recognizer에서 구현해야함.
     }
-    
-    
     @IBAction func returnToMain(_ sender: Any) {
-        // 더보기 창 꺼주기
+        // return to main View
         if (!moreView.isHidden) {
-            // 켜져있으면, 꺼주고
             moreView.isHidden = true
         }
-        
     }
+    
+    //MARK: 화면비 변경 버튼
+    /*
+     이 함수에서 화면비 아이콘도 변경하고 previewView의 사이즈도 변경함.
+     !!To do!!
+        - preview 사이즈 변경할 때 지금은 previewConstraints.constant가
+           지저분하게 작성되어있는데, 깔끔하게 정리할 필요가 있음.
+     */
+    @IBAction func switchScreenRatio(_ sender: Any) {
+        // 0 == 1:1 || 1 == 3:4 || 2 == 9:16
+        
+        screenRatioSwitchedStatus += 1
+        screenRatioSwitchedStatus %= ScreenType.numberOfRatioType()
+        if let currentPosition = self.currentPosition {
+            switch screenRatioSwitchedStatus {
+            case ScreenType.Ratio.square.rawValue :
+                screenRatioBarButtonItem.image = UIImage(named: "screen_ratio_1_1")
+
+            case ScreenType.Ratio.retangle.rawValue :
+                screenRatioBarButtonItem.image = UIImage(named: "screen_ratio_3_4")
+            
+            case ScreenType.Ratio.full.rawValue :
+                screenRatioBarButtonItem.image = UIImage(named: "screen_ratio_9_16")
+
+            default:
+                break;
+            }
+            // 전후면 카메라 스위칭 될 때, 화면 비율을 넘기기 위함.
+            // 이거 필요없으면 나중에 삭제하는게 좋음
+            // extension으로 빼놨음.
+            setToolbarsUI()
+            getSizeByScreenRatio(with: currentPosition, at: screenRatioSwitchedStatus)
+        }
+    }
+    
+    // MARK: 앨범버튼 썸네일 설정
+    // 에러있어서 현재 상수 입력해놓았음. imageManger 에서 targetsize 적어야하는데 지금은 그냥 44 로 적어놨음.
+    // 버튼 객체에 접근해서 .frame.size으로 하면 UI API 가 백그라운드에서 수행중이라고 에러 뜸.
+    func setLatestPhoto(){
+        PHPhotoLibrary.authorizationStatus()
+        
+        authorizationStatus = PHPhotoLibrary.authorizationStatus()
+        
+        if let authorizationStatusOfPhoto = authorizationStatus {
+            switch authorizationStatusOfPhoto {
+            case .authorized:
+                self.imageManger = PHCachingImageManager()
+                let options = PHFetchOptions()
+                options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+                
+                self.assetsFetchResults = PHAsset.fetchAssets(with: PHAssetMediaType.image, options: options)
+                
+                //self.photoAlbumCollectionView?.reloadData()
+           
+            case .denied:
+                print(authorizationStatusOfPhoto)
+            case .notDetermined:
+                print(authorizationStatusOfPhoto)
+                PHPhotoLibrary.requestAuthorization({ (authorizationStatus) in
+                    print(authorizationStatus.rawValue)
+                })
+            case .restricted:
+                print(authorizationStatusOfPhoto)
+            case .limited:
+                print("접근제한(.limited): \(authorizationStatusOfPhoto)")
+            @unknown default:
+                print("@unknown error: \(authorizationStatusOfPhoto)")
+            }
+        }
+        
+        let asset: PHAsset = self.assetsFetchResults![0]
+        self.imageManger?.requestImage(for: asset,
+                                       targetSize: CGSize(width: 44, height: 44),
+                                       contentMode: PHImageContentMode.aspectFill,
+                                       options: nil,
+                                       resultHandler: { (result : UIImage?, info) in
+                                        DispatchQueue.main.async {
+                                            self.photoLibraryButton.setImage(result, for: .normal)
+                                        } } )
+    }
+    
+    //MARK: 상, 하단 툴 바 설정
+    func setToolbarsUI(){
+        
+        // 화면비에 따른 상, 하단 툴바 상태 조절
+        switch screenRatioSwitchedStatus {
+        case ScreenType.Ratio.square.rawValue :
+            print("-> UI setup: screen_ratio 1_1")
+            
+            // setToolbarsUI // tool bar UI 설정하는 부분
+            settingToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
+            settingToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
+            settingToolbar.isTranslucent = false
+            cameraToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
+            cameraToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
+            cameraToolbar.isTranslucent = false
+            
+            cameraToolBarHeight.constant = view.frame.size.height - (view.frame.size.width + settingToolbar.frame.size.height)
+        
+        case ScreenType.Ratio.retangle.rawValue :
+            print("-> UI setup: screen_ratio 3_4")
+            
+            settingToolbar.isTranslucent = true
+            cameraToolbar.isTranslucent = false
+            
+            cameraToolBarHeight.constant = view.frame.size.height - ((view.frame.size.width)*(4.0/3.0))
+            
+        case ScreenType.Ratio.full.rawValue :
+            print("-> UI setup: screen_ratio 9:16")
+
+            settingToolbar.isTranslucent = true
+            cameraToolbar.isTranslucent = true
+            
+            cameraToolBarHeight.constant = view.frame.size.height - ((view.frame.size.width)*(4.0/3.0))
+
+
+        default:
+            print("--> screenRatioSwitchedStatus: default")
+        }
+    }
+    
 }

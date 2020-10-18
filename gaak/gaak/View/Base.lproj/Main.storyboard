@@ -28,7 +28,7 @@
                                 <items>
                                     <barButtonItem style="plain" id="dbl-Oi-kg4">
                                         <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Hu5-ep-XK6">
-                                            <rect key="frame" x="20" y="0.0" width="102" height="50"/>
+                                            <rect key="frame" x="19" y="0.0" width="51" height="50"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                             <gestureRecognizers/>
                                             <state key="normal" image="more_icon_temp"/>
@@ -45,7 +45,7 @@
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="eoN-hT-IEf"/>
                                     <barButtonItem style="plain" id="qYl-jb-28y">
-                                        <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="stH-Um-tRG">
+                                        <button key="customView" opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="stH-Um-tRG">
                                             <rect key="frame" x="370" y="13" width="24" height="24"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <constraints>
@@ -70,9 +70,9 @@
                                 <items>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="R8M-Gt-hz2"/>
                                     <barButtonItem style="plain" id="DvI-n9-Cuh" userLabel="PhotoAlbumButton">
-                                        <button key="customView" opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ra3-NV-Evq">
-                                            <rect key="frame" x="77" y="114" width="44" height="44"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                        <button key="customView" autoresizesSubviews="NO" opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ra3-NV-Evq">
+                                            <rect key="frame" x="76" y="114" width="44" height="44"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                             <color key="tintColor" systemColor="labelColor"/>
                                             <state key="normal" image="photo" catalog="system"/>
                                             <connections>
@@ -94,7 +94,7 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="5BY-qS-GRs"/>
                                     <barButtonItem style="plain" id="mfx-Qb-VOn">
                                         <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="UN5-HA-TGe">
-                                            <rect key="frame" x="318" y="114" width="19" height="44"/>
+                                            <rect key="frame" x="317" y="114" width="20" height="44"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <state key="normal" image="pin" catalog="system"/>
                                         </button>
@@ -438,7 +438,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xPH-t1-NCR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2810.144927536232" y="103.53260869565219"/>
+            <point key="canvasLocation" x="2809" y="104"/>
         </scene>
         <!--Image Zoom View Controller-->
         <scene sceneID="gaV-v0-dUN">
