@@ -20,12 +20,10 @@
                             <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QNI-Ja-PV0" customClass="PreviewView" customModule="gaak">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lLs-7U-yIp" userLabel="grid View" customClass="GrideView" customModule="gaak" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="51" width="414" height="412"/>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8Cs-HW-WMR" customClass="GridView" customModule="gaak" customModuleProvider="target">
+                                        <rect key="frame" x="87" y="262" width="240" height="128"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </imageView>
+                                    </view>
                                 </subviews>
                             </view>
                             <toolbar clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SBv-cb-p7s" userLabel="Setting Toolbar">
@@ -210,6 +208,14 @@
                                                         <color key="textColor" systemColor="systemBlueColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
+                                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rdN-LX-b20" userLabel="gridbtn">
+                                                        <rect key="frame" x="-15" y="-10" width="61" height="72"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <state key="normal" title="Button"/>
+                                                        <connections>
+                                                            <action selector="gridButton:" destination="Su1-Ld-wf4" eventType="touchUpInside" id="r5I-f0-Wdy"/>
+                                                        </connections>
+                                                    </button>
                                                 </subviews>
                                                 <constraints>
                                                     <constraint firstItem="mLy-d0-fGX" firstAttribute="leading" secondItem="hWC-Em-Y9Y" secondAttribute="leading" id="6nT-yr-1r8"/>
@@ -293,8 +299,8 @@
                         <outlet property="cameraToolBarHeight" destination="5F8-Fl-xcB" id="rzV-fY-gda"/>
                         <outlet property="cameraToolbar" destination="Ax0-BG-EXD" id="oHx-hV-bVO"/>
                         <outlet property="captureButton" destination="2bV-oP-2Ud" id="Vs1-eN-zGx"/>
-                        <outlet property="gridButton" destination="mLy-d0-fGX" id="cyW-0i-7o3"/>
-                        <outlet property="gridView" destination="lLs-7U-yIp" id="eqj-FU-bYv"/>
+                        <outlet property="gridButton" destination="rdN-LX-b20" id="7Pv-6g-eeZ"/>
+                        <outlet property="gridView" destination="8Cs-HW-WMR" id="suI-bW-wa9"/>
                         <outlet property="moreView" destination="kmT-IZ-8ZC" id="zWE-mg-YTK"/>
                         <outlet property="photoLibraryButton" destination="ra3-NV-Evq" id="IDT-S9-wJp"/>
                         <outlet property="previewView" destination="QNI-Ja-PV0" id="g9S-oC-KBU"/>
