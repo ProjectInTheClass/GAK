@@ -19,6 +19,14 @@
                         <subviews>
                             <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QNI-Ja-PV0" customClass="PreviewView" customModule="gaak">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lLs-7U-yIp" userLabel="grid View" customClass="GrideView" customModule="gaak" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="51" width="414" height="412"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </imageView>
+                                </subviews>
                             </view>
                             <toolbar clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SBv-cb-p7s" userLabel="Setting Toolbar">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
@@ -28,7 +36,7 @@
                                 <items>
                                     <barButtonItem style="plain" id="dbl-Oi-kg4">
                                         <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Hu5-ep-XK6">
-                                            <rect key="frame" x="19" y="0.0" width="51" height="50"/>
+                                            <rect key="frame" x="20" y="0.0" width="51" height="50"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                             <gestureRecognizers/>
                                             <state key="normal" image="more_icon_temp"/>
@@ -71,7 +79,7 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="R8M-Gt-hz2"/>
                                     <barButtonItem style="plain" id="DvI-n9-Cuh" userLabel="PhotoAlbumButton">
                                         <button key="customView" autoresizesSubviews="NO" opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ra3-NV-Evq">
-                                            <rect key="frame" x="76" y="114" width="44" height="44"/>
+                                            <rect key="frame" x="77" y="114" width="44" height="44"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                             <color key="tintColor" systemColor="labelColor"/>
                                             <state key="normal" image="photo" catalog="system"/>
@@ -94,7 +102,7 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="5BY-qS-GRs"/>
                                     <barButtonItem style="plain" id="mfx-Qb-VOn">
                                         <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="UN5-HA-TGe">
-                                            <rect key="frame" x="317" y="114" width="20" height="44"/>
+                                            <rect key="frame" x="318" y="114" width="20" height="44"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <state key="normal" image="pin" catalog="system"/>
                                         </button>
@@ -285,6 +293,8 @@
                         <outlet property="cameraToolBarHeight" destination="5F8-Fl-xcB" id="rzV-fY-gda"/>
                         <outlet property="cameraToolbar" destination="Ax0-BG-EXD" id="oHx-hV-bVO"/>
                         <outlet property="captureButton" destination="2bV-oP-2Ud" id="Vs1-eN-zGx"/>
+                        <outlet property="gridButton" destination="mLy-d0-fGX" id="cyW-0i-7o3"/>
+                        <outlet property="gridView" destination="lLs-7U-yIp" id="eqj-FU-bYv"/>
                         <outlet property="moreView" destination="kmT-IZ-8ZC" id="zWE-mg-YTK"/>
                         <outlet property="photoLibraryButton" destination="ra3-NV-Evq" id="IDT-S9-wJp"/>
                         <outlet property="previewView" destination="QNI-Ja-PV0" id="g9S-oC-KBU"/>
@@ -354,6 +364,28 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Photo Album" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G5W-uA-uhP">
+                                <rect key="frame" x="137.66666666666666" y="20" width="138.99999999999997" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dPa-Zh-7gP">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="Photo Album" id="s1d-Q7-UND">
+                                        <barButtonItem key="leftBarButtonItem" title="Back" image="chevron.backward" catalog="system" id="YSn-uJ-15c">
+                                            <connections>
+                                                <action selector="canclePickImageFromPhotoAlbum:" destination="zGB-Y3-h8c" id="1Qf-xb-YQD"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" title="선택" id="XK9-OS-48i">
+                                            <color key="tintColor" systemColor="systemBlueColor"/>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="nEj-4n-Woz">
                                 <rect key="frame" x="0.0" y="70" width="414" height="646"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -396,28 +428,6 @@
                                     <outlet property="delegate" destination="zGB-Y3-h8c" id="33U-Tu-gA5"/>
                                 </connections>
                             </collectionView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Photo Album" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G5W-uA-uhP">
-                                <rect key="frame" x="137.66666666666666" y="20" width="138.99999999999997" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dPa-Zh-7gP">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <items>
-                                    <navigationItem title="Photo Album" id="s1d-Q7-UND">
-                                        <barButtonItem key="leftBarButtonItem" title="Back" image="chevron.backward" catalog="system" id="YSn-uJ-15c">
-                                            <connections>
-                                                <action selector="canclePickImageFromPhotoAlbum:" destination="zGB-Y3-h8c" id="1Qf-xb-YQD"/>
-                                            </connections>
-                                        </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" title="선택" id="XK9-OS-48i">
-                                            <color key="tintColor" systemColor="systemBlueColor"/>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="S9L-if-38l"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>

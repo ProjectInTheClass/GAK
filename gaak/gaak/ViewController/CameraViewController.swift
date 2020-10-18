@@ -52,6 +52,24 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     @IBOutlet weak var cameraToolbar: UIToolbar! // 화면 하단의 툴 바
     @IBOutlet weak var photoLibraryButton: UIButton! // 사진앨범 버튼
     @IBOutlet weak var captureButton: UIButton!// 사진촬영 버튼
+    
+    
+    //그리드 뷰 || 버튼 활성화 비활성화
+    var isOn = false
+    @IBOutlet weak var gridButton: UIButton! // 그리드 버튼
+    @IBOutlet weak var gridView: GridView!
+    @IBAction func gridButton(_ sender: Any) {
+        isOn = !isOn
+        
+        if isOn {
+            gridView.isHidden = false
+            gridButton.setImage(UIImage(named: "onGrid" ), for: .normal)
+        } else {
+            gridView.isHidden = true
+            gridButton.setImage(UIImage(named: "offGrid"), for: .normal)
+        }
+    }
+    
         
     override var prefersStatusBarHidden: Bool {
         return true // 아이폰 상단 정보 (시간, 배터리 등)을 숨겨줌
@@ -220,4 +238,23 @@ extension CameraViewController {
     
     
     
+}
+
+//MARK: 카메라 그리드를 작동시키는 함수 입니다.
+extension CameraViewController {
+   
+   private func addGridView() {
+       // grideView is my view where you want to show the grid view
+       let horizontalMargin = previewView.bounds.size.width / 4
+       let verticalMargin = previewView.bounds.size.height / 4
+       
+       let gridView = GridView()
+       gridView.translatesAutoresizingMaskIntoConstraints = false
+       previewView.addSubview(gridView)
+       gridView.backgroundColor = UIColor.clear
+       gridView.leftAnchor.constraint(equalTo: previewView.leftAnchor, constant: horizontalMargin).isActive = true
+       gridView.rightAnchor.constraint(equalTo: previewView.rightAnchor, constant: -1 * horizontalMargin).isActive = true
+       gridView.topAnchor.constraint(equalTo: previewView.topAnchor, constant: verticalMargin).isActive = true
+       gridView.bottomAnchor.constraint(equalTo: previewView.bottomAnchor, constant: -1 * verticalMargin).isActive = true
+   }
 }
