@@ -56,6 +56,8 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     
     //그리드 뷰 || 버튼 활성화 비활성화
     //버튼 크기 조정이 필요할것 같습니다. 터치미스가 잘나는데, 버튼 크기조절 고민필요!
+    //현재는 어플을 키면 바로 격자가 on상태인데, 최종완성시에는 사용성에따라 off로 할지 on으로 할지 고민필요함
+    //동현님 현재는 그리드 뷰는 일부러 제약 안걸고 가만히 나뒀습니다! 그 편이 화면비 변환에 따라 격자 크기 변하는 설정하실때 편할것 같아서요!
     var isOn = true
     @IBOutlet weak var gridButton: UIButton! // 그리드 버튼
     @IBOutlet weak var gridView: GridView!
