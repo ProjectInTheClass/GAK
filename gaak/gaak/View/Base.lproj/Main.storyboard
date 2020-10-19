@@ -198,9 +198,8 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hWC-Em-Y9Y" userLabel="Grid">
                                                 <rect key="frame" x="242.33333333333331" y="25" width="31" height="50"/>
                                                 <subviews>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="grid" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="mLy-d0-fGX">
-                                                        <rect key="frame" x="0.0" y="1.3333333333333321" width="31" height="47.666666666666671"/>
-                                                        <color key="tintColor" systemColor="systemBlueColor"/>
+                                                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mLy-d0-fGX" userLabel="grid">
+                                                        <rect key="frame" x="0.0" y="0.0" width="31" height="50"/>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="그리드" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xw3-W9-Mte">
                                                         <rect key="frame" x="2.3333333333333712" y="50" width="26" height="12"/>
@@ -208,10 +207,9 @@
                                                         <color key="textColor" systemColor="systemBlueColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rdN-LX-b20" userLabel="gridbtn">
-                                                        <rect key="frame" x="-15" y="-10" width="61" height="72"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <state key="normal" title="Button"/>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rdN-LX-b20" userLabel="gridbtn">
+                                                        <rect key="frame" x="0.0" y="0.0" width="31" height="50"/>
+                                                        <state key="normal" image="onGrid"/>
                                                         <connections>
                                                             <action selector="gridButton:" destination="Su1-Ld-wf4" eventType="touchUpInside" id="r5I-f0-Wdy"/>
                                                         </connections>
@@ -219,11 +217,15 @@
                                                 </subviews>
                                                 <constraints>
                                                     <constraint firstItem="mLy-d0-fGX" firstAttribute="leading" secondItem="hWC-Em-Y9Y" secondAttribute="leading" id="6nT-yr-1r8"/>
+                                                    <constraint firstItem="rdN-LX-b20" firstAttribute="leading" secondItem="hWC-Em-Y9Y" secondAttribute="leading" id="Ad6-rs-lnq"/>
                                                     <constraint firstAttribute="trailing" secondItem="mLy-d0-fGX" secondAttribute="trailing" id="DUF-rq-LE3"/>
+                                                    <constraint firstAttribute="bottom" secondItem="rdN-LX-b20" secondAttribute="bottom" id="G8R-cK-41f"/>
+                                                    <constraint firstItem="rdN-LX-b20" firstAttribute="top" secondItem="hWC-Em-Y9Y" secondAttribute="top" id="IdY-eU-ghG"/>
                                                     <constraint firstItem="xw3-W9-Mte" firstAttribute="centerX" secondItem="mLy-d0-fGX" secondAttribute="centerX" id="U8h-Et-Rw6"/>
                                                     <constraint firstAttribute="bottom" secondItem="mLy-d0-fGX" secondAttribute="bottom" id="g2M-Uq-gKc"/>
                                                     <constraint firstItem="mLy-d0-fGX" firstAttribute="top" secondItem="hWC-Em-Y9Y" secondAttribute="top" id="oEd-XW-f9Z"/>
                                                     <constraint firstItem="xw3-W9-Mte" firstAttribute="top" secondItem="mLy-d0-fGX" secondAttribute="bottom" id="ue4-xg-DUr"/>
+                                                    <constraint firstAttribute="trailing" secondItem="rdN-LX-b20" secondAttribute="trailing" id="yQM-it-2W0"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V1A-Bu-OoH" userLabel="Settings">
@@ -537,10 +539,10 @@
         <image name="circle.dashed.inset.fill" catalog="system" width="128" height="121"/>
         <image name="deskclock" catalog="system" width="128" height="124"/>
         <image name="gearshape" catalog="system" width="128" height="121"/>
-        <image name="grid" catalog="system" width="128" height="112"/>
         <image name="hand.tap.fill" catalog="system" width="115" height="128"/>
         <image name="ic_camera_front" width="24" height="24"/>
         <image name="more_icon_temp" width="30" height="30"/>
+        <image name="onGrid" width="32" height="32"/>
         <image name="photo" catalog="system" width="128" height="93"/>
         <image name="pin" catalog="system" width="119" height="128"/>
         <image name="rectangle.fill" catalog="system" width="128" height="93"/>

@@ -55,12 +55,12 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     
     
     //그리드 뷰 || 버튼 활성화 비활성화
-    var isOn = false
+    //버튼 크기 조정이 필요할것 같습니다. 터치미스가 잘나는데, 버튼 크기조절 고민필요!
+    var isOn = true
     @IBOutlet weak var gridButton: UIButton! // 그리드 버튼
     @IBOutlet weak var gridView: GridView!
     @IBAction func gridButton(_ sender: Any) {
         isOn = !isOn
-        
         if isOn {
             gridView.isHidden = false
             gridButton.setImage(UIImage(named: "onGrid" ), for: .normal)
