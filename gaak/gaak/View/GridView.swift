@@ -11,13 +11,11 @@ import UIKit
 class GridView: UIView {
     
     override func draw(_ rect: CGRect) {
-        
-        print("draw func has called")
-        
+        print("draw func has called: \(bounds)")
+
         // Drawing code
-        
         let borderLayer = gridLayer()
-        borderLayer.path = UIBezierPath(rect: bounds).cgPath
+        borderLayer.path = UIBezierPath(rect: self.bounds).cgPath
         layer.addSublayer(borderLayer)
         
         let firstColumnPath = UIBezierPath()
@@ -52,7 +50,7 @@ class GridView: UIView {
     func gridLayer() -> CAShapeLayer {
         let shapeLayer = CAShapeLayer()
         shapeLayer.strokeColor = UIColor.black.cgColor
-        shapeLayer.lineDashPattern = [3, 3]
+        shapeLayer.lineDashPattern = [1, 1]
         shapeLayer.frame = bounds
 //        shapeLayer.fillColor = UIColor.orange.cgColor
         shapeLayer.fillColor = UIColor.clear.cgColor
