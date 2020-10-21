@@ -12,29 +12,64 @@ import Photos
 
 extension CameraViewController {
     
-    
-    
     //MARK: 사진 촬영
     @IBAction func capturePhoto(_ sender: UIButton) {
         // TODO: photoOutput의 capturePhoto 메소드
         // orientation
         // photooutput
-        
         let videoPreviewLayerOrientation = self.previewView.videoPreviewLayer.connection?.videoOrientation
-        
         sessionQueue.async {
             let connection = self.photoOutput.connection(with: .video)
-           
             connection?.videoOrientation = videoPreviewLayerOrientation!
-            
+            connection?.videoOrientation = .portrait
             // 캡쳐 세션에 요청하는것
             let setting = AVCapturePhotoSettings()
-            
             self.photoOutput.capturePhoto(with: setting, delegate: self)
         }
     }
     
-    //MARK: 사진 저장
+    // MARK: - 저장1. 화면비에 맞게 자르기
+    // 사진 저장할 때 화면비에 맞게 잘라서 저장해주는 함수
+    /* 지금은 너무 코드가 더러움... 보기좋게 Constants를 만듥 것!! */
+    
+    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+        // TODO: capturePhoto delegate method 구현
+        guard error == nil else { return }
+        guard let imageData = photo.fileDataRepresentation() else { return }
+        guard let image = UIImage(data: imageData) else { return }
+
+        // 여기부터 // 더러워지기 시작 // 아랫부분 수정할 것
+        var croppedImage: UIImage = image
+        
+        if( screenRatioSwitchedStatus == 0 ) { // 1:1 비율일 때
+                        
+            let photoRatio = CGRect(x: 0, y: (image.size.height - image.size.width)/2.0, width: image.size.width, height: image.size.width)
+            croppedImage = cropImage2(image: image, rect: photoRatio, scale: 1.0) ?? image
+        }
+        else if( screenRatioSwitchedStatus == 1 ) {
+            
+            let rectRatio = CGRect(x: 0, y: 0, width: image.size.width, height: image.size.width*4.0/3.0)
+                        
+            croppedImage = cropImage2(image: image, rect: rectRatio, scale: 1.0) ?? image
+        }
+        else if( screenRatioSwitchedStatus == 2 ) {
+            
+            let rectRatio = CGRect(x: (image.size.width)/(4.0)/(2.0), y: 0, width: (image.size.height)*(9.0)/(16.0), height: image.size.height)
+            
+            croppedImage = cropImage2(image: image, rect: rectRatio, scale: 1.0) ?? image
+        }
+        
+        //croppedImage를 리사이즈해야함.
+        
+        // cripImage2 함수도 같이 정리할 것.
+        //guard let resizedImage = resizedImage(at: croppedImage, for: CGSize(width: 1080, height: 1080)) else { return }
+        //self.savePhotoLibrary(image: resizedImage)
+        
+        
+        self.savePhotoLibrary(image: resizeImage(image: croppedImage, newWidth: 1080))
+    }
+    
+    //MARK: 저장2. 라이브러리에 저장
     func savePhotoLibrary(image: UIImage) {
         // TODO: capture한 이미지 포토라이브러리에 저장
         
@@ -44,7 +79,7 @@ extension CameraViewController {
                 PHPhotoLibrary.shared().performChanges({
                     PHAssetChangeRequest.creationRequestForAsset(from: image)
                 }) { (_, error) in
-                    self.setLatestPhoto()
+                    self.setLatestPhoto() // 앨범버튼 썸네일 업데이트
                 }
             } else {
                 print(" error to save photo library")
@@ -54,50 +89,35 @@ extension CameraViewController {
         }
     }
     
-    // MARK: - 라이브러리에 저장
-    // 사진 저장할 때 화면비에 맞게 잘라서 저장해주는 함수
-    /* 지금은 너무 코드가 더러움... 보기좋게 Constants를 만듥 것!! */
-    
-    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
-        // TODO: capturePhoto delegate method 구현
-        guard error == nil else { return }
-        guard let imageData = photo.fileDataRepresentation() else { return }
-        guard let image = UIImage(data: imageData) else { return }
-        
-        // 여기부터 // 더러워지기 시작 // 아랫부분 수정할 것
-        var croppedImage: UIImage = image
-        
-        if( screenRatioSwitchedStatus == 0 ) { // 1:1 비율일 때
-            
-            let rectRatio = CGRect(x: 0, y: image.size.height - image.size.width, width: image.size.width, height: image.size.width)
-                        
-            croppedImage = cropImage2(image: image, rect: rectRatio, scale: 1.0) ?? image
-        }
-        else if( screenRatioSwitchedStatus == 1 ) {
-            
-            let rectRatio = CGRect(x: 0, y: 0, width: image.size.width, height: image.size.width*4.0/3.0)
-                        
-            croppedImage = cropImage2(image: image, rect: rectRatio, scale: 1.0) ?? image
-        }
-        else {
-            
-            let rectRatio = CGRect(x: (image.size.width)/(4.0)/(2.0), y: 0, width: (image.size.height)*(9.0)/(16.0), height: image.size.height)
-            
-            croppedImage = cropImage2(image: image, rect: rectRatio, scale: 1.0) ?? image
-        }
-        // cripImage2 함수도 같이 정리할 것.
-        self.savePhotoLibrary(image: croppedImage)
-    }
-    
     func cropImage2 (image : UIImage, rect : CGRect, scale : CGFloat)-> UIImage? {
         UIGraphicsBeginImageContextWithOptions (
             CGSize (width : rect.size.width / scale, height : rect.size.height / scale), true, 0.0)
         image.draw (at : CGPoint (x : -rect.origin.x / scale, y : -rect.origin.y / scale))
         let croppedImage = UIGraphicsGetImageFromCurrentImageContext ()
-        UIGraphicsEndImageContext ()
+        UIGraphicsEndImageContext()
         return croppedImage
     }
     
+    
+    // Technique #1. UIGraphicsImageRenderer
+//    func resizedImage(at image: UIImage, for size: CGSize) -> UIImage? {
+//
+//        let renderer = UIGraphicsImageRenderer(size: size)
+//        return renderer.image { (context) in
+//            image.draw(in: CGRect(origin: .zero, size: size))
+//        }
+//    }
+    
+    // Technique #2. UIKit에서 이미지 리사이징
+    func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
+        let scale = newWidth / image.size.width // 새 이미지 확대/축소 비율
+        let newHeight = image.size.height * scale
+        UIGraphicsBeginImageContext(CGSize(width: newWidth, height: newHeight))
+        image.draw(in: CGRect(x: 0, y: 0, width: newWidth, height: newHeight))
+        guard let newImage = UIGraphicsGetImageFromCurrentImageContext() else { return image }
+        UIGraphicsEndImageContext()
+        return newImage
+    }
     
     //MARK: 카메라 전후 전환 icon
     func updateSwitchCameraIcon(position: AVCaptureDevice.Position) {
@@ -185,11 +205,7 @@ extension CameraViewController {
     }
     
     //MARK: 화면비 변경 버튼
-    /*
-     이 함수에서 화면비 아이콘도 변경하고 previewView의 사이즈도 변경함.
-     !!To do!!
-        - preview 사이즈 변경할 때 지금은 previewConstraints.constant가
-           지저분하게 작성되어있는데, 깔끔하게 정리할 필요가 있음.
+    /*     이 함수에서 화면비 아이콘도 변경하고 previewView의 사이즈도 변경함.
      */
     @IBAction func switchScreenRatio(_ sender: Any) {
         // 0 == 1:1 || 1 == 3:4 || 2 == 9:16
@@ -210,11 +226,57 @@ extension CameraViewController {
             default:
                 break;
             }
-            // 전후면 카메라 스위칭 될 때, 화면 비율을 넘기기 위함.
-            // 이거 필요없으면 나중에 삭제하는게 좋음
-            // extension으로 빼놨음.
+            
             setToolbarsUI()
+            
+            
+
+            
+            // getSizeBy... // 전후면 카메라 스위칭 될 때, 화면 비율을 넘기기 위한 함수임.
+            // 이거 필요없으면 나중에 삭제하는게 좋음 // extension으로 빼놨음.
             getSizeByScreenRatio(with: currentPosition, at: screenRatioSwitchedStatus)
+        }
+    }
+    
+    //MARK: 상, 하단 툴 바 설정
+    func setToolbarsUI(){
+        
+        // 화면비에 따른 상, 하단 툴바 상태 조절
+        switch screenRatioSwitchedStatus {
+        case ScreenType.Ratio.square.rawValue :
+            //print("-> UI setup: screen_ratio 1_1")
+            // setToolbarsUI // tool bar UI 설정하는 부분
+            settingToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
+            settingToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
+            settingToolbar.isTranslucent = false
+            cameraToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
+            cameraToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
+            cameraToolbar.isTranslucent = false
+            
+            previewViewHeight.constant = view.frame.width * (4.0/3.0)
+            gridViewHeight.constant = view.frame.width
+            settingToolbarHeight.constant = (previewViewHeight.constant - view.frame.width)/2.0
+            cameraToolBarHeight.constant = view.frame.size.height - (view.frame.size.width + settingToolbar.frame.size.height)
+        
+        case ScreenType.Ratio.retangle.rawValue :
+            //print("-> UI setup: screen_ratio 3_4")
+            settingToolbar.isTranslucent = true
+            cameraToolbar.isTranslucent = false
+            
+            gridViewHeight.constant = previewViewHeight.constant
+            cameraToolBarHeight.constant = view.frame.size.height - ((view.frame.size.width)*(4.0/3.0))
+
+        case ScreenType.Ratio.full.rawValue :
+            //print("-> UI setup: screen_ratio 9:16")
+            settingToolbar.isTranslucent = true
+            cameraToolbar.isTranslucent = true
+            
+            previewViewHeight.constant = view.frame.size.width * (16.0/9.0)
+            gridViewHeight.constant = previewViewHeight.constant
+            cameraToolBarHeight.constant = view.frame.size.height - ((view.frame.size.width)*(4.0/3.0))
+
+        default:
+            print("--> screenRatioSwitchedStatus: default")
         }
     }
     
@@ -262,46 +324,6 @@ extension CameraViewController {
                                         DispatchQueue.main.async {
                                             self.photoLibraryButton.setImage(result, for: .normal)
                                         } } )
-    }
-    
-    //MARK: 상, 하단 툴 바 설정
-    func setToolbarsUI(){
-        
-        // 화면비에 따른 상, 하단 툴바 상태 조절
-        switch screenRatioSwitchedStatus {
-        case ScreenType.Ratio.square.rawValue :
-            print("-> UI setup: screen_ratio 1_1")
-            
-            // setToolbarsUI // tool bar UI 설정하는 부분
-            settingToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
-            settingToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
-            settingToolbar.isTranslucent = false
-            cameraToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
-            cameraToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
-            cameraToolbar.isTranslucent = false
-            
-            cameraToolBarHeight.constant = view.frame.size.height - (view.frame.size.width + settingToolbar.frame.size.height)
-        
-        case ScreenType.Ratio.retangle.rawValue :
-            print("-> UI setup: screen_ratio 3_4")
-            
-            settingToolbar.isTranslucent = true
-            cameraToolbar.isTranslucent = false
-            
-            cameraToolBarHeight.constant = view.frame.size.height - ((view.frame.size.width)*(4.0/3.0))
-            
-        case ScreenType.Ratio.full.rawValue :
-            print("-> UI setup: screen_ratio 9:16")
-
-            settingToolbar.isTranslucent = true
-            cameraToolbar.isTranslucent = true
-            
-            cameraToolBarHeight.constant = view.frame.size.height - ((view.frame.size.width)*(4.0/3.0))
-
-
-        default:
-            print("--> screenRatioSwitchedStatus: default")
-        }
     }
     
 }
