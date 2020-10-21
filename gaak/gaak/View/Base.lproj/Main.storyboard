@@ -114,7 +114,7 @@
                                 </items>
                                 <color key="tintColor" systemColor="labelColor"/>
                             </toolbar>
-                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dNm-nt-TDF" userLabel="View(TBD4Grid)">
+                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dNm-nt-TDF" userLabel="View(TBD4Grid)" customClass="GridView" customModule="gaak" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="44" width="414" height="546"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="546" id="aS1-f3-GdU"/>
@@ -209,9 +209,8 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hWC-Em-Y9Y" userLabel="Grid">
                                                 <rect key="frame" x="242.5" y="25" width="30.5" height="50"/>
                                                 <subviews>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="grid" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="mLy-d0-fGX">
-                                                        <rect key="frame" x="0.0" y="1" width="30.5" height="48"/>
-                                                        <color key="tintColor" systemColor="systemBlueColor"/>
+                                                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mLy-d0-fGX" userLabel="nil">
+                                                        <rect key="frame" x="0.0" y="0.0" width="30.5" height="50"/>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="그리드" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xw3-W9-Mte">
                                                         <rect key="frame" x="2.5" y="50" width="26" height="12"/>
@@ -219,14 +218,25 @@
                                                         <color key="textColor" systemColor="systemBlueColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
+                                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jc0-Mv-gLN" userLabel="gridbtn">
+                                                        <rect key="frame" x="-28" y="-16" width="86" height="81"/>
+                                                        <state key="normal" image="onGrid"/>
+                                                        <connections>
+                                                            <action selector="gridButton:" destination="Su1-Ld-wf4" eventType="touchUpInside" id="hCE-RR-OBq"/>
+                                                        </connections>
+                                                    </button>
                                                 </subviews>
                                                 <constraints>
                                                     <constraint firstItem="mLy-d0-fGX" firstAttribute="leading" secondItem="hWC-Em-Y9Y" secondAttribute="leading" id="6nT-yr-1r8"/>
+                                                    <constraint firstItem="Jc0-Mv-gLN" firstAttribute="top" secondItem="mLy-d0-fGX" secondAttribute="top" id="9JM-u1-j53"/>
                                                     <constraint firstAttribute="trailing" secondItem="mLy-d0-fGX" secondAttribute="trailing" id="DUF-rq-LE3"/>
+                                                    <constraint firstItem="Jc0-Mv-gLN" firstAttribute="leading" secondItem="mLy-d0-fGX" secondAttribute="leading" id="GbW-HR-bP5"/>
                                                     <constraint firstItem="xw3-W9-Mte" firstAttribute="centerX" secondItem="mLy-d0-fGX" secondAttribute="centerX" id="U8h-Et-Rw6"/>
+                                                    <constraint firstItem="Jc0-Mv-gLN" firstAttribute="bottom" secondItem="mLy-d0-fGX" secondAttribute="bottom" id="a0e-4O-wiF"/>
                                                     <constraint firstAttribute="bottom" secondItem="mLy-d0-fGX" secondAttribute="bottom" id="g2M-Uq-gKc"/>
                                                     <constraint firstItem="mLy-d0-fGX" firstAttribute="top" secondItem="hWC-Em-Y9Y" secondAttribute="top" id="oEd-XW-f9Z"/>
                                                     <constraint firstItem="xw3-W9-Mte" firstAttribute="top" secondItem="mLy-d0-fGX" secondAttribute="bottom" id="ue4-xg-DUr"/>
+                                                    <constraint firstItem="Jc0-Mv-gLN" firstAttribute="trailing" secondItem="mLy-d0-fGX" secondAttribute="trailing" id="wqC-Vf-9FG"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V1A-Bu-OoH" userLabel="Settings">
@@ -312,6 +322,8 @@
                         <outlet property="cameraToolBarHeight" destination="5F8-Fl-xcB" id="rzV-fY-gda"/>
                         <outlet property="cameraToolbar" destination="Ax0-BG-EXD" id="oHx-hV-bVO"/>
                         <outlet property="captureButton" destination="2bV-oP-2Ud" id="Vs1-eN-zGx"/>
+                        <outlet property="gridButton" destination="Jc0-Mv-gLN" id="DYz-Of-3MP"/>
+                        <outlet property="gridView" destination="dNm-nt-TDF" id="pJh-3k-fmn"/>
                         <outlet property="gridViewHeight" destination="aS1-f3-GdU" id="a4O-Xi-EwJ"/>
                         <outlet property="moreView" destination="kmT-IZ-8ZC" id="zWE-mg-YTK"/>
                         <outlet property="photoLibraryButton" destination="ra3-NV-Evq" id="IDT-S9-wJp"/>
@@ -551,10 +563,10 @@
         <image name="circle.dashed.inset.fill" catalog="system" width="128" height="121"/>
         <image name="deskclock" catalog="system" width="128" height="124"/>
         <image name="gearshape" catalog="system" width="128" height="121"/>
-        <image name="grid" catalog="system" width="128" height="112"/>
         <image name="hand.tap.fill" catalog="system" width="115" height="128"/>
         <image name="ic_camera_front" width="24" height="24"/>
         <image name="more_icon_temp" width="30" height="30"/>
+        <image name="onGrid" width="32" height="32"/>
         <image name="photo" catalog="system" width="128" height="93"/>
         <image name="pin" catalog="system" width="119" height="128"/>
         <image name="rectangle.fill" catalog="system" width="128" height="93"/>
