@@ -64,6 +64,28 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     @IBOutlet weak var photoLibraryButton: UIButton! // 사진앨범 버튼
     @IBOutlet weak var captureButton: UIButton!// 사진촬영 버튼
         
+    
+    //그리드 뷰 || 버튼 활성화 비활성화
+    //버튼 크기 조정이 필요할것 같습니다. 터치미스가 잘나는데, 버튼 크기조절 고민필요!
+    //현재는 어플을 키면 바로 격자가 on상태인데, 최종완성시에는 사용성에따라 off로 할지 on으로 할지 고민필요함
+    var isOn = true
+    @IBOutlet weak var gridButton: UIButton! // 그리드 버튼
+    @IBOutlet weak var gridView: GridView!
+    @IBAction func gridButton(_ sender: Any) {
+        isOn = !isOn
+        if isOn {
+            gridView.isHidden = false
+            gridButton.setImage(UIImage(named: "onGrid" ), for: .normal)
+        } else {
+            gridView.isHidden = true
+            gridButton.setImage(UIImage(named: "offGrid"), for: .normal)
+        }
+    }
+    
+    
+    
+    
+    
     override var prefersStatusBarHidden: Bool {
         return true // 아이폰 상단 정보 (시간, 배터리 등)을 숨겨줌
     }
@@ -236,4 +258,23 @@ extension CameraViewController {
     
     
     
+}
+
+//MARK: 카메라 그리드를 작동시키는 함수 입니다.
+extension CameraViewController {
+   
+   private func addGridView() {
+       // grideView is my view where you want to show the grid view
+       let horizontalMargin = previewView.bounds.size.width / 4
+       let verticalMargin = previewView.bounds.size.height / 4
+       
+       let gridView = GridView()
+       gridView.translatesAutoresizingMaskIntoConstraints = false
+       previewView.addSubview(gridView)
+       gridView.backgroundColor = UIColor.clear
+       gridView.leftAnchor.constraint(equalTo: previewView.leftAnchor, constant: horizontalMargin).isActive = true
+       gridView.rightAnchor.constraint(equalTo: previewView.rightAnchor, constant: -1 * horizontalMargin).isActive = true
+       gridView.topAnchor.constraint(equalTo: previewView.topAnchor, constant: verticalMargin).isActive = true
+       gridView.bottomAnchor.constraint(equalTo: previewView.bottomAnchor, constant: -1 * verticalMargin).isActive = true
+   }
 }
