@@ -243,6 +243,16 @@ extension CameraViewController {
     // + Draw Grid Simple.ver
     func setToolbarsUI(){
         
+        ///
+        let verticalSafeAreaInset: CGFloat
+        if #available(iOS 11.0, *) {
+          verticalSafeAreaInset = self.view.safeAreaInsets.bottom + self.view.safeAreaInsets.top
+        } else {
+          verticalSafeAreaInset = 0.0
+        }
+        let safeAreaHeight = self.view.frame.height - verticalSafeAreaInset
+        ///
+        
         // 화면비에 따른 상, 하단 툴바 상태 조절
         switch screenRatioSwitchedStatus {
         case ScreenType.Ratio.square.rawValue :
@@ -258,7 +268,10 @@ extension CameraViewController {
             previewViewHeight.constant = view.frame.width * (4.0/3.0)
             gridViewHeight.constant = view.frame.width
             settingToolbarHeight.constant = (previewViewHeight.constant - view.frame.width)/2.0
-            cameraToolBarHeight.constant = view.frame.size.height - (view.frame.size.width + settingToolbar.frame.size.height)
+            cameraToolBarHeight.constant = safeAreaHeight - (view.frame.width + settingToolbar.frame.size.height)
+            
+            
+            // safeAreaHeight
             
             /// draw grid (simple.ver)
             gridH1.constant = gridviewView.frame.width / 3
@@ -273,13 +286,15 @@ extension CameraViewController {
             cameraToolbar.isTranslucent = false
             
             gridViewHeight.constant = previewViewHeight.constant
-            cameraToolBarHeight.constant = view.frame.size.height - ((view.frame.size.width)*(4.0/3.0))
+            cameraToolBarHeight.constant = safeAreaHeight - ((view.frame.size.width)*(4.0/3.0))
+            
             /// draw grid (simple.ver)
             gridH1.constant = (previewView.frame.width * (4.0/3.0)) / 3
             gridH2.constant = -(previewView.frame.width * (4.0/3.0)) / 3
             gridV1.constant = previewView.frame.width / 3
             gridV2.constant = -(previewView.frame.width / 3)
             ///
+
 
         case ScreenType.Ratio.full.rawValue :
             //print("-> UI setup: screen_ratio 9:16")
@@ -288,7 +303,8 @@ extension CameraViewController {
             
             previewViewHeight.constant = view.frame.size.width * (16.0/9.0)
             gridViewHeight.constant = previewViewHeight.constant
-            cameraToolBarHeight.constant = view.frame.size.height - ((view.frame.size.width)*(4.0/3.0))
+            cameraToolBarHeight.constant = safeAreaHeight - ((view.frame.size.width)*(4.0/3.0))
+            
             /// draw grid (simple.ver)
             gridH1.constant = (previewView.frame.width * (16.0/9.0)) / 3
             gridH2.constant = -(previewView.frame.width * (16.0/9.0)) / 3

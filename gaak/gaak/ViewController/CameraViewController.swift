@@ -42,6 +42,8 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     var imageManger: PHCachingImageManager? // 포토앨범 썸네일 1장 불러오기 위한 프로퍼티 3종 세트-2
     var authorizationStatus: PHAuthorizationStatus? // 포토앨범 썸네일 1장 불러오기 위한 프로퍼티 3종 세트-3
 
+    
+    
 
     // 상단 툴 바
     @IBOutlet weak var settingToolbar: UIToolbar! // 화면 비율 버튼이 있는 툴바
