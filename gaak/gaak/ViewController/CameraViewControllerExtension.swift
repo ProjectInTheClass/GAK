@@ -243,7 +243,8 @@ extension CameraViewController {
     // + Draw Grid Simple.ver
     func setToolbarsUI(){
         
-        ///
+        /// 이런 잔 버그는 나중에 차차 잡도록 하자...
+        /// 첫 1:1 화면에서는 적용이 안 되어있음.
         let verticalSafeAreaInset: CGFloat
         if #available(iOS 11.0, *) {
           verticalSafeAreaInset = self.view.safeAreaInsets.bottom + self.view.safeAreaInsets.top
@@ -256,16 +257,6 @@ extension CameraViewController {
         // 화면비에 따른 상, 하단 툴바 상태 조절
         switch screenRatioSwitchedStatus {
         case ScreenType.Ratio.square.rawValue :
-            
-            ///
-            let verticalSafeAreaInset: CGFloat
-            if #available(iOS 11.0, *) {
-              verticalSafeAreaInset = self.view.safeAreaInsets.bottom + self.view.safeAreaInsets.top
-            } else {
-              verticalSafeAreaInset = 0.0
-            }
-            let safeAreaHeight = self.view.frame.height - verticalSafeAreaInset
-            ///
             
             //print("-> UI setup: screen_ratio 1_1")
             // setToolbarsUI // tool bar UI 설정하는 부분
