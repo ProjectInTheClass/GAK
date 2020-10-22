@@ -127,6 +127,8 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
 
     //MARK: setupUI()
     func setupUI() {
+        
+        
                 
         // 더보기(상단바) 버튼 UI 설정
         moreView.isHidden = true // 안 보이게 해놓고

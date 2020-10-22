@@ -256,6 +256,17 @@ extension CameraViewController {
         // 화면비에 따른 상, 하단 툴바 상태 조절
         switch screenRatioSwitchedStatus {
         case ScreenType.Ratio.square.rawValue :
+            
+            ///
+            let verticalSafeAreaInset: CGFloat
+            if #available(iOS 11.0, *) {
+              verticalSafeAreaInset = self.view.safeAreaInsets.bottom + self.view.safeAreaInsets.top
+            } else {
+              verticalSafeAreaInset = 0.0
+            }
+            let safeAreaHeight = self.view.frame.height - verticalSafeAreaInset
+            ///
+            
             //print("-> UI setup: screen_ratio 1_1")
             // setToolbarsUI // tool bar UI 설정하는 부분
             settingToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
@@ -269,7 +280,6 @@ extension CameraViewController {
             gridViewHeight.constant = view.frame.width
             settingToolbarHeight.constant = (previewViewHeight.constant - view.frame.width)/2.0
             cameraToolBarHeight.constant = safeAreaHeight - (view.frame.width + settingToolbar.frame.size.height)
-            
             
             // safeAreaHeight
             
