@@ -17,8 +17,6 @@ private let reuseIdentifier = "ImageCell"
 
 class PhotoAlbumViewController: UIViewController, PHPhotoLibraryChangeObserver {
     
-    
-    @IBOutlet weak var pickPhotoImageBarButton: UIBarButtonItem!
     @IBOutlet weak var photoAlbumCollectionView: UICollectionView!
     @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
     
@@ -49,13 +47,15 @@ class PhotoAlbumViewController: UIViewController, PHPhotoLibraryChangeObserver {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        navigationController?.isNavigationBarHidden = false
+        
         // delegate, datasource set
         //self.photoAlbumCollectionView.delegate = self
         //self.photoAlbumCollectionView.dataSource = self
         
         //Init value
-        pickPhotoImageBarButton.isEnabled = false
+        //pickPhotoImageBarButton.isEnabled = false
         
         // Init Flow Layout !
         setFlowLayout()
@@ -93,7 +93,7 @@ class PhotoAlbumViewController: UIViewController, PHPhotoLibraryChangeObserver {
     }
     
     func setFlowLayout() {
-        let space:CGFloat = 3.0
+        let space:CGFloat = 1.0
         
         // the size of the main view, wihich is dependent upon screen size.
         let dimension = (view.frame.size.width - (2 * space)) / 3.0
@@ -121,6 +121,7 @@ class PhotoAlbumViewController: UIViewController, PHPhotoLibraryChangeObserver {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
     }
+    
     @IBAction func canclePickImageFromPhotoAlbum(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
@@ -146,7 +147,7 @@ extension PhotoAlbumViewController: UICollectionViewDataSource {
         self.imageManger?.requestImage(for: asset,
                                        targetSize: cell.frame.size,
                                        //targetSize: CGSize(width: cell.pixelWidth, height: asset.pixelHeight),
-                                       contentMode: PHImageContentMode.aspectFit,
+                                       contentMode: PHImageContentMode.aspectFill,
                                        options: nil,
                                        resultHandler: { (result : UIImage?, info) in cell.photoImageView.image = result
                                        })

@@ -17,7 +17,7 @@ class PhotoAlbumItemCollectionViewCell: UICollectionViewCell {
         
         if isSelected {
             self.photoImageView.layer.borderColor = CGColor(red: 5, green: 197, blue: 144, alpha: 1)
-            self.photoImageView.layer.borderWidth = 3
+            self.photoImageView.layer.borderWidth = 1
         } else {
             self.photoImageView.layer.borderColor = UIColor.clear.cgColor
             self.photoImageView.layer.borderWidth = 0
@@ -29,7 +29,7 @@ class PhotoAlbumItemCollectionViewCell: UICollectionViewCell {
             
             if isSelected {
                 self.photoImageView.layer.borderColor = CGColor(red: 5, green: 197, blue: 144, alpha: 1)
-                self.photoImageView.layer.borderWidth = 3
+                self.photoImageView.layer.borderWidth = 1
             } else {
                 self.photoImageView.layer.borderColor = UIColor.clear.cgColor
                 self.photoImageView.layer.borderWidth = 0

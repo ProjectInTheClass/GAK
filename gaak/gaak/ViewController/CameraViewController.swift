@@ -30,7 +30,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         position: .unspecified
     )
     
-    var screenRatioSwitchedStatus: Int = 1 // 화면 비율 구분을 위한 저장 프로퍼티
+    var screenRatioSwitchedStatus: Int = 0 // 화면 비율 구분을 위한 저장 프로퍼티
     var currentPosition: AVCaptureDevice.Position? // 카메라 포지션을 저장할 프로퍼티
     var rectOfpreviewImage: CGRect? // previewImage의 CGRect
     var cameraViewPhotoSize: CameraViewPhotoSize? // 카메라 뷰에 담길 촬영 포토 사이즈를 위한 프로퍼티
@@ -81,11 +81,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
             gridButton.setImage(UIImage(named: "offGrid"), for: .normal)
         }
     }
-    
-    
-    
-    
-    
+
     override var prefersStatusBarHidden: Bool {
         return true // 아이폰 상단 정보 (시간, 배터리 등)을 숨겨줌
     }
@@ -99,30 +95,37 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
             self.setupSession()
             self.startSession()
         }
+        setupUI()
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        setupUI()
 
+        cameraToolbar.translatesAutoresizingMaskIntoConstraints = false
+        navigationController?.isNavigationBarHidden = true
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        /// 노치가 있는 폰에서는 safeArea를 고려해서 UI를 배치해야하는데
+        /// viewDidAppear 에서부터 safeArea를 선언할 수 있음.
+        setupUI() /// 따라서 setupUI()를 한 번 더 선언함.
+        ///사실 여기서 한 번만 호출해도 되는데 그러면 맨 첨에 약간 화면이 버벅거리는 느낌이 있어서 그냥 호출함.
+        
+
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
     }
     
-    
-    
 
     //MARK: setupUI()
     func setupUI() {
         
-        
+        navigationController?.isNavigationBarHidden = true
+
                 
         // 더보기(상단바) 버튼 UI 설정
         moreView.isHidden = true // 안 보이게 해놓고
@@ -139,9 +142,8 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         captureButton.layer.cornerRadius = captureButton.bounds.height/2
         captureButton.layer.masksToBounds = true
         
-        setLatestPhoto() // 앨범버튼 썸네일 설정
         setToolbarsUI() // 상, 하단 툴 바 설정
-
+        setLatestPhoto() // 앨범버튼 썸네일 설정
     }
     
     // MARK:- Get Screen Ratio

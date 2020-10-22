@@ -230,9 +230,6 @@ extension CameraViewController {
             setToolbarsUI()
             //addGridView()
             
-            
-
-            
             // getSizeBy... // 전후면 카메라 스위칭 될 때, 화면 비율을 넘기기 위한 함수임.
             // 이거 필요없으면 나중에 삭제하는게 좋음 // extension으로 빼놨음.
             getSizeByScreenRatio(with: currentPosition, at: screenRatioSwitchedStatus)
@@ -243,16 +240,10 @@ extension CameraViewController {
     // + Draw Grid Simple.ver
     func setToolbarsUI(){
         
-        /// 이런 잔 버그는 나중에 차차 잡도록 하자...
-        /// 첫 1:1 화면에서는 적용이 안 되어있음.
-        let verticalSafeAreaInset: CGFloat
-        if #available(iOS 11.0, *) {
-          verticalSafeAreaInset = self.view.safeAreaInsets.bottom + self.view.safeAreaInsets.top
-        } else {
-          verticalSafeAreaInset = 0.0
-        }
+        // get safeAreaHeight !!!
+        let verticalSafeAreaInset = self.view.safeAreaInsets.bottom + self.view.safeAreaInsets.top
         let safeAreaHeight = self.view.frame.height - verticalSafeAreaInset
-        ///
+        
         
         // 화면비에 따른 상, 하단 툴바 상태 조절
         switch screenRatioSwitchedStatus {
@@ -335,7 +326,18 @@ extension CameraViewController {
                 
                 self.assetsFetchResults = PHAsset.fetchAssets(with: PHAssetMediaType.image, options: options)
                 
+                let asset: PHAsset = self.assetsFetchResults![0]
+                self.imageManger?.requestImage(for: asset,
+                                               targetSize: CGSize(width: 50, height: 50),
+                                               contentMode: PHImageContentMode.aspectFill,
+                                               options: nil,
+                                               resultHandler: { (result : UIImage?, info) in
+                                                DispatchQueue.main.async {
+                                                    self.photoLibraryButton.setImage(result, for: .normal)
+                                                } } )
+                
                 //self.photoAlbumCollectionView?.reloadData()
+
            
             case .denied:
                 print(authorizationStatusOfPhoto)
@@ -353,15 +355,6 @@ extension CameraViewController {
             }
         }
         
-        let asset: PHAsset = self.assetsFetchResults![0]
-        self.imageManger?.requestImage(for: asset,
-                                       targetSize: CGSize(width: 44, height: 44),
-                                       contentMode: PHImageContentMode.aspectFill,
-                                       options: nil,
-                                       resultHandler: { (result : UIImage?, info) in
-                                        DispatchQueue.main.async {
-                                            self.photoLibraryButton.setImage(result, for: .normal)
-                                        } } )
+        
     }
-    
 }
