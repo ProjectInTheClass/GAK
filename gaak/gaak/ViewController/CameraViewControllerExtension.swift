@@ -308,8 +308,6 @@ extension CameraViewController {
     }
     
     // MARK: 앨범버튼 썸네일 설정
-    // 에러있어서 현재 상수 입력해놓았음. imageManger 에서 targetsize 적어야하는데 지금은 그냥 44 로 적어놨음.
-    // 버튼 객체에 접근해서 .frame.size으로 하면 UI API 가 백그라운드에서 수행중이라고 에러 뜸.
     func setLatestPhoto(){
         PHPhotoLibrary.authorizationStatus()
         
