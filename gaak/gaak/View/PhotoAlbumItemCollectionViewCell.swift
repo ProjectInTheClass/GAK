@@ -22,7 +22,7 @@ class PhotoAlbumItemCollectionViewCell: UICollectionViewCell {
             self.photoImageView.layer.borderColor = UIColor.clear.cgColor
             self.photoImageView.layer.borderWidth = 0
         }
-    }
+}
     
     override var isSelected: Bool {
         didSet {

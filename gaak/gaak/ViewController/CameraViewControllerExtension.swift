@@ -327,7 +327,7 @@ extension CameraViewController {
                 let asset: PHAsset = self.assetsFetchResults![0]
                 self.imageManger?.requestImage(for: asset,
                                                targetSize: CGSize(width: 50, height: 50),
-                                               contentMode: PHImageContentMode.aspectFit,
+                                               contentMode: PHImageContentMode.aspectFill,
                                                options: nil,
                                                resultHandler: { (result : UIImage?, info) in
                                                 DispatchQueue.main.async {
