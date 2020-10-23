@@ -9,6 +9,7 @@
 import UIKit
 import AVFoundation
 import Photos
+import SnapKit
 
 class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
 
@@ -51,8 +52,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     @IBOutlet weak var previewViewHeight: NSLayoutConstraint!
     @IBOutlet weak var gridViewHeight: NSLayoutConstraint!
     
-    // lazy var previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
-    //이거 필요없음 시바
+    // lazy var previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession) //이거 필요없음 시바
 
     // 하단 툴 바
     @IBOutlet weak var cameraToolBarHeight: NSLayoutConstraint! // 카메라 툴바 height 셋업
@@ -71,17 +71,8 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     var isOn = true
     @IBOutlet weak var gridButton: UIButton! // 그리드 버튼
     @IBOutlet weak var gridviewView: GridView!
-    @IBAction func gridButton(_ sender: Any) {
-        isOn = !isOn
-        if isOn {
-            gridviewView.isHidden = false
-            gridButton.setImage(UIImage(named: "onGrid" ), for: .normal)
-        } else {
-            gridviewView.isHidden = true
-            gridButton.setImage(UIImage(named: "offGrid"), for: .normal)
-        }
-    }
-
+    
+    
     override var prefersStatusBarHidden: Bool {
         return true // 아이폰 상단 정보 (시간, 배터리 등)을 숨겨줌
     }
@@ -96,7 +87,6 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
             self.startSession()
         }
         setupUI()
-
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -130,20 +120,16 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         // 더보기(상단바) 버튼 UI 설정
         moreView.isHidden = true // 안 보이게 해놓고
         
-        // 하단 툴바
-        cameraToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
         
-        //photoLibraryButton.setImage(UIImage(named: "?"), for: .normal) // image
-        photoLibraryButton.layer.cornerRadius = 10
-        photoLibraryButton.layer.masksToBounds = true
-        photoLibraryButton.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        photoLibraryButton.layer.borderWidth = 1
+        
+        
+        setLatestPhoto() // 앨범버튼 썸네일 설정
+
         
         captureButton.layer.cornerRadius = captureButton.bounds.height/2
         captureButton.layer.masksToBounds = true
         
         setToolbarsUI() // 상, 하단 툴 바 설정
-        setLatestPhoto() // 앨범버튼 썸네일 설정
     }
     
     // MARK:- Get Screen Ratio
@@ -260,6 +246,18 @@ extension CameraViewController {
 
 /* 인재님이 구현한 함수 넣는 곳 */
 extension CameraViewController {
+    // 그리드버튼 On/Off
+    @IBAction func gridButton(_ sender: Any) {
+        isOn = !isOn
+        if isOn {
+            gridviewView.isHidden = false
+            gridButton.setImage(UIImage(named: "onGrid" ), for: .normal)
+        } else {
+            gridviewView.isHidden = true
+            gridButton.setImage(UIImage(named: "offGrid"), for: .normal)
+        }
+    }
+
     
     //MARK: 그리드를 그리는 함수
     func addGridView() {

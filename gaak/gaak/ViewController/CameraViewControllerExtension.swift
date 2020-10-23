@@ -228,7 +228,6 @@ extension CameraViewController {
             }
             
             setToolbarsUI()
-            //addGridView()
             
             // getSizeBy... // 전후면 카메라 스위칭 될 때, 화면 비율을 넘기기 위한 함수임.
             // 이거 필요없으면 나중에 삭제하는게 좋음 // extension으로 빼놨음.
@@ -244,19 +243,18 @@ extension CameraViewController {
         let verticalSafeAreaInset = self.view.safeAreaInsets.bottom + self.view.safeAreaInsets.top
         let safeAreaHeight = self.view.frame.height - verticalSafeAreaInset
         
+        settingToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
+        cameraToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
+        settingToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
+        cameraToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
         
         // 화면비에 따른 상, 하단 툴바 상태 조절
         switch screenRatioSwitchedStatus {
         case ScreenType.Ratio.square.rawValue :
-            
-            //print("-> UI setup: screen_ratio 1_1")
             // setToolbarsUI // tool bar UI 설정하는 부분
-            settingToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
-            settingToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
-            settingToolbar.isTranslucent = false
-            cameraToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
-            cameraToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
+            
             cameraToolbar.isTranslucent = false
+            settingToolbar.isTranslucent = false
             
             previewViewHeight.constant = view.frame.width * (4.0/3.0)
             gridViewHeight.constant = view.frame.width
@@ -329,11 +327,18 @@ extension CameraViewController {
                 let asset: PHAsset = self.assetsFetchResults![0]
                 self.imageManger?.requestImage(for: asset,
                                                targetSize: CGSize(width: 50, height: 50),
-                                               contentMode: PHImageContentMode.aspectFill,
+                                               contentMode: PHImageContentMode.aspectFit,
                                                options: nil,
                                                resultHandler: { (result : UIImage?, info) in
                                                 DispatchQueue.main.async {
                                                     self.photoLibraryButton.setImage(result, for: .normal)
+                                                    self.photoLibraryButton.layer.cornerRadius = 10
+                                                    self.photoLibraryButton.layer.masksToBounds = true
+                                                    self.photoLibraryButton.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+                                                    self.photoLibraryButton.layer.borderWidth = 1
+                                                    self.photoLibraryButton.snp.makeConstraints {
+                                                        $0.width.height.equalTo(50)
+                                                    }
                                                 } } )
                 
                 //self.photoAlbumCollectionView?.reloadData()
@@ -354,7 +359,6 @@ extension CameraViewController {
                 print("@unknown error: \(authorizationStatusOfPhoto)")
             }
         }
-        
         
     }
 }

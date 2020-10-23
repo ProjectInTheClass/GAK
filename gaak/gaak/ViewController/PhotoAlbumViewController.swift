@@ -145,12 +145,14 @@ extension PhotoAlbumViewController: UICollectionViewDataSource {
         // cell frame CGSize만큼 asset을 설정하여 photoImageView에 setting
         let asset: PHAsset = self.assetsFetchResults![indexPath.item]
         self.imageManger?.requestImage(for: asset,
-                                       targetSize: cell.frame.size,
-                                       //targetSize: CGSize(width: cell.pixelWidth, height: asset.pixelHeight),
-                                       contentMode: PHImageContentMode.aspectFill,
+                                       //targetSize: cell.frame.size,
+                                       targetSize: CGSize(width: 300, height: 300),
+                                       contentMode: PHImageContentMode.aspectFit,
                                        options: nil,
-                                       resultHandler: { (result : UIImage?, info) in cell.photoImageView.image = result
-                                       })
+                                       resultHandler: { (result : UIImage?, info) in
+                                        cell.photoImageView.image = result
+                                       }
+        )
         return cell
     }
 }
