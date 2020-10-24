@@ -191,12 +191,18 @@ extension CameraViewController {
     
     
     //MARK: 더보기 func
+    // gesture control
     @IBAction func seeMore(_ sender: Any) {
         if(moreView.isHidden) {
             moreView.isHidden = false
             moreView.alpha = 1
+        } else {
+            moreView.isHidden = true
         }
+        
+        
     }
+    // gesture control
     @IBAction func returnToMain(_ sender: Any) {
         // return to main View
         if (!moreView.isHidden) {
@@ -244,24 +250,29 @@ extension CameraViewController {
         let safeAreaHeight = self.view.frame.height - verticalSafeAreaInset
         
         settingToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
-        cameraToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
+        cameraToolsView.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
+//        cameraToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
         settingToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
-        cameraToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
+//        cameraToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
+        
         
         // 화면비에 따른 상, 하단 툴바 상태 조절
         switch screenRatioSwitchedStatus {
         case ScreenType.Ratio.square.rawValue :
             // setToolbarsUI // tool bar UI 설정하는 부분
             
-            cameraToolbar.isTranslucent = false
+//            cameraToolbar.isTranslucent = false
+            cameraToolsView.backgroundColor = CustomColor.uiColor("black")
             settingToolbar.isTranslucent = false
             
             previewViewHeight.constant = view.frame.width * (4.0/3.0)
             gridViewHeight.constant = view.frame.width
             settingToolbarHeight.constant = (previewViewHeight.constant - view.frame.width)/2.0
-            cameraToolBarHeight.constant = safeAreaHeight - (view.frame.width + settingToolbar.frame.size.height)
-            
-            // safeAreaHeight
+            //cameraToolsView.translatesAutoresizingMaskIntoConstraints = false
+            cameraToolsView.snp.updateConstraints {
+                $0.height.equalTo(safeAreaHeight - (view.frame.width + settingToolbar.frame.size.height))
+            }
+//            cameraToolBarHeight.constant = safeAreaHeight - (view.frame.width + settingToolbar.frame.size.height)
             
             /// draw grid (simple.ver)
             gridH1.constant = gridviewView.frame.width / 3
@@ -273,10 +284,16 @@ extension CameraViewController {
         case ScreenType.Ratio.retangle.rawValue :
             //print("-> UI setup: screen_ratio 3_4")
             settingToolbar.isTranslucent = true
-            cameraToolbar.isTranslucent = false
+//            cameraToolbar.isTranslucent = false
+            cameraToolsView.backgroundColor = CustomColor.uiColor("clear")
             
             gridViewHeight.constant = previewViewHeight.constant
-            cameraToolBarHeight.constant = safeAreaHeight - ((view.frame.size.width)*(4.0/3.0))
+//            cameraToolBarHeight.constant = safeAreaHeight - ((view.frame.size.width)*(4.0/3.0))
+            print("hi hello")
+
+            cameraToolsView.snp.updateConstraints {
+                $0.height.equalTo(safeAreaHeight - ((view.frame.size.width)*(4.0/3.0)))
+            }
             
             /// draw grid (simple.ver)
             gridH1.constant = (previewView.frame.width * (4.0/3.0)) / 3
@@ -289,11 +306,15 @@ extension CameraViewController {
         case ScreenType.Ratio.full.rawValue :
             //print("-> UI setup: screen_ratio 9:16")
             settingToolbar.isTranslucent = true
-            cameraToolbar.isTranslucent = true
+//            cameraToolbar.isTranslucent = true
+            cameraToolsView.backgroundColor = CustomColor.uiColor("clear")
             
             previewViewHeight.constant = view.frame.size.width * (16.0/9.0)
             gridViewHeight.constant = previewViewHeight.constant
-            cameraToolBarHeight.constant = safeAreaHeight - ((view.frame.size.width)*(4.0/3.0))
+//            cameraToolBarHeight.constant = safeAreaHeight - ((view.frame.size.width)*(4.0/3.0))
+            cameraToolsView.snp.updateConstraints {
+                $0.height.equalTo(safeAreaHeight - ((view.frame.size.width)*(4.0/3.0)))
+            }
             
             /// draw grid (simple.ver)
             gridH1.constant = (previewView.frame.width * (16.0/9.0)) / 3
@@ -329,12 +350,12 @@ extension CameraViewController {
                                                options: nil,
                                                resultHandler: { (result : UIImage?, info) in
                                                 DispatchQueue.main.async {
-                                                    self.photoLibraryButton.setImage(result, for: .normal)
-                                                    self.photoLibraryButton.layer.cornerRadius = 10
-                                                    self.photoLibraryButton.layer.masksToBounds = true
-                                                    self.photoLibraryButton.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-                                                    self.photoLibraryButton.layer.borderWidth = 1
-                                                    self.photoLibraryButton.snp.makeConstraints {
+                                                    self.photosButton.setImage(result, for: .normal)
+                                                    self.photosButton.layer.cornerRadius = 10
+                                                    self.photosButton.layer.masksToBounds = true
+                                                    self.photosButton.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+                                                    self.photosButton.layer.borderWidth = 1
+                                                    self.photosButton.snp.makeConstraints {
                                                         $0.width.height.equalTo(50)
                                                     }
                                                 } } )

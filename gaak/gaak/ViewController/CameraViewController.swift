@@ -51,15 +51,21 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     @IBOutlet weak var previewView: PreviewView!
     @IBOutlet weak var previewViewHeight: NSLayoutConstraint!
     @IBOutlet weak var gridViewHeight: NSLayoutConstraint!
-    
-    // lazy var previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession) //이거 필요없음 시바
 
     // 하단 툴 바
     @IBOutlet weak var cameraToolBarHeight: NSLayoutConstraint! // 카메라 툴바 height 셋업
     @IBOutlet weak var cameraToolbar: UIToolbar! // 화면 하단의 툴 바
     @IBOutlet weak var photoLibraryButton: UIButton! // 사진앨범 버튼
     @IBOutlet weak var captureButton: UIButton!// 사진촬영 버튼
-        
+    ///
+    @IBOutlet weak var cameraToolsView: UIView! // 화면 하단의 툴 바
+    @IBOutlet weak var photosButton: UIButton! // 사진촬영 버튼
+    
+    
+    ///
+    
+    
+    
     
     //그리드 뷰 && 버튼 활성화 비활성화
     //버튼 크기 조정이 필요할것 같습니다. 터치미스가 잘나는데, 버튼 크기조절 고민필요!
@@ -92,7 +98,6 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        cameraToolbar.translatesAutoresizingMaskIntoConstraints = false
         navigationController?.isNavigationBarHidden = true
     }
 
@@ -116,18 +121,14 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         
         navigationController?.isNavigationBarHidden = true
 
-                
         // 더보기(상단바) 버튼 UI 설정
         moreView.isHidden = true // 안 보이게 해놓고
-        
-        
-        
         
         setLatestPhoto() // 앨범버튼 썸네일 설정
 
         
-        captureButton.layer.cornerRadius = captureButton.bounds.height/2
-        captureButton.layer.masksToBounds = true
+        //captureButton.layer.cornerRadius = captureButton.bounds.height/2 //old
+        //captureButton.layer.masksToBounds = true // old
         
         setToolbarsUI() // 상, 하단 툴 바 설정
     }

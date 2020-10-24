@@ -34,6 +34,22 @@ enum AddPhotoMode {
     case camera
 }
 
+struct CustomColor {
+    static func uiColor(_ color: String) -> UIColor {
+        switch color {
+        case "black":
+            return UIColor(red: 1, green: 1, blue: 1, alpha: 1)
+            
+        case "clear":
+            return UIColor(white: 1, alpha: 0)
+            
+        default:
+            print("error in CustomColor")
+            fatalError()
+        }
+    }
+}
+
 struct ScreenType {
     static let width: [CGFloat] = [0.0, 1080.0, 720.0]
     
