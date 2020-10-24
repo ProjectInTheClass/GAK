@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="timerTest" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wro-Gt-ij9">
+                                <rect key="frame" x="175" y="309.5" width="25" height="48"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rse-W2-qbl">
+                                <rect key="frame" x="100" y="50" width="50" height="50"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="timer0" translatesAutoresizingMaskIntoConstraints="NO" id="GXj-82-wDl">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    </imageView>
+                                </subviews>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="GXj-82-wDl" secondAttribute="bottom" id="8cp-CC-8Tg"/>
+                                    <constraint firstAttribute="height" constant="50" id="Bob-ak-vWu"/>
+                                    <constraint firstItem="GXj-82-wDl" firstAttribute="leading" secondItem="rse-W2-qbl" secondAttribute="leading" id="Mp4-X1-bVK"/>
+                                    <constraint firstAttribute="trailing" secondItem="GXj-82-wDl" secondAttribute="trailing" id="RBK-fy-jEI"/>
+                                    <constraint firstItem="GXj-82-wDl" firstAttribute="top" secondItem="rse-W2-qbl" secondAttribute="top" id="dbY-4o-HBZ"/>
+                                    <constraint firstAttribute="width" constant="50" id="jzh-EX-jfj"/>
+                                </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="48h-MK-dr3" appends="YES" id="81v-2L-0My"/>
+                                </connections>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rkt-rh-vUJ" userLabel="Capturer">
+                                <rect key="frame" x="150" y="521" width="60" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="2NE-HK-cR6"/>
+                                    <constraint firstAttribute="height" constant="60" id="RWz-Fg-IjH"/>
+                                </constraints>
+                                <state key="normal" title="capture"/>
+                                <connections>
+                                    <action selector="touchedStartTimerButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="JOw-Vj-SN0"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="rkt-rh-vUJ" secondAttribute="trailing" constant="165" id="6Da-i5-x78"/>
+                            <constraint firstItem="rse-W2-qbl" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="50" id="DUO-aB-cGs"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="rkt-rh-vUJ" secondAttribute="bottom" constant="86" id="JsJ-c5-Hia"/>
+                            <constraint firstItem="wro-Gt-ij9" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="YaI-QD-fGX"/>
+                            <constraint firstItem="rkt-rh-vUJ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="150" id="cyT-fw-eBG"/>
+                            <constraint firstItem="wro-Gt-ij9" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="n3A-fj-euh"/>
+                            <constraint firstItem="rse-W2-qbl" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="100" id="qZo-5C-Ws1"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="timeLeft" destination="wro-Gt-ij9" id="FHq-bo-DNH"/>
+                        <outlet property="timerButton" destination="GXj-82-wDl" id="L8h-Ru-KT0"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="48h-MK-dr3">
+                    <connections>
+                        <action selector="timerButton:" destination="BYZ-38-t0r" id="Q1k-eB-uHK"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="12" y="97.601199400299862"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="timer0" width="32" height="32"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
