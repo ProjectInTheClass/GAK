@@ -30,7 +30,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         mediaType: .video,
         position: .unspecified
     )
-    let motionKit = MotionKit()
+    let motionKit = MotionKit() // core motion 수직수평계(중력가속도)측정을 위한 킷
     
     var screenRatioSwitchedStatus: Int = 0 // 화면 비율 구분을 위한 저장 프로퍼티
     var currentPosition: AVCaptureDevice.Position? // 카메라 포지션을 저장할 프로퍼티
@@ -62,75 +62,11 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     // 하단 툴 바
     @IBOutlet weak var cameraToolsView: UIView! // 화면 하단의 툴 바
     @IBOutlet weak var photosButton: UIButton! // 사진촬영 버튼
-    
-    /// core motion variables
-    
-    
     @IBOutlet weak var horizonIndicator: UIView! // 수평계(회전할 superview)
+    @IBOutlet weak var captureButtonInner: UIImageView! // 캡쳐버튼 회전하는 객체
+    @IBOutlet weak var captureButtonOuter: UIImageView! // 캡쳐버튼 테두리
     @IBOutlet weak var horizonIndicatorInner: UIImageView! // 회전하는 객체
     @IBOutlet weak var horizonIndicatorOuter: UIImageView! // 수평 100%
-    
-    
-    
-    @IBOutlet weak var captureButtonInner: UIImageView!
-    @IBOutlet weak var captureButtonOuter: UIImageView!
-    
-    // MARK: 수평, 수직계 센서 데이터 획득
-    func setGravityAccelerator() {
-        
-        motionKit.getGravityAccelerationFromDeviceMotion(interval: 0.1) { (x, y, z) in
-            // x가 좌-1 우+1, z가 앞-1 뒤+1
-            let roundedX = Float(round(x * 100)) / 100.0
-            let roundedZ = Float(round(z * 100)) / 100.0
-            
-            var current: Float
-            var transform: CATransform3D
-            
-            current = roundedX * 200
-            transform = CATransform3DIdentity;
-            transform.m34 = 1.0/500
-            transform = CATransform3DRotate(
-                transform,
-                CGFloat(current * Float.pi / 180), 0, 0, 1
-            )
-            UIView.animate(withDuration: 0.1) {
-                self.horizonIndicator.transform3D = transform
-            }
-            
-            if (current < 2 && current > -2) {
-                self.horizonIndicatorInner.tintColor = .systemGreen
-                self.horizonIndicatorOuter.tintColor = .systemGreen
-            }
-            else {
-                self.horizonIndicatorInner.tintColor = .systemRed
-                self.horizonIndicatorOuter.tintColor = .systemRed
-            }
-            
-            
-            current = roundedZ * 100
-            transform = CATransform3DIdentity;
-            transform.m34 = 1.0/500
-            transform = CATransform3DRotate(
-                transform,
-                CGFloat(current * Float.pi / 180), 1, 0, 0
-            )
-            UIView.animate(withDuration: 0.1) {
-                self.captureButtonInner.transform3D = transform
-            }
-            
-            if (current < 3 && current > -3) {
-                self.captureButtonInner.alpha = 1.0
-                self.captureButtonInner.tintColor = .systemGreen
-                self.captureButtonOuter.tintColor = .systemGreen
-            }
-            else {
-                self.captureButtonInner.alpha = CGFloat(-abs(current/100))+1.0
-                self.captureButtonInner.tintColor = .systemRed
-                self.captureButtonOuter.tintColor = .systemRed
-            }
-        }
-    }
-    
 
     override var prefersStatusBarHidden: Bool {
         return true // 아이폰 상단 정보 (시간, 배터리 등)을 숨겨줌
@@ -150,7 +86,6 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        navigationController?.isNavigationBarHidden = true
     }
 
     override func viewDidAppear(_ animated: Bool) {

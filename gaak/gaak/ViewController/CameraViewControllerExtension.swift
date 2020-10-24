@@ -9,6 +9,8 @@
 import UIKit
 import AVFoundation
 import Photos
+import Haptica
+
 
 extension CameraViewController {
     
@@ -352,6 +354,82 @@ extension CameraViewController {
                 print("@unknown error: \(authorizationStatusOfPhoto)")
             }
         }
-        
     }
+    
+    
+    // MARK: 수평, 수직계 Indicator
+    func setGravityAccelerator() {
+        var isImpactH: Bool = true
+        var isImpactV: Bool = true
+
+        motionKit.getGravityAccelerationFromDeviceMotion(interval: 0.02) { (x, y, z) in
+            // x가 좌-1 우+1, z가 앞-1 뒤+1
+            let roundedX = Float(round(x * 100)) / 100.0
+            let roundedZ = Float(round(z * 100)) / 100.0
+            
+            var current: Float
+            var transform: CATransform3D
+            
+            current = roundedX * 90
+            transform = CATransform3DIdentity;
+            transform.m34 = 1.0/500
+            transform = CATransform3DRotate(
+                transform,
+                CGFloat(current * Float.pi / 180), 0, 0, 1
+            )
+            self.horizonIndicator.transform3D = transform
+            
+            if (current < 2 && current > -2) {
+                self.horizonIndicatorInner.tintColor = .systemGreen
+                self.horizonIndicatorOuter.tintColor = .systemGreen
+                
+                if isImpactH {
+                    Haptic.play("O", delay: 0.1)
+                    isImpactH = false
+                }
+            }
+            else {
+                self.horizonIndicatorInner.tintColor = .systemRed
+                self.horizonIndicatorOuter.tintColor = .systemRed
+                if (!isImpactH) {
+                    Haptic.play("O", delay: 0.1)
+                    isImpactH = true
+                }
+            }
+            
+            
+            current = roundedZ * 90
+            transform = CATransform3DIdentity;
+            transform.m34 = 1.0/500
+            transform = CATransform3DRotate(
+                transform,
+                CGFloat(current * Float.pi / 180), 1, 0, 0
+            )
+            self.captureButtonInner.transform3D = transform
+            
+            
+            if (current < 3 && current > -3) {
+                self.captureButtonInner.alpha = 1.0
+                self.captureButtonInner.tintColor = .systemGreen
+                self.captureButtonOuter.tintColor = .systemGreen
+                
+                if isImpactV {
+                    Haptic.play("O", delay: 0.1)
+                    isImpactV = false
+                }
+            }
+            else {
+                self.captureButtonInner.alpha = CGFloat(-abs(current/100))+1.0
+                self.captureButtonInner.tintColor = .systemRed
+                self.captureButtonOuter.tintColor = .systemRed
+                
+                if !isImpactV {
+                    Haptic.play("O", delay: 0.1)
+                    isImpactV = true
+                }
+            }
+        }
+    }
+    
+    
 }
