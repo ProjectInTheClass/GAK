@@ -23,6 +23,7 @@
 		9FD87EC925273ED6001FF3F9 /* ImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD87EC825273ED6001FF3F9 /* ImageExtension.swift */; };
 		9FE00E50252C95F5000E6F9A /* PhotoAlbumItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE00E4F252C95F5000E6F9A /* PhotoAlbumItemCollectionViewCell.swift */; };
 		9FE00E53252CA5FD000E6F9A /* ImageZoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE00E52252CA5FD000E6F9A /* ImageZoomViewController.swift */; };
+		9FE288FC254421FF009583B3 /* Haptica in Frameworks */ = {isa = PBXBuildFile; productRef = 9FE288FB254421FF009583B3 /* Haptica */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +54,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9F930E532542A2370058CC83 /* SnapKit in Frameworks */,
+				9FE288FC254421FF009583B3 /* Haptica in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -183,6 +185,7 @@
 			name = gaak;
 			packageProductDependencies = (
 				9F930E522542A2370058CC83 /* SnapKit */,
+				9FE288FB254421FF009583B3 /* Haptica */,
 			);
 			productName = gaak;
 			productReference = 9F5ACF86250F4AA000516A9B /* gaak.app */;
@@ -214,6 +217,7 @@
 			mainGroup = 9F5ACF7D250F4AA000516A9B;
 			packageReferences = (
 				9F930E512542A2370058CC83 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				9FE288FA254421FF009583B3 /* XCRemoteSwiftPackageReference "Haptica" */,
 			);
 			productRefGroup = 9F5ACF87250F4AA000516A9B /* Products */;
 			projectDirPath = "";
@@ -490,6 +494,14 @@
 				minimumVersion = 5.0.1;
 			};
 		};
+		9FE288FA254421FF009583B3 /* XCRemoteSwiftPackageReference "Haptica" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/efremidze/Haptica.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -497,6 +509,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9F930E512542A2370058CC83 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		9FE288FB254421FF009583B3 /* Haptica */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9FE288FA254421FF009583B3 /* XCRemoteSwiftPackageReference "Haptica" */;
+			productName = Haptica;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
