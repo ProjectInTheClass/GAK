@@ -27,7 +27,17 @@
                             </view>
                             <view tag="1" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="QNI-Ja-PV0" customClass="PreviewView" customModule="gaak">
                                 <rect key="frame" x="0.0" y="44" width="414" height="546"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nvU-pP-YOt">
+                                        <rect key="frame" x="207" y="273" width="0.0" height="0.0"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="50"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
                                 <constraints>
+                                    <constraint firstItem="nvU-pP-YOt" firstAttribute="centerX" secondItem="QNI-Ja-PV0" secondAttribute="centerX" id="EdW-hu-xqr"/>
+                                    <constraint firstItem="nvU-pP-YOt" firstAttribute="centerY" secondItem="QNI-Ja-PV0" secondAttribute="centerY" id="RAf-gd-AvS"/>
                                     <constraint firstAttribute="height" constant="546" id="evT-0U-peu"/>
                                 </constraints>
                             </view>
@@ -278,7 +288,7 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DQb-Lg-613" userLabel="Timer">
                                                 <rect key="frame" x="81" y="25" width="30.5" height="50"/>
                                                 <subviews>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="deskclock" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="GRf-SY-fbh">
+                                                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.0" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="deskclock" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="GRf-SY-fbh">
                                                         <rect key="frame" x="0.0" y="0.0" width="30.5" height="49.5"/>
                                                         <color key="tintColor" systemColor="systemBlueColor"/>
                                                     </imageView>
@@ -288,14 +298,24 @@
                                                         <color key="textColor" systemColor="systemBlueColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="he2-W9-8XC" userLabel="timerButton">
+                                                        <rect key="frame" x="-1" y="9" width="32" height="32"/>
+                                                        <gestureRecognizers/>
+                                                        <state key="normal" image="timer0"/>
+                                                        <connections>
+                                                            <outletCollection property="gestureRecognizers" destination="9Zx-Sg-ka9" appends="YES" id="rHK-oh-p8x"/>
+                                                        </connections>
+                                                    </button>
                                                 </subviews>
                                                 <constraints>
                                                     <constraint firstItem="ziW-gV-fsd" firstAttribute="top" secondItem="GRf-SY-fbh" secondAttribute="bottom" id="6rm-6M-TK9"/>
+                                                    <constraint firstItem="he2-W9-8XC" firstAttribute="centerX" secondItem="DQb-Lg-613" secondAttribute="centerX" id="8r3-R3-3kk"/>
                                                     <constraint firstItem="GRf-SY-fbh" firstAttribute="top" secondItem="DQb-Lg-613" secondAttribute="top" id="CEo-Uv-5R2"/>
                                                     <constraint firstItem="ziW-gV-fsd" firstAttribute="centerX" secondItem="GRf-SY-fbh" secondAttribute="centerX" id="Cl3-nm-q0S"/>
                                                     <constraint firstAttribute="trailing" secondItem="GRf-SY-fbh" secondAttribute="trailing" id="EXH-s5-vlQ"/>
                                                     <constraint firstAttribute="bottom" secondItem="GRf-SY-fbh" secondAttribute="bottom" id="GXE-aS-oQy"/>
                                                     <constraint firstItem="GRf-SY-fbh" firstAttribute="leading" secondItem="DQb-Lg-613" secondAttribute="leading" id="coC-dU-yFC"/>
+                                                    <constraint firstItem="he2-W9-8XC" firstAttribute="centerY" secondItem="DQb-Lg-613" secondAttribute="centerY" id="rJJ-1b-I4e"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1lb-xT-pno" userLabel="TouchCapture">
@@ -455,6 +475,8 @@
                         <outlet property="settingToolbar" destination="SBv-cb-p7s" id="lIC-SQ-k0t"/>
                         <outlet property="settingToolbarHeight" destination="WWI-ub-GRP" id="b6v-8w-cHR"/>
                         <outlet property="switchButton" destination="stH-Um-tRG" id="zpT-ry-ru9"/>
+                        <outlet property="timeLeft" destination="nvU-pP-YOt" id="a2h-nH-0NP"/>
+                        <outlet property="timerButton" destination="he2-W9-8XC" id="YID-fN-9fI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mLT-lH-gqP" sceneMemberID="firstResponder"/>
@@ -469,9 +491,14 @@
                         <action selector="returnToMain:" destination="Su1-Ld-wf4" id="wUC-Ml-MgI"/>
                     </connections>
                 </tapGestureRecognizer>
-                <tapGestureRecognizer id="o6K-mg-M6S">
+                <tapGestureRecognizer id="o6K-mg-M6S" userLabel="Capture Tap Gesture Recognizer">
                     <connections>
-                        <action selector="capturePhoto:" destination="Su1-Ld-wf4" id="XoE-Jn-86y"/>
+                        <action selector="touchedStartTimerButton:" destination="Su1-Ld-wf4" id="Bav-IK-0O8"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="9Zx-Sg-ka9" userLabel="Timer Tap Gesture Recognizer">
+                    <connections>
+                        <action selector="timerButton:" destination="Su1-Ld-wf4" id="BEM-NW-3sM"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
@@ -645,6 +672,7 @@
         <image name="pin" catalog="system" width="119" height="128"/>
         <image name="rectangle.fill" catalog="system" width="128" height="93"/>
         <image name="screen_ratio_1_1" width="22" height="22"/>
+        <image name="timer0" width="32" height="32"/>
         <image name="triangle.fill" catalog="system" width="128" height="112"/>
         <image name="whileObject" width="86" height="77"/>
         <systemColor name="labelColor">
