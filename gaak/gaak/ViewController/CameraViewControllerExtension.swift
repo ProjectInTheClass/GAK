@@ -361,6 +361,9 @@ extension CameraViewController {
     func setGravityAccelerator() {
         var isImpactH: Bool = true
         var isImpactV: Bool = true
+        
+        /// 조금 더 찰지게 해보려고 삼각함수 적용해보았으나 실효성을 느끼지 못했음.
+        /// 팀원들에게 테스트해보고 결정할 것. ex) let sin_x = sin( x * (.pi/2) )
 
         motionKit.getGravityAccelerationFromDeviceMotion(interval: 0.02) { (x, y, z) in
             // x가 좌-1 우+1, z가 앞-1 뒤+1
@@ -396,7 +399,6 @@ extension CameraViewController {
                     isImpactH = true
                 }
             }
-            
             
             current = roundedZ * 90
             transform = CATransform3DIdentity;
