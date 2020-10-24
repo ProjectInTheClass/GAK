@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="gyro_ref_01" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hrj-1J-puc">
+                                <rect key="frame" x="157" y="536" width="100" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="4gH-T4-LaQ"/>
+                                    <constraint firstAttribute="height" constant="50" id="k7d-Of-fTZ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="gaak" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GkB-6R-5Vy">
+                                <rect key="frame" x="182" y="507.5" width="50" height="26.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="29B-Tm-OZR"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8iA-8k-nTr" userLabel="CaptureButton">
+                                <rect key="frame" x="127" y="688.5" width="160" height="165"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="flame.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="nU9-Iy-uQ3">
+                                        <rect key="frame" x="47" y="49" width="66" height="66"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="tintColor" systemColor="labelColor"/>
+                                    </imageView>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="circlebadge" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="gfg-kZ-nPA">
+                                        <rect key="frame" x="20" y="22.5" width="120" height="120"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="tintColor" systemColor="labelColor"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="160" id="Aap-V2-kxU"/>
+                                    <constraint firstAttribute="height" constant="165" id="YMi-f8-sGg"/>
+                                </constraints>
+                            </view>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="kKz-zW-BJe">
+                                <rect key="frame" x="42.5" y="650" width="329" height="31"/>
+                                <connections>
+                                    <action selector="sliderValueChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="6Gd-SJ-tcU"/>
+                                </connections>
+                            </slider>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ijU-P4-nn4">
+                                <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <items>
+                                    <barButtonItem title="Item" id="axr-eO-8z8"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="FgG-h3-VKQ"/>
+                                    <barButtonItem title="Item" id="Nj3-fF-lAS"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="gp7-ZX-jOz"/>
+                                    <barButtonItem title="Item" id="Yxo-0h-FmC"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="nJW-RW-5wL"/>
+                                    <barButtonItem title="Item" id="L9G-8r-YYz"/>
+                                </items>
+                            </toolbar>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="kKz-zW-BJe" firstAttribute="width" secondItem="8iA-8k-nTr" secondAttribute="width" multiplier="2" constant="5" id="G5Y-U4-slO"/>
+                            <constraint firstItem="GkB-6R-5Vy" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="Q0P-cd-ZKB"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="8iA-8k-nTr" secondAttribute="bottom" constant="8.5" id="X4q-JH-Zr9"/>
+                            <constraint firstItem="kKz-zW-BJe" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="ZEv-oj-Igo"/>
+                            <constraint firstItem="8iA-8k-nTr" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="asc-Ed-lPS"/>
+                            <constraint firstItem="8iA-8k-nTr" firstAttribute="top" secondItem="kKz-zW-BJe" secondAttribute="bottom" constant="8.5" id="eea-x5-vQR"/>
+                            <constraint firstItem="hrj-1J-puc" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="niH-cI-QQl"/>
+                            <constraint firstItem="kKz-zW-BJe" firstAttribute="top" secondItem="hrj-1J-puc" secondAttribute="bottom" constant="64" id="ver-71-XiS"/>
+                            <constraint firstItem="hrj-1J-puc" firstAttribute="firstBaseline" secondItem="GkB-6R-5Vy" secondAttribute="baseline" constant="36" symbolType="layoutAnchor" id="xwG-Ne-LDU"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="angleBar" destination="kKz-zW-BJe" id="xU4-jh-06O"/>
+                        <outlet property="fireButton" destination="nU9-Iy-uQ3" id="rST-YF-9q0"/>
+                        <outlet property="textLabel" destination="hrj-1J-puc" id="zGn-kr-QGN"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-197.10144927536234" y="88.392857142857139"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="circlebadge" catalog="system" width="128" height="120"/>
+        <image name="flame.fill" catalog="system" width="108" height="128"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

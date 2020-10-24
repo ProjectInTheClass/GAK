@@ -12,8 +12,9 @@ import Photos
 
 extension CameraViewController {
     
+    
     //MARK: 사진 촬영
-    @IBAction func capturePhoto(_ sender: UIButton) {
+    @IBAction func capturePhoto(_ sender: Any) {
         // TODO: photoOutput의 capturePhoto 메소드
         // orientation
         // photooutput
@@ -59,13 +60,6 @@ extension CameraViewController {
             croppedImage = cropImage2(image: image, rect: rectRatio, scale: 1.0) ?? image
         }
         
-        //croppedImage를 리사이즈해야함.
-        
-        // cripImage2 함수도 같이 정리할 것.
-        //guard let resizedImage = resizedImage(at: croppedImage, for: CGSize(width: 1080, height: 1080)) else { return }
-        //self.savePhotoLibrary(image: resizedImage)
-        
-        
         self.savePhotoLibrary(image: resizeImage(image: croppedImage, newWidth: 1080))
     }
     
@@ -99,14 +93,6 @@ extension CameraViewController {
     }
     
     
-    // Technique #1. UIGraphicsImageRenderer
-//    func resizedImage(at image: UIImage, for size: CGSize) -> UIImage? {
-//
-//        let renderer = UIGraphicsImageRenderer(size: size)
-//        return renderer.image { (context) in
-//            image.draw(in: CGRect(origin: .zero, size: size))
-//        }
-//    }
     
     // Technique #2. UIKit에서 이미지 리사이징
     func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
@@ -251,9 +237,7 @@ extension CameraViewController {
         
         settingToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
         cameraToolsView.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
-//        cameraToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
         settingToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
-//        cameraToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
         
         
         // 화면비에 따른 상, 하단 툴바 상태 조절
@@ -261,18 +245,15 @@ extension CameraViewController {
         case ScreenType.Ratio.square.rawValue :
             // setToolbarsUI // tool bar UI 설정하는 부분
             
-//            cameraToolbar.isTranslucent = false
             cameraToolsView.backgroundColor = CustomColor.uiColor("black")
             settingToolbar.isTranslucent = false
             
             previewViewHeight.constant = view.frame.width * (4.0/3.0)
             gridViewHeight.constant = view.frame.width
             settingToolbarHeight.constant = (previewViewHeight.constant - view.frame.width)/2.0
-            //cameraToolsView.translatesAutoresizingMaskIntoConstraints = false
             cameraToolsView.snp.updateConstraints {
                 $0.height.equalTo(safeAreaHeight - (view.frame.width + settingToolbar.frame.size.height))
             }
-//            cameraToolBarHeight.constant = safeAreaHeight - (view.frame.width + settingToolbar.frame.size.height)
             
             /// draw grid (simple.ver)
             gridH1.constant = gridviewView.frame.width / 3
@@ -284,44 +265,37 @@ extension CameraViewController {
         case ScreenType.Ratio.retangle.rawValue :
             //print("-> UI setup: screen_ratio 3_4")
             settingToolbar.isTranslucent = true
-//            cameraToolbar.isTranslucent = false
             cameraToolsView.backgroundColor = CustomColor.uiColor("clear")
             
             gridViewHeight.constant = previewViewHeight.constant
-//            cameraToolBarHeight.constant = safeAreaHeight - ((view.frame.size.width)*(4.0/3.0))
-            print("hi hello")
 
             cameraToolsView.snp.updateConstraints {
                 $0.height.equalTo(safeAreaHeight - ((view.frame.size.width)*(4.0/3.0)))
             }
             
-            /// draw grid (simple.ver)
+            // draw grid (simple.ver)
             gridH1.constant = (previewView.frame.width * (4.0/3.0)) / 3
             gridH2.constant = -(previewView.frame.width * (4.0/3.0)) / 3
             gridV1.constant = previewView.frame.width / 3
             gridV2.constant = -(previewView.frame.width / 3)
-            ///
 
 
         case ScreenType.Ratio.full.rawValue :
             //print("-> UI setup: screen_ratio 9:16")
             settingToolbar.isTranslucent = true
-//            cameraToolbar.isTranslucent = true
             cameraToolsView.backgroundColor = CustomColor.uiColor("clear")
             
             previewViewHeight.constant = view.frame.size.width * (16.0/9.0)
             gridViewHeight.constant = previewViewHeight.constant
-//            cameraToolBarHeight.constant = safeAreaHeight - ((view.frame.size.width)*(4.0/3.0))
             cameraToolsView.snp.updateConstraints {
                 $0.height.equalTo(safeAreaHeight - ((view.frame.size.width)*(4.0/3.0)))
             }
             
-            /// draw grid (simple.ver)
+            // draw grid (simple.ver)
             gridH1.constant = (previewView.frame.width * (16.0/9.0)) / 3
             gridH2.constant = -(previewView.frame.width * (16.0/9.0)) / 3
             gridV1.constant = previewView.frame.width / 3
             gridV2.constant = -(previewView.frame.width / 3)
-            ///
 
         default:
             print("--> screenRatioSwitchedStatus: default")

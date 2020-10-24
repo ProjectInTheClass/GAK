@@ -30,15 +30,16 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         mediaType: .video,
         position: .unspecified
     )
+    let motionKit = MotionKit()
     
     var screenRatioSwitchedStatus: Int = 0 // 화면 비율 구분을 위한 저장 프로퍼티
     var currentPosition: AVCaptureDevice.Position? // 카메라 포지션을 저장할 프로퍼티
     var rectOfpreviewImage: CGRect? // previewImage의 CGRect
     var cameraViewPhotoSize: CameraViewPhotoSize? // 카메라 뷰에 담길 촬영 포토 사이즈를 위한 프로퍼티
-    
-    var assetsFetchResults: PHFetchResult<PHAsset>! // 포토앨범 썸네일 1장 불러오기 위한 프로퍼티 3종 세트-1
-    var imageManger: PHCachingImageManager? // 포토앨범 썸네일 1장 불러오기 위한 프로퍼티 3종 세트-2
-    var authorizationStatus: PHAuthorizationStatus? // 포토앨범 썸네일 1장 불러오기 위한 프로퍼티 3종 세트-3
+    var isOn = true //그리드 뷰 && 버튼 활성화 비활성화 flow controll value
+    var assetsFetchResults: PHFetchResult<PHAsset>! // 포토앨범 썸네일 1장 불러오기 위한 프로퍼티-1
+    var imageManger: PHCachingImageManager?         // 포토앨범 썸네일 1장 불러오기 위한 프로퍼티-2
+    var authorizationStatus: PHAuthorizationStatus? // 포토앨범 썸네일 1장 불러오기 위한 프로퍼티-3
 
     // 상단 툴 바
     @IBOutlet weak var settingToolbar: UIToolbar! // 화면 비율 버튼이 있는 툴바
@@ -50,49 +51,100 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     // 화면 중앙에 위치한 기능들
     @IBOutlet weak var previewView: PreviewView!
     @IBOutlet weak var previewViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var gridviewView: GridView!
+    @IBOutlet weak var gridButton: UIButton! // 그리드 버튼
     @IBOutlet weak var gridViewHeight: NSLayoutConstraint!
-
-    // 하단 툴 바
-    @IBOutlet weak var cameraToolBarHeight: NSLayoutConstraint! // 카메라 툴바 height 셋업
-    @IBOutlet weak var cameraToolbar: UIToolbar! // 화면 하단의 툴 바
-    @IBOutlet weak var photoLibraryButton: UIButton! // 사진앨범 버튼
-    @IBOutlet weak var captureButton: UIButton!// 사진촬영 버튼
-    ///
-    @IBOutlet weak var cameraToolsView: UIView! // 화면 하단의 툴 바
-    @IBOutlet weak var photosButton: UIButton! // 사진촬영 버튼
-    
-    
-    ///
-    
-    
-    
-    
-    //그리드 뷰 && 버튼 활성화 비활성화
-    //버튼 크기 조정이 필요할것 같습니다. 터치미스가 잘나는데, 버튼 크기조절 고민필요!
-    //현재는 어플을 키면 바로 격자가 on상태인데, 최종완성시에는 사용성에따라 off로 할지 on으로 할지 고민필요함
     @IBOutlet weak var gridH1: NSLayoutConstraint!
     @IBOutlet weak var gridH2: NSLayoutConstraint!
     @IBOutlet weak var gridV1: NSLayoutConstraint!
     @IBOutlet weak var gridV2: NSLayoutConstraint!
-    var isOn = true
-    @IBOutlet weak var gridButton: UIButton! // 그리드 버튼
-    @IBOutlet weak var gridviewView: GridView!
+
+    // 하단 툴 바
+    @IBOutlet weak var cameraToolsView: UIView! // 화면 하단의 툴 바
+    @IBOutlet weak var photosButton: UIButton! // 사진촬영 버튼
+    
+    /// core motion variables
     
     
+    @IBOutlet weak var horizonIndicator: UIView! // 수평계(회전할 superview)
+    @IBOutlet weak var horizonIndicatorInner: UIImageView! // 회전하는 객체
+    @IBOutlet weak var horizonIndicatorOuter: UIImageView! // 수평 100%
+    
+    
+    
+    @IBOutlet weak var captureButtonInner: UIImageView!
+    @IBOutlet weak var captureButtonOuter: UIImageView!
+    
+    // MARK: 수평, 수직계 센서 데이터 획득
+    func setGravityAccelerator() {
+        
+        motionKit.getGravityAccelerationFromDeviceMotion(interval: 0.1) { (x, y, z) in
+            // x가 좌-1 우+1, z가 앞-1 뒤+1
+            let roundedX = Float(round(x * 100)) / 100.0
+            let roundedZ = Float(round(z * 100)) / 100.0
+            
+            var current: Float
+            var transform: CATransform3D
+            
+            current = roundedX * 200
+            transform = CATransform3DIdentity;
+            transform.m34 = 1.0/500
+            transform = CATransform3DRotate(
+                transform,
+                CGFloat(current * Float.pi / 180), 0, 0, 1
+            )
+            UIView.animate(withDuration: 0.1) {
+                self.horizonIndicator.transform3D = transform
+            }
+            
+            if (current < 2 && current > -2) {
+                self.horizonIndicatorInner.tintColor = .systemGreen
+                self.horizonIndicatorOuter.tintColor = .systemGreen
+            }
+            else {
+                self.horizonIndicatorInner.tintColor = .systemRed
+                self.horizonIndicatorOuter.tintColor = .systemRed
+            }
+            
+            
+            current = roundedZ * 100
+            transform = CATransform3DIdentity;
+            transform.m34 = 1.0/500
+            transform = CATransform3DRotate(
+                transform,
+                CGFloat(current * Float.pi / 180), 1, 0, 0
+            )
+            UIView.animate(withDuration: 0.1) {
+                self.captureButtonInner.transform3D = transform
+            }
+            
+            if (current < 3 && current > -3) {
+                self.captureButtonInner.alpha = 1.0
+                self.captureButtonInner.tintColor = .systemGreen
+                self.captureButtonOuter.tintColor = .systemGreen
+            }
+            else {
+                self.captureButtonInner.alpha = CGFloat(-abs(current/100))+1.0
+                self.captureButtonInner.tintColor = .systemRed
+                self.captureButtonOuter.tintColor = .systemRed
+            }
+        }
+    }
+    
+
     override var prefersStatusBarHidden: Bool {
         return true // 아이폰 상단 정보 (시간, 배터리 등)을 숨겨줌
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         previewView.session = captureSession
         
         sessionQueue.async { // AVCaptureSession을 구성하는건 세션큐에서 할거임
             self.setupSession()
             self.startSession()
         }
-        setupUI()
+        setupUI() // <- 여기에 로딩될 때 화면을 넣어야 함! 어차피 setupUI()는 viewDidAppear에서 호출됨!
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -103,19 +155,19 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        /// 노치가 있는 폰에서는 safeArea를 고려해서 UI를 배치해야하는데
-        /// viewDidAppear 에서부터 safeArea를 선언할 수 있음.
+        /* 노치가 있는 폰에서는 safeArea를 고려해서 UI를 배치해야하는데
+         viewDidAppear 에서부터 safeArea를 선언할 수 있음. */
         setupUI() /// 따라서 setupUI()를 한 번 더 선언함.
-        ///사실 여기서 한 번만 호출해도 되는데 그러면 맨 첨에 약간 화면이 버벅거리는 느낌이 있어서 그냥 호출함.
         
-
+        /// test
+        setGravityAccelerator()
+        /// test end
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
     }
     
-
     //MARK: setupUI()
     func setupUI() {
         
@@ -245,8 +297,14 @@ extension CameraViewController {
     }
 }
 
-/* 인재님이 구현한 함수 넣는 곳 */
+/* MARK: 인재님이 구현한 함수 넣는 곳 */
 extension CameraViewController {
+
+    //MARK: 그리드를 그리는 함수
+    //그리드 뷰 && 버튼 활성화 비활성화
+    //버튼 크기 조정이 필요할것 같습니다. 터치미스가 잘나는데, 버튼 크기조절 고민필요! -> (동현) 제가 마지막에 하겠습니다!
+    //현재는 어플을 키면 바로 격자가 on상태인데, 최종완성시에는 사용성에따라 off로 할지 on으로 할지 고민필요함
+    
     // 그리드버튼 On/Off
     @IBAction func gridButton(_ sender: Any) {
         isOn = !isOn
@@ -258,9 +316,7 @@ extension CameraViewController {
             gridButton.setImage(UIImage(named: "offGrid"), for: .normal)
         }
     }
-
     
-    //MARK: 그리드를 그리는 함수
     func addGridView() {
         // grideView is my view where you want to show the grid view
         let horizontalMargin = gridviewView.bounds.size.width / 4

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import CoreMotion
 
 class ViewController: UIViewController {
     
@@ -19,7 +18,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var RightLeftInner: UIImageView!
     @IBOutlet weak var RightLeftOutline: UIImageView!
     
-    let motionManager = CMMotionManager()
+    //let motionManager = CMMotionManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
