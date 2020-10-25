@@ -249,9 +249,11 @@ extension CameraViewController {
         case 2:
             setTime = 5
             timerButton.setImage(UIImage(named: "timer5"), for: .normal)
+            timeLeft.isHidden = false
         case 3:
             setTime = 10
             timerButton.setImage(UIImage(named: "timer10"), for: .normal)
+            timeLeft.isHidden = false
             
         default:
             break
@@ -287,6 +289,7 @@ extension CameraViewController {
 
                     timer.invalidate()
                     self.capturePhoto()
+                    self.timeLeft.isHidden = true
                 }
             }
         } else {
