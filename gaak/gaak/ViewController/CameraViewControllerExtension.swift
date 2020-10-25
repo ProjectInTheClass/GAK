@@ -10,7 +10,8 @@ import UIKit
 import AVFoundation
 import Photos
 import Haptica
-
+import SnapKit
+import Foundation
 
 extension CameraViewController {
     
@@ -199,8 +200,7 @@ extension CameraViewController {
     }
     
     //MARK: 화면비 변경 버튼
-    /*     이 함수에서 화면비 아이콘도 변경하고 previewView의 사이즈도 변경함.
-     */
+    /*     이 함수에서 화면비 아이콘도 변경하고 previewView의 사이즈도 변경함. */
     @IBAction func switchScreenRatio(_ sender: Any) {
         // 0 == 1:1 || 1 == 3:4 || 2 == 9:16
         
@@ -227,6 +227,107 @@ extension CameraViewController {
             // 이거 필요없으면 나중에 삭제하는게 좋음 // extension으로 빼놨음.
             getSizeByScreenRatio(with: currentPosition, at: screenRatioSwitchedStatus)
         }
+    }
+    
+    //MARK: 타이머 버튼
+    //타이머 0초(기본값), 3초, 5초, 10초
+    
+    @IBAction func timerButton(_ sender: Any) {
+        
+        timerStatus += 1
+        timerStatus %= 4
+        
+        switch timerStatus {
+        case 0:
+            setTime = 0
+            timerButton.setImage(UIImage(named: "timer0"), for: .normal)
+            timeLeft.isHidden = true
+        case 1:
+            setTime = 3
+            timerButton.setImage(UIImage(named: "timer3"), for: .normal)
+            timeLeft.isHidden = false
+        case 2:
+            setTime = 5
+            timerButton.setImage(UIImage(named: "timer5"), for: .normal)
+        case 3:
+            setTime = 10
+            timerButton.setImage(UIImage(named: "timer10"), for: .normal)
+            
+        default:
+            break
+        }
+    }
+    
+    func capturePhoto() {
+        let videoPreviewLayerOrientation = self.previewView.videoPreviewLayer.connection?.videoOrientation
+        self.sessionQueue.async {
+            let connection = self.photoOutput.connection(with: .video)
+            connection?.videoOrientation = videoPreviewLayerOrientation!
+            connection?.videoOrientation = .portrait
+            // 캡쳐 세션에 요청하는것
+            let setting = AVCapturePhotoSettings()
+            self.photoOutput.capturePhoto(with: setting, delegate: self)
+        }
+    }
+    
+    @IBAction func touchedStartTimerButton(_ sender: Any) {
+        //off(default) == 0 || 3초 == 1 || 5초 == 2 || 10초 == 3
+        //연결할 부분: 캡쳐 버튼
+        
+        if (timerStatus != 0) {
+            var countDown = setTime + 2
+
+            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+
+                countDown -= 1
+
+                self.timeLeft.text = String(countDown-1)
+
+                if(countDown == 1){
+
+                    timer.invalidate()
+                    self.capturePhoto()
+                }
+            }
+        } else {
+            capturePhoto()
+        }
+    }
+    
+    //MARK: 그리드를 그리는 함수
+    //그리드 뷰 && 버튼 활성화 비활성화
+    //버튼 크기 조정이 필요할것 같습니다. 터치미스가 잘나는데, 버튼 크기조절 고민필요! -> (동현) 제가 마지막에 하겠습니다!
+    //현재는 어플을 키면 바로 격자가 on상태인데, 최종완성시에는 사용성에따라 off로 할지 on으로 할지 고민필요함
+    
+    // 그리드버튼 On/Off
+    @IBAction func gridButton(_ sender: Any) {
+        isOn = !isOn
+        if isOn {
+            gridviewView.isHidden = false
+            gridButton.setImage(UIImage(named: "onGrid" ), for: .normal)
+        } else {
+            gridviewView.isHidden = true
+            gridButton.setImage(UIImage(named: "offGrid"), for: .normal)
+        }
+    }
+    
+    func addGridView() {
+        // grideView is my view where you want to show the grid view
+        let horizontalMargin = gridviewView.bounds.size.width / 4
+        let verticalMargin = gridviewView.bounds.size.height / 4
+
+        let gridView = GridView()
+
+        gridView.translatesAutoresizingMaskIntoConstraints = false
+
+        gridviewView.addSubview(gridView)
+
+        gridView.backgroundColor = UIColor.clear
+        gridView.leftAnchor.constraint(equalTo: previewView.leftAnchor, constant: horizontalMargin).isActive = true
+        gridView.rightAnchor.constraint(equalTo: previewView.rightAnchor, constant: -1 * horizontalMargin).isActive = true
+        gridView.topAnchor.constraint(equalTo: previewView.topAnchor, constant: verticalMargin).isActive = true
+        gridView.bottomAnchor.constraint(equalTo: previewView.bottomAnchor, constant: -1 * verticalMargin).isActive = true
+
     }
     
     //MARK: 상하단 툴바 설정 + Draw Grid
@@ -432,6 +533,4 @@ extension CameraViewController {
             }
         }
     }
-    
-    
 }

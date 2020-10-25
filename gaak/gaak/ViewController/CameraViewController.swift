@@ -10,6 +10,7 @@ import UIKit
 import AVFoundation
 import Photos
 import SnapKit
+import Foundation
 
 class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
 
@@ -40,6 +41,9 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     var assetsFetchResults: PHFetchResult<PHAsset>! // 포토앨범 썸네일 1장 불러오기 위한 프로퍼티-1
     var imageManger: PHCachingImageManager?         // 포토앨범 썸네일 1장 불러오기 위한 프로퍼티-2
     var authorizationStatus: PHAuthorizationStatus? // 포토앨범 썸네일 1장 불러오기 위한 프로퍼티-3
+    var timerStatus: Int = 0 // 타이머 0초, 3초, 5초, 10초 구분을 위한 프로퍼티
+    var setTime: Int = 0 // 타이머 카운트다운을 위한 프로퍼티
+
 
     // 상단 툴 바
     @IBOutlet weak var settingToolbar: UIToolbar! // 화면 비율 버튼이 있는 툴바
@@ -67,7 +71,12 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     @IBOutlet weak var captureButtonOuter: UIImageView! // 캡쳐버튼 테두리
     @IBOutlet weak var horizonIndicatorInner: UIImageView! // 회전하는 객체
     @IBOutlet weak var horizonIndicatorOuter: UIImageView! // 수평 100%
-
+    
+    //타이머 버튼
+    @IBOutlet weak var timerButton: UIButton! // 더보기에 있는 타이머 버튼 이미지
+    @IBOutlet weak var timeLeft: UILabel! // 타이머 버튼 작동시 보이는 이미지
+    
+    
     override var prefersStatusBarHidden: Bool {
         return true // 아이폰 상단 정보 (시간, 배터리 등)을 숨겨줌
     }
@@ -235,39 +244,5 @@ extension CameraViewController {
 /* MARK: 인재님이 구현한 함수 넣는 곳 */
 extension CameraViewController {
 
-    //MARK: 그리드를 그리는 함수
-    //그리드 뷰 && 버튼 활성화 비활성화
-    //버튼 크기 조정이 필요할것 같습니다. 터치미스가 잘나는데, 버튼 크기조절 고민필요! -> (동현) 제가 마지막에 하겠습니다!
-    //현재는 어플을 키면 바로 격자가 on상태인데, 최종완성시에는 사용성에따라 off로 할지 on으로 할지 고민필요함
-    
-    // 그리드버튼 On/Off
-    @IBAction func gridButton(_ sender: Any) {
-        isOn = !isOn
-        if isOn {
-            gridviewView.isHidden = false
-            gridButton.setImage(UIImage(named: "onGrid" ), for: .normal)
-        } else {
-            gridviewView.isHidden = true
-            gridButton.setImage(UIImage(named: "offGrid"), for: .normal)
-        }
-    }
-    
-    func addGridView() {
-        // grideView is my view where you want to show the grid view
-        let horizontalMargin = gridviewView.bounds.size.width / 4
-        let verticalMargin = gridviewView.bounds.size.height / 4
 
-        let gridView = GridView()
-
-        gridView.translatesAutoresizingMaskIntoConstraints = false
-
-        gridviewView.addSubview(gridView)
-
-        gridView.backgroundColor = UIColor.clear
-        gridView.leftAnchor.constraint(equalTo: previewView.leftAnchor, constant: horizontalMargin).isActive = true
-        gridView.rightAnchor.constraint(equalTo: previewView.rightAnchor, constant: -1 * horizontalMargin).isActive = true
-        gridView.topAnchor.constraint(equalTo: previewView.topAnchor, constant: verticalMargin).isActive = true
-        gridView.bottomAnchor.constraint(equalTo: previewView.bottomAnchor, constant: -1 * verticalMargin).isActive = true
-
-    }
 }
