@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="gridetest2" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nxB-qw-EXH">
+                                <rect key="frame" x="20" y="104" width="374" height="698"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="698" id="klO-Yd-bBD"/>
+                                    <constraint firstAttribute="width" constant="374" id="xrr-fw-HVf"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ofk-9v-SSM">
+                                <rect key="frame" x="179.5" y="53" width="55" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <state key="normal" title="Grid"/>
+                                <connections>
+                                    <action selector="btnGrid:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Grc-bI-2Zi"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="nxB-qw-EXH" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="6I2-Fa-HYZ"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="nxB-qw-EXH" secondAttribute="trailing" constant="20" id="IKQ-oX-yW5"/>
+                            <constraint firstItem="ofk-9v-SSM" firstAttribute="centerX" secondItem="nxB-qw-EXH" secondAttribute="centerX" id="Zz2-bk-K3M"/>
+                            <constraint firstItem="nxB-qw-EXH" firstAttribute="top" secondItem="ofk-9v-SSM" secondAttribute="bottom" constant="21" id="b0O-dg-LO8"/>
+                            <constraint firstItem="nxB-qw-EXH" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="60" id="hR2-gu-bUL"/>
+                            <constraint firstItem="ofk-9v-SSM" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="9" id="q18-Ga-PN7"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="nxB-qw-EXH" secondAttribute="bottom" constant="60" id="vgX-B9-hUG"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="nxB-qw-EXH" id="j2e-ss-JHn"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="140.57971014492756" y="103.79464285714285"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
