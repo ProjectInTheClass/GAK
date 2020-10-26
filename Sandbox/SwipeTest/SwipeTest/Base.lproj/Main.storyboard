@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="SwipeTest" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ArrowLeft1" translatesAutoresizingMaskIntoConstraints="NO" id="rZG-zI-wKo" userLabel="ArrowLeft">
+                                <rect key="frame" x="102" y="432" width="32" height="32"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ArrowRight1" translatesAutoresizingMaskIntoConstraints="NO" id="laE-rZ-LT4" userLabel="ArrowRight">
+                                <rect key="frame" x="280.5" y="432" width="32" height="32"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Swipe" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="82s-Cp-0xK">
+                                <rect key="frame" x="184" y="438" width="46.5" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="laE-rZ-LT4" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Fom-rk-ENr"/>
+                            <constraint firstItem="82s-Cp-0xK" firstAttribute="leading" secondItem="rZG-zI-wKo" secondAttribute="trailing" constant="50" id="Nge-Qo-hLW"/>
+                            <constraint firstItem="laE-rZ-LT4" firstAttribute="leading" secondItem="82s-Cp-0xK" secondAttribute="trailing" constant="50" id="XWt-y7-15v"/>
+                            <constraint firstItem="82s-Cp-0xK" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="XaK-8z-P5Z"/>
+                            <constraint firstItem="rZG-zI-wKo" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="gG7-Ip-iQ4"/>
+                            <constraint firstItem="82s-Cp-0xK" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="oEb-ht-OVU"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="imageViewLeft" destination="rZG-zI-wKo" id="Hgl-WS-7Bd"/>
+                        <outlet property="imageViewRight" destination="laE-rZ-LT4" id="dru-Xb-AVD"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="13.043478260869566" y="103.79464285714285"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="ArrowLeft1" width="32" height="32"/>
+        <image name="ArrowRight1" width="32" height="32"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
