@@ -246,12 +246,17 @@ extension CameraViewController {
             setTime = 3
             timerButton.setImage(UIImage(named: "timer3"), for: .normal)
             timeLeft.isHidden = false
+            timeLeft.text = String(setTime)
         case 2:
             setTime = 5
             timerButton.setImage(UIImage(named: "timer5"), for: .normal)
+            timeLeft.isHidden = false
+            timeLeft.text = String(setTime)
         case 3:
             setTime = 10
             timerButton.setImage(UIImage(named: "timer10"), for: .normal)
+            timeLeft.isHidden = false
+            timeLeft.text = String(setTime)
             
         default:
             break
@@ -276,7 +281,6 @@ extension CameraViewController {
         
         if (timerStatus != 0) {
             var countDown = setTime + 2
-
             Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
 
                 countDown -= 1
@@ -287,6 +291,7 @@ extension CameraViewController {
 
                     timer.invalidate()
                     self.capturePhoto()
+                    self.timeLeft.isHidden = true
                 }
             }
         } else {
