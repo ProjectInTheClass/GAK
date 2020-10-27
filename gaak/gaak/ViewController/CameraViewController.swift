@@ -83,8 +83,10 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        previewView.session = captureSession
         
+        UIApplication.shared.isIdleTimerDisabled = true // Awake Screen!
+        
+        previewView.session = captureSession
         sessionQueue.async { // AVCaptureSession을 구성하는건 세션큐에서 할거임
             self.setupSession()
             self.startSession()
