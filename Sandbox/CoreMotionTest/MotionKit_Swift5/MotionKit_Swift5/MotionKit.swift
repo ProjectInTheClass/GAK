@@ -6,9 +6,11 @@
 //  Created by Haroon on 14/02/2015.
 //  Launched under the Creative Commons License. You're free to use MotionKit.
 //
+//  Edited by DongHyunTedKim on 27/10/2020.
+//  Edited to work without errors in Swift 5.
+
 //  The original Github repository is https://github.com/MHaroonBaig/MotionKit
 //  The official blog post and documentation is https://medium.com/@PyBaig/motionkit-the-missing-ios-coremotion-wrapper-written-in-swift-99fcb83355d0
-//
 
 import Foundation
 import CoreMotion
