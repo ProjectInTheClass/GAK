@@ -45,6 +45,8 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     var setTime: Int = 0 // 타이머 카운트다운을 위한 프로퍼티
     var countTimer: Timer! // 동적 타이머 프로퍼티를 컨트롤하기 위한 정적 프로퍼티
     var isCounting: Bool = false // 타이머가 동작중인지 확인하는 프로퍼티
+    var isOn_flash: Bool = false // 플래시 상태 프로퍼티
+
 
     // 상단 툴 바
     @IBOutlet weak var settingToolbar: UIToolbar! // 화면 비율 버튼이 있는 툴바
@@ -73,9 +75,13 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     @IBOutlet weak var horizonIndicatorInner: UIImageView! // 회전하는 객체
     @IBOutlet weak var horizonIndicatorOuter: UIImageView! // 수평 100%
     
-    //타이머 버튼
+    // 타이머 버튼
     @IBOutlet weak var timerButton: UIButton! // 더보기에 있는 타이머 버튼 이미지
     @IBOutlet weak var timeLeft: UILabel! // 타이머 버튼 작동시 보이는 이미지
+    
+    // 플래시 버튼
+    @IBOutlet weak var flashButton: UIImageView!
+    
     
     override var prefersStatusBarHidden: Bool {
         return true // 아이폰 상단 정보 (시간, 배터리 등)을 숨겨줌
@@ -128,6 +134,8 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         
         setToolbarsUI() // 상, 하단 툴 바 설정
     }
+    
+
     
     // MARK:- Get Screen Ratio
     // AVCaptureDevice 종류와 선택한 스크린 사이즈 비율에 맞게 PreviewImageView Frame 변경
