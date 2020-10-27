@@ -46,7 +46,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     var countTimer: Timer! // 동적 타이머 프로퍼티를 컨트롤하기 위한 정적 프로퍼티
     var isCounting: Bool = false // 타이머가 동작중인지 확인하는 프로퍼티
     var isOn_flash: Bool = false // 플래시 상태 프로퍼티
-
+    var touchCaptureStatus: Bool = false // 터치촬영 상태 프로퍼티
 
     // 상단 툴 바
     @IBOutlet weak var settingToolbar: UIToolbar! // 화면 비율 버튼이 있는 툴바
@@ -54,6 +54,11 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     @IBOutlet weak var moreView: UIView! // 더보기 뷰(활성화/비활성화)
     @IBOutlet weak var screenRatioBarButtonItem: UIBarButtonItem! // 스크린 비율을 위한 버튼 (1:1, 3:4, 9:16)
     @IBOutlet weak var switchButton: UIButton! // 카메라 전환 버튼
+    @IBOutlet weak var timerButton: UIButton! // 타이머, 더보기에 있는 버튼 이미지
+    @IBOutlet weak var timeLeft: UILabel! // 타이머, 동작할 때 화면중앙에 남은 시간 안내
+    @IBOutlet weak var flashButton: UIImageView! // 플래시 on/off 버튼
+    @IBOutlet weak var touchCaptureButton: UIImageView! // 터치촬영 on/off 버튼
+    
 
     // 화면 중앙에 위치한 기능들
     @IBOutlet weak var previewView: PreviewView!
@@ -74,14 +79,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     @IBOutlet weak var captureButtonOuter: UIImageView! // 캡쳐버튼 테두리
     @IBOutlet weak var horizonIndicatorInner: UIImageView! // 회전하는 객체
     @IBOutlet weak var horizonIndicatorOuter: UIImageView! // 수평 100%
-    
-    // 타이머 버튼
-    @IBOutlet weak var timerButton: UIButton! // 더보기에 있는 타이머 버튼 이미지
-    @IBOutlet weak var timeLeft: UILabel! // 타이머 버튼 작동시 보이는 이미지
-    
-    // 플래시 버튼
-    @IBOutlet weak var flashButton: UIImageView!
-    
+
     
     override var prefersStatusBarHidden: Bool {
         return true // 아이폰 상단 정보 (시간, 배터리 등)을 숨겨줌

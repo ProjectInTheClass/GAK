@@ -17,6 +17,63 @@ extension CameraViewController {
     
     
     //MARK: 사진 촬영
+    
+    // 촬영 버튼 Tap !
+    @IBAction func tapCaptureButton(_ sender: Any) {
+        capturePhotoWithOptions()
+    }
+    
+    func capturePhotoWithOptions(){
+        //off(default) == 0 || 3초 == 1 || 5초 == 2 || 10초 == 3
+        //var timerID: Timer
+        if (timerStatus != 0) {
+            
+            var countDown = setTime
+            
+            if(isCounting == true) { // 타이머 동작 중간에 취소하고싶다면,
+                self.timeLeft.text = String(self.setTime) // * reset
+                self.timeLeft.isHidden = false // * reSet 하고 다시 보여줌
+                self.countTimer.invalidate()
+                
+                self.isCounting = false
+                self.captureButtonInner.image = UIImage(systemName: "circle.fill", withConfiguration: .none)
+                self.captureButtonInner.tintColor = .systemRed
+                // !!!주의!!! 이 곳의 x_o_temp 이미지를 원래대로 돌려야 함.
+                return
+            }
+
+            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+                self.countTimer = timer
+                
+                self.isCounting = true
+                // 실행중에는 캡쳐버튼의 UI가 x로 변함.
+                self.captureButtonInner.image = UIImage(named: "x_temp")
+                
+                self.timeLeft.text = String(countDown - 1)
+                
+                UIView.transition(with: self.timeLeft, duration: 0.3, options: .transitionCrossDissolve, animations: .none, completion: nil)
+                
+                if(countDown == 1){
+                    self.capturePhoto()
+                    self.timeLeft.isHidden = true // * 0일때는 사라짐
+                }
+                else if (countDown == 0) {
+                    self.timeLeft.text = String(self.setTime) // * reset
+                    self.timeLeft.isHidden = false // * reSet 하고 다시 보여줌
+                    self.countTimer.invalidate()
+                    self.isCounting = false
+                    // !!!주의!!! 이 곳의 x_o_temp 이미지를 원래대로 돌려야 함.
+                    self.captureButtonInner.image = UIImage()
+                    self.captureButtonInner.backgroundColor = .systemRed
+                    // !!!주의!!!
+                }
+                countDown -= 1
+            }
+        } else {
+            capturePhoto()
+        }
+    }
+    
     func capturePhoto() {
         let videoPreviewLayerOrientation = self.previewView.videoPreviewLayer.connection?.videoOrientation
         self.sessionQueue.async {
@@ -241,12 +298,9 @@ extension CameraViewController {
     
 
     
-    //MARK: 타이머 버튼
-    //타이머 0초(기본값), 3초, 5초, 10초
-    
-    /* func timerButton(_ sender: Any)
-     타이머의 시간과 타이머버튼UI를 설정하는 함수
-     */
+    // MARK: 타이머 버튼
+    // 타이머 0초(기본값), 3초, 5초, 10초
+    // 타이머 시간, 버튼UI을 설정하는 Action
     @IBAction func timerButton(_ sender: Any) {
         
         timerStatus += 1
@@ -277,55 +331,26 @@ extension CameraViewController {
             break
         }
     }
+    
+    
+    
+    // MARK: 터치촬영
+    // touchCaptureTrigger: 버튼 On/Off 변경
+    @IBAction func touchCaptureTrigger(_ sender: Any) {
         
-    @IBAction func touchedStartTimerButton(_ sender: Any) {
-        //off(default) == 0 || 3초 == 1 || 5초 == 2 || 10초 == 3
-        //var timerID: Timer
-        if (timerStatus != 0) {
-            
-            var countDown = setTime
-            
-            if(isCounting == true) { // 타이머 동작 중간에 취소하고싶다면,
-                self.timeLeft.text = String(self.setTime) // * reset
-                self.timeLeft.isHidden = false // * reSet 하고 다시 보여줌
-                self.countTimer.invalidate()
-                
-                self.isCounting = false
-                self.captureButtonInner.image = UIImage()
-                self.captureButtonInner.backgroundColor = .systemRed
-                // !!!주의!!! 이 곳의 x_o_temp 이미지를 원래대로 돌려야 함.
-                return
-            }
-
-            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-                self.countTimer = timer
-                
-                self.isCounting = true
-                // 실행중에는 캡쳐버튼의 UI가 x로 변함.
-                self.captureButtonInner.image = UIImage(named: "x_temp")
-                
-                self.timeLeft.text = String(countDown - 1)
-                
-                UIView.transition(with: self.timeLeft, duration: 0.3, options: .transitionCrossDissolve, animations: .none, completion: nil)
-                
-                if(countDown == 1){
-                    self.capturePhoto()
-                    self.timeLeft.isHidden = true // * 0일때는 사라짐
-                }
-                else if (countDown == 0) {
-                    self.timeLeft.text = String(self.setTime) // * reset
-                    self.timeLeft.isHidden = false // * reSet 하고 다시 보여줌
-                    self.countTimer.invalidate()
-                    self.isCounting = false
-                    // !!!주의!!! 이 곳의 x_o_temp 이미지를 원래대로 돌려야 함.
-                    self.captureButtonInner.image = UIImage()
-                    self.captureButtonInner.backgroundColor = .systemRed
-                    // !!!주의!!!
-                }
-                countDown -= 1
-            }
+        if touchCaptureStatus {
+            touchCaptureStatus = !touchCaptureStatus
+            touchCaptureButton.image = UIImage(named: "touchCaptureOff")
         } else {
-            capturePhoto()
+            touchCaptureStatus = !touchCaptureStatus
+            touchCaptureButton.image = UIImage(named: "touchCaptureOn")
+        }
+    }
+
+    // touchCaptureTrigger: 터치촬영 동작!
+    @IBAction func touchCapture(_ sender: Any) {
+        if touchCaptureStatus {
+            capturePhotoWithOptions()
         }
     }
     

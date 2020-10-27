@@ -35,11 +35,15 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstItem="nvU-pP-YOt" firstAttribute="centerX" secondItem="QNI-Ja-PV0" secondAttribute="centerX" id="EdW-hu-xqr"/>
                                     <constraint firstItem="nvU-pP-YOt" firstAttribute="centerY" secondItem="QNI-Ja-PV0" secondAttribute="centerY" id="RAf-gd-AvS"/>
                                     <constraint firstAttribute="height" constant="546" id="evT-0U-peu"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="pav-3T-4Lw" appends="YES" id="bP9-N6-Mej"/>
+                                </connections>
                             </view>
                             <toolbar clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SBv-cb-p7s" userLabel="Setting Toolbar">
                                 <rect key="frame" x="0.0" y="44" width="414" height="70"/>
@@ -336,6 +340,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
+                                                <gestureRecognizers/>
                                                 <constraints>
                                                     <constraint firstItem="KNU-Lf-fyb" firstAttribute="leading" secondItem="1lb-xT-pno" secondAttribute="leading" id="0SK-yt-Waf"/>
                                                     <constraint firstItem="Y2E-Xu-up7" firstAttribute="top" secondItem="KNU-Lf-fyb" secondAttribute="bottom" id="441-1L-3mG"/>
@@ -344,6 +349,9 @@
                                                     <constraint firstItem="Y2E-Xu-up7" firstAttribute="centerX" secondItem="KNU-Lf-fyb" secondAttribute="centerX" id="YW6-0M-i3i"/>
                                                     <constraint firstItem="KNU-Lf-fyb" firstAttribute="top" secondItem="1lb-xT-pno" secondAttribute="top" id="do7-A6-2Lx"/>
                                                 </constraints>
+                                                <connections>
+                                                    <outletCollection property="gestureRecognizers" destination="W6H-nF-EXp" appends="YES" id="qGD-RX-fg5"/>
+                                                </connections>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hWC-Em-Y9Y" userLabel="Grid">
                                                 <rect key="frame" x="242.5" y="25" width="30.5" height="50"/>
@@ -482,6 +490,7 @@
                         <outlet property="switchButton" destination="stH-Um-tRG" id="zpT-ry-ru9"/>
                         <outlet property="timeLeft" destination="nvU-pP-YOt" id="a2h-nH-0NP"/>
                         <outlet property="timerButton" destination="he2-W9-8XC" id="YID-fN-9fI"/>
+                        <outlet property="touchCaptureButton" destination="KNU-Lf-fyb" id="g4X-97-tvp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mLT-lH-gqP" sceneMemberID="firstResponder"/>
@@ -498,7 +507,7 @@
                 </tapGestureRecognizer>
                 <tapGestureRecognizer id="o6K-mg-M6S" userLabel="Capture Tap Gesture Recognizer">
                     <connections>
-                        <action selector="touchedStartTimerButton:" destination="Su1-Ld-wf4" id="Bav-IK-0O8"/>
+                        <action selector="tapCaptureButton:" destination="Su1-Ld-wf4" id="5ZK-uZ-5FP"/>
                     </connections>
                 </tapGestureRecognizer>
                 <tapGestureRecognizer id="9Zx-Sg-ka9" userLabel="Timer Tap Gesture Recognizer">
@@ -509,6 +518,16 @@
                 <tapGestureRecognizer id="23o-IF-Vnr" userLabel="Flash Tap Gesture Recognizer">
                     <connections>
                         <action selector="flashTrigger:" destination="Su1-Ld-wf4" id="8DA-9U-6Lf"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="pav-3T-4Lw" userLabel="Touch Capture Gesture Recognizer">
+                    <connections>
+                        <action selector="touchCapture:" destination="Su1-Ld-wf4" id="nkG-4X-REI"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="W6H-nF-EXp" userLabel="Touch Capture Button Gesture Recognizer">
+                    <connections>
+                        <action selector="touchCaptureTrigger:" destination="Su1-Ld-wf4" id="5SD-Q5-Vnv"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
