@@ -232,6 +232,9 @@ extension CameraViewController {
     //MARK: 타이머 버튼
     //타이머 0초(기본값), 3초, 5초, 10초
     
+    /* func timerButton(_ sender: Any)
+     타이머의 시간과 타이머버튼UI를 설정하는 함수
+     */
     @IBAction func timerButton(_ sender: Any) {
         
         timerStatus += 1
@@ -262,7 +265,57 @@ extension CameraViewController {
             break
         }
     }
-    
+        
+    @IBAction func touchedStartTimerButton(_ sender: Any) {
+        //off(default) == 0 || 3초 == 1 || 5초 == 2 || 10초 == 3
+        //var timerID: Timer
+        if (timerStatus != 0) {
+            
+            var countDown = setTime
+            
+            if(isCounting == true) { // 타이머 동작 중간에 취소하고싶다면,
+                self.timeLeft.text = String(self.setTime) // * reset
+                self.timeLeft.isHidden = false // * reSet 하고 다시 보여줌
+                self.countTimer.invalidate()
+                
+                self.isCounting = false
+                self.captureButtonInner.image = UIImage()
+                self.captureButtonInner.backgroundColor = .systemRed
+                // !!!주의!!! 이 곳의 x_o_temp 이미지를 원래대로 돌려야 함.
+                return
+            }
+
+            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+                self.countTimer = timer
+                
+                self.isCounting = true
+                // 실행중에는 캡쳐버튼의 UI가 x로 변함.
+                self.captureButtonInner.image = UIImage(named: "x_temp")
+                
+                self.timeLeft.text = String(countDown - 1)
+                
+                UIView.transition(with: self.timeLeft, duration: 0.3, options: .transitionCrossDissolve, animations: .none, completion: nil)
+                
+                if(countDown == 1){
+                    self.capturePhoto()
+                    self.timeLeft.isHidden = true // * 0일때는 사라짐
+                }
+                else if (countDown == 0) {
+                    self.timeLeft.text = String(self.setTime) // * reset
+                    self.timeLeft.isHidden = false // * reSet 하고 다시 보여줌
+                    self.countTimer.invalidate()
+                    self.isCounting = false
+                    // !!!주의!!! 이 곳의 x_o_temp 이미지를 원래대로 돌려야 함.
+                    self.captureButtonInner.image = UIImage()
+                    self.captureButtonInner.backgroundColor = .systemRed
+                    // !!!주의!!!
+                }
+                countDown -= 1
+            }
+        } else {
+            capturePhoto()
+        }
+    }
     func capturePhoto() {
         let videoPreviewLayerOrientation = self.previewView.videoPreviewLayer.connection?.videoOrientation
         self.sessionQueue.async {
@@ -272,30 +325,6 @@ extension CameraViewController {
             // 캡쳐 세션에 요청하는것
             let setting = AVCapturePhotoSettings()
             self.photoOutput.capturePhoto(with: setting, delegate: self)
-        }
-    }
-    
-    @IBAction func touchedStartTimerButton(_ sender: Any) {
-        //off(default) == 0 || 3초 == 1 || 5초 == 2 || 10초 == 3
-        //연결할 부분: 캡쳐 버튼
-        
-        if (timerStatus != 0) {
-            var countDown = setTime + 2
-            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-
-                countDown -= 1
-
-                self.timeLeft.text = String(countDown-1)
-
-                if(countDown == 1){
-
-                    timer.invalidate()
-                    self.capturePhoto()
-                    self.timeLeft.isHidden = true
-                }
-            }
-        } else {
-            capturePhoto()
         }
     }
     
@@ -488,7 +517,7 @@ extension CameraViewController {
             )
             self.horizonIndicator.transform3D = transform
             
-            if (current < 2 && current > -2) {
+            if (current < 2 && current > -2) { // 임계값 도달
                 self.horizonIndicatorInner.tintColor = .systemGreen
                 self.horizonIndicatorOuter.tintColor = .systemGreen
                 
@@ -497,7 +526,7 @@ extension CameraViewController {
                     isImpactH = false
                 }
             }
-            else {
+            else { // 임계값 이탈
                 self.horizonIndicatorInner.tintColor = .systemRed
                 self.horizonIndicatorOuter.tintColor = .systemRed
                 if (!isImpactH) {
@@ -516,7 +545,7 @@ extension CameraViewController {
             self.captureButtonInner.transform3D = transform
             
             
-            if (current < 3 && current > -3) {
+            if (current < 3 && current > -3) { // 임계값 도달
                 self.captureButtonInner.alpha = 1.0
                 self.captureButtonInner.tintColor = .systemGreen
                 self.captureButtonOuter.tintColor = .systemGreen
@@ -526,7 +555,7 @@ extension CameraViewController {
                     isImpactV = false
                 }
             }
-            else {
+            else { // 임계값 이탈
                 self.captureButtonInner.alpha = CGFloat(-abs(current/100))+1.0
                 self.captureButtonInner.tintColor = .systemRed
                 self.captureButtonOuter.tintColor = .systemRed
