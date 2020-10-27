@@ -276,6 +276,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
+                                                <gestureRecognizers/>
                                                 <constraints>
                                                     <constraint firstItem="7EO-81-ujO" firstAttribute="centerX" secondItem="qX1-N0-G2O" secondAttribute="centerX" id="4ra-As-sxO"/>
                                                     <constraint firstItem="7EO-81-ujO" firstAttribute="top" secondItem="qX1-N0-G2O" secondAttribute="bottom" id="dT8-xm-bjA"/>
@@ -284,6 +285,9 @@
                                                     <constraint firstItem="qX1-N0-G2O" firstAttribute="leading" secondItem="7Yt-hD-Mhb" secondAttribute="leading" id="kaV-HD-7JE"/>
                                                     <constraint firstAttribute="trailing" secondItem="qX1-N0-G2O" secondAttribute="trailing" id="zNv-w4-QzB"/>
                                                 </constraints>
+                                                <connections>
+                                                    <outletCollection property="gestureRecognizers" destination="23o-IF-Vnr" appends="YES" id="5rS-Ye-2qA"/>
+                                                </connections>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DQb-Lg-613" userLabel="Timer">
                                                 <rect key="frame" x="81" y="25" width="30.5" height="50"/>
@@ -457,6 +461,7 @@
                         <outlet property="cameraToolsView" destination="lNm-wV-Pti" id="Xra-Q5-yWo"/>
                         <outlet property="captureButtonInner" destination="79T-DZ-xn8" id="Ec3-vm-MYd"/>
                         <outlet property="captureButtonOuter" destination="ifb-KP-SHf" id="41m-As-efF"/>
+                        <outlet property="flashButton" destination="qX1-N0-G2O" id="40g-T9-jDD"/>
                         <outlet property="gridButton" destination="Jc0-Mv-gLN" id="DYz-Of-3MP"/>
                         <outlet property="gridH1" destination="jkn-Oa-x58" id="6P2-4u-ghV"/>
                         <outlet property="gridH2" destination="yNl-XS-vsJ" id="vbb-Jl-Q9P"/>
@@ -499,6 +504,11 @@
                 <tapGestureRecognizer id="9Zx-Sg-ka9" userLabel="Timer Tap Gesture Recognizer">
                     <connections>
                         <action selector="timerButton:" destination="Su1-Ld-wf4" id="BEM-NW-3sM"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="23o-IF-Vnr" userLabel="Flash Tap Gesture Recognizer">
+                    <connections>
+                        <action selector="flashTrigger:" destination="Su1-Ld-wf4" id="8DA-9U-6Lf"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
