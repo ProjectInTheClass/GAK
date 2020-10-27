@@ -17,20 +17,34 @@ extension CameraViewController {
     
     
     //MARK: 사진 촬영
-    @IBAction func capturePhoto(_ sender: Any) {
-        // TODO: photoOutput의 capturePhoto 메소드
-        // orientation
-        // photooutput
+    func capturePhoto() {
         let videoPreviewLayerOrientation = self.previewView.videoPreviewLayer.connection?.videoOrientation
-        sessionQueue.async {
+        self.sessionQueue.async {
             let connection = self.photoOutput.connection(with: .video)
             connection?.videoOrientation = videoPreviewLayerOrientation!
             connection?.videoOrientation = .portrait
             // 캡쳐 세션에 요청하는것
             let setting = AVCapturePhotoSettings()
+            setting.flashMode = self.getCurrentFlashMode(self.isOn_flash)
             self.photoOutput.capturePhoto(with: setting, delegate: self)
         }
     }
+
+//  [old] func capturePhoto() 으로 변경되었음.
+//    @IBAction func capturePhoto(_ sender: Any) {
+//        // TODO: photoOutput의 capturePhoto 메소드
+//        // orientation
+//        // photooutput
+//        let videoPreviewLayerOrientation = self.previewView.videoPreviewLayer.connection?.videoOrientation
+//        sessionQueue.async {
+//            let connection = self.photoOutput.connection(with: .video)
+//            connection?.videoOrientation = videoPreviewLayerOrientation!
+//            connection?.videoOrientation = .portrait
+//            // 캡쳐 세션에 요청하는것
+//            let setting = AVCapturePhotoSettings()
+//            self.photoOutput.capturePhoto(with: setting, delegate: self)
+//        }
+//    }
     
     // MARK: - 저장1. 화면비에 맞게 자르기
     // 사진 저장할 때 화면비에 맞게 잘라서 저장해주는 함수
@@ -199,35 +213,33 @@ extension CameraViewController {
         }
     }
     
-    //MARK: 화면비 변경 버튼
-    /*     이 함수에서 화면비 아이콘도 변경하고 previewView의 사이즈도 변경함. */
-    @IBAction func switchScreenRatio(_ sender: Any) {
-        // 0 == 1:1 || 1 == 3:4 || 2 == 9:16
-        
-        screenRatioSwitchedStatus += 1
-        screenRatioSwitchedStatus %= ScreenType.numberOfRatioType()
-        if let currentPosition = self.currentPosition {
-            switch screenRatioSwitchedStatus {
-            case ScreenType.Ratio.square.rawValue :
-                screenRatioBarButtonItem.image = UIImage(named: "screen_ratio_1_1")
-
-            case ScreenType.Ratio.retangle.rawValue :
-                screenRatioBarButtonItem.image = UIImage(named: "screen_ratio_3_4")
-            
-            case ScreenType.Ratio.full.rawValue :
-                screenRatioBarButtonItem.image = UIImage(named: "screen_ratio_9_16")
-
-            default:
-                break;
-            }
-            
-            setToolbarsUI()
-            
-            // getSizeBy... // 전후면 카메라 스위칭 될 때, 화면 비율을 넘기기 위한 함수임.
-            // 이거 필요없으면 나중에 삭제하는게 좋음 // extension으로 빼놨음.
-            getSizeByScreenRatio(with: currentPosition, at: screenRatioSwitchedStatus)
+    // MARK: 플래시 상태 + 버튼 UI 변경
+    @IBAction func flashTrigger(_ sender: Any) {
+        if(isOn_flash == false){
+            isOn_flash = true
+            flashButton.image = UIImage(named: "flashOn")
+        }
+        else if (isOn_flash == true){
+            isOn_flash = false
+            flashButton.image = UIImage(named: "flashOff")
         }
     }
+    
+    // 현재 플래시 상태를 캡쳐세션에 전달하기 위한 함수
+    func getCurrentFlashMode(_ mode : Bool) -> AVCaptureDevice.FlashMode{
+        
+        var valueOfAVCaptureFlashMode: AVCaptureDevice.FlashMode = .off
+        
+        switch mode {
+        case false:
+            valueOfAVCaptureFlashMode = .off
+        case true:
+            valueOfAVCaptureFlashMode = .on
+        }
+        return valueOfAVCaptureFlashMode
+    }
+    
+
     
     //MARK: 타이머 버튼
     //타이머 0초(기본값), 3초, 5초, 10초
@@ -316,19 +328,9 @@ extension CameraViewController {
             capturePhoto()
         }
     }
-    func capturePhoto() {
-        let videoPreviewLayerOrientation = self.previewView.videoPreviewLayer.connection?.videoOrientation
-        self.sessionQueue.async {
-            let connection = self.photoOutput.connection(with: .video)
-            connection?.videoOrientation = videoPreviewLayerOrientation!
-            connection?.videoOrientation = .portrait
-            // 캡쳐 세션에 요청하는것
-            let setting = AVCapturePhotoSettings()
-            self.photoOutput.capturePhoto(with: setting, delegate: self)
-        }
-    }
     
-    //MARK: 그리드를 그리는 함수
+    
+    //MARK: Grid Button
     //그리드 뷰 && 버튼 활성화 비활성화
     //버튼 크기 조정이 필요할것 같습니다. 터치미스가 잘나는데, 버튼 크기조절 고민필요! -> (동현) 제가 마지막에 하겠습니다!
     //현재는 어플을 키면 바로 격자가 on상태인데, 최종완성시에는 사용성에따라 off로 할지 on으로 할지 고민필요함
@@ -344,24 +346,54 @@ extension CameraViewController {
             gridButton.setImage(UIImage(named: "offGrid"), for: .normal)
         }
     }
+//[old] 인재님이 구현하셨던건데, 제가 간단한 버전(화면비변경part에)을 만들어서 넣어놨습니다.
+//    func addGridView() {
+//        // grideView is my view where you want to show the grid view
+//        let horizontalMargin = gridviewView.bounds.size.width / 4
+//        let verticalMargin = gridviewView.bounds.size.height / 4
+//
+//        let gridView = GridView()
+//
+//        gridView.translatesAutoresizingMaskIntoConstraints = false
+//
+//        gridviewView.addSubview(gridView)
+//
+//        gridView.backgroundColor = UIColor.clear
+//        gridView.leftAnchor.constraint(equalTo: previewView.leftAnchor, constant: horizontalMargin).isActive = true
+//        gridView.rightAnchor.constraint(equalTo: previewView.rightAnchor, constant: -1 * horizontalMargin).isActive = true
+//        gridView.topAnchor.constraint(equalTo: previewView.topAnchor, constant: verticalMargin).isActive = true
+//        gridView.bottomAnchor.constraint(equalTo: previewView.bottomAnchor, constant: -1 * verticalMargin).isActive = true
+//
+//    }
     
-    func addGridView() {
-        // grideView is my view where you want to show the grid view
-        let horizontalMargin = gridviewView.bounds.size.width / 4
-        let verticalMargin = gridviewView.bounds.size.height / 4
+    //MARK: 화면비 변경 버튼
+    /*     이 함수에서 화면비 아이콘도 변경하고 previewView의 사이즈도 변경함. */
+    @IBAction func switchScreenRatio(_ sender: Any) {
+        // 0 == 1:1 || 1 == 3:4 || 2 == 9:16
+        
+        screenRatioSwitchedStatus += 1
+        screenRatioSwitchedStatus %= ScreenType.numberOfRatioType()
+        if let currentPosition = self.currentPosition {
+            switch screenRatioSwitchedStatus {
+            case ScreenType.Ratio.square.rawValue :
+                screenRatioBarButtonItem.image = UIImage(named: "screen_ratio_1_1")
 
-        let gridView = GridView()
+            case ScreenType.Ratio.retangle.rawValue :
+                screenRatioBarButtonItem.image = UIImage(named: "screen_ratio_3_4")
+            
+            case ScreenType.Ratio.full.rawValue :
+                screenRatioBarButtonItem.image = UIImage(named: "screen_ratio_9_16")
 
-        gridView.translatesAutoresizingMaskIntoConstraints = false
-
-        gridviewView.addSubview(gridView)
-
-        gridView.backgroundColor = UIColor.clear
-        gridView.leftAnchor.constraint(equalTo: previewView.leftAnchor, constant: horizontalMargin).isActive = true
-        gridView.rightAnchor.constraint(equalTo: previewView.rightAnchor, constant: -1 * horizontalMargin).isActive = true
-        gridView.topAnchor.constraint(equalTo: previewView.topAnchor, constant: verticalMargin).isActive = true
-        gridView.bottomAnchor.constraint(equalTo: previewView.bottomAnchor, constant: -1 * verticalMargin).isActive = true
-
+            default:
+                break;
+            }
+            
+            setToolbarsUI()
+            
+            // getSizeBy... // 전후면 카메라 스위칭 될 때, 화면 비율을 넘기기 위한 함수임.
+            // 이거 필요없으면 나중에 삭제하는게 좋음 // extension으로 빼놨음.
+            getSizeByScreenRatio(with: currentPosition, at: screenRatioSwitchedStatus)
+        }
     }
     
     //MARK: 상하단 툴바 설정 + Draw Grid

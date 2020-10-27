@@ -34,6 +34,8 @@ enum AddPhotoMode {
     case camera
 }
 
+
+// 내가 만든 커스텀컬러
 struct CustomColor {
     static func uiColor(_ color: String) -> UIColor {
         switch color {
