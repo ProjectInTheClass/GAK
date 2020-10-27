@@ -349,9 +349,16 @@ extension CameraViewController {
 
     // touchCaptureTrigger: 터치촬영 동작!
     @IBAction func touchCapture(_ sender: Any) {
-        if touchCaptureStatus {
+        
+        // return to main View
+        if (!moreView.isHidden) {
+            moreView.isHidden = true
+            return
+        }
+        else if touchCaptureStatus {
             capturePhotoWithOptions()
         }
+        
     }
     
     
