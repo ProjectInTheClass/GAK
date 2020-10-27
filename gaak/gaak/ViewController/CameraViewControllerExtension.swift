@@ -565,7 +565,7 @@ extension CameraViewController {
         /// 팀원들에게 테스트해보고 결정할 것. ex) let sin_x = sin( x * (.pi/2) )
 
         motionKit.getGravityAccelerationFromDeviceMotion(interval: 0.02) { (x, y, z) in
-            // x가 좌-1 우+1, z가 앞-1 뒤+1
+            // x(H)가 좌-1 우+1, z(V)가 앞-1 뒤+1
             let roundedX = Float(round(x * 100)) / 100.0
             let roundedZ = Float(round(z * 100)) / 100.0
             
@@ -573,17 +573,11 @@ extension CameraViewController {
             var transform: CATransform3D
             
             current = roundedX * 90
-            transform = CATransform3DIdentity;
-            transform.m34 = 1.0/500
-            transform = CATransform3DRotate(
-                transform,
-                CGFloat(current * Float.pi / 180), 0, 0, 1
-            )
-            self.horizonIndicator.transform3D = transform
             
             if (current < 2 && current > -2) { // 임계값 도달
                 self.horizonIndicatorInner.tintColor = .systemGreen
                 self.horizonIndicatorOuter.tintColor = .systemGreen
+                current = 0
                 
                 if isImpactH {
                     Haptic.play("O", delay: 0.1)
@@ -599,16 +593,15 @@ extension CameraViewController {
                 }
             }
             
-            current = roundedZ * 90
             transform = CATransform3DIdentity;
             transform.m34 = 1.0/500
             transform = CATransform3DRotate(
                 transform,
-                CGFloat(current * Float.pi / 180), 1, 0, 0
+                CGFloat(current * Float.pi / 180), 0, 0, 1
             )
-            self.captureButtonInner.transform3D = transform
+            self.horizonIndicator.transform3D = transform
             
-            
+            current = roundedZ * 90
             if (current < 3 && current > -3) { // 임계값 도달
                 self.captureButtonInner.alpha = 1.0
                 self.captureButtonInner.tintColor = .systemGreen
@@ -629,6 +622,16 @@ extension CameraViewController {
                     isImpactV = true
                 }
             }
+            transform = CATransform3DIdentity;
+            transform.m34 = 1.0/500
+            transform = CATransform3DRotate(
+                transform,
+                CGFloat(current * Float.pi / 180), 1, 0, 0
+            )
+            self.captureButtonInner.transform3D = transform
+            
+            
+            
         }
     }
 }
