@@ -580,7 +580,7 @@ extension CameraViewController {
                 current = 0
                 
                 if isImpactH {
-                    Haptic.play("O", delay: 0.1)
+                    Haptic.play("ooo--OOOOO-", delay: 0.1)
                     isImpactH = false
                 }
             }
@@ -588,7 +588,7 @@ extension CameraViewController {
                 self.horizonIndicatorInner.tintColor = .systemRed
                 self.horizonIndicatorOuter.tintColor = .systemRed
                 if (!isImpactH) {
-                    Haptic.play("O", delay: 0.1)
+                    Haptic.play("-", delay: 0.1)
                     isImpactH = true
                 }
             }
@@ -608,7 +608,7 @@ extension CameraViewController {
                 self.captureButtonOuter.tintColor = .systemGreen
                 
                 if isImpactV {
-                    Haptic.play("O", delay: 0.1)
+                    Haptic.play("o-Oo", delay: 0.1)
                     isImpactV = false
                 }
             }
@@ -618,7 +618,7 @@ extension CameraViewController {
                 self.captureButtonOuter.tintColor = .systemRed
                 
                 if !isImpactV {
-                    Haptic.play("O", delay: 0.1)
+                    Haptic.play("-", delay: 0.1)
                     isImpactV = true
                 }
             }
@@ -629,9 +629,6 @@ extension CameraViewController {
                 CGFloat(current * Float.pi / 180), 1, 0, 0
             )
             self.captureButtonInner.transform3D = transform
-            
-            
-            
         }
     }
 }
