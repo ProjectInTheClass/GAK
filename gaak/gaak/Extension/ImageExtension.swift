@@ -129,6 +129,7 @@ extension UIImage {
         return resultImage
     }
     
+    
     // imageOrientation을 set
     func fixOrientationOfImage() -> UIImage? {
         if self.imageOrientation == .up {
@@ -187,5 +188,7 @@ extension UIImage {
         
         return UIImage(cgImage: CGImage)
     }
+    
+    
     
 }

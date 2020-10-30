@@ -17,20 +17,91 @@ extension CameraViewController {
     
     
     //MARK: 사진 촬영
-    @IBAction func capturePhoto(_ sender: Any) {
-        // TODO: photoOutput의 capturePhoto 메소드
-        // orientation
-        // photooutput
+    
+    // 촬영 버튼 Tap !
+    @IBAction func tapCaptureButton(_ sender: Any) {
+        capturePhotoWithOptions()
+    }
+    
+    func capturePhotoWithOptions(){
+        //off(default) == 0 || 3초 == 1 || 5초 == 2 || 10초 == 3
+        //var timerID: Timer
+        if (timerStatus != 0) {
+            
+            var countDown = setTime
+            
+            if(isCounting == true) { // 타이머 동작 중간에 취소하고싶다면,
+                self.timeLeft.text = String(self.setTime) // * reset
+                self.timeLeft.isHidden = false // * reSet 하고 다시 보여줌
+                self.countTimer.invalidate()
+                
+                self.isCounting = false
+                self.captureButtonInner.image = UIImage(systemName: "circle.fill", withConfiguration: .none)
+                self.captureButtonInner.tintColor = .systemRed
+                // !!!주의!!! 이 곳의 x_o_temp 이미지를 원래대로 돌려야 함.
+                return
+            }
+
+            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+                self.countTimer = timer
+                
+                self.isCounting = true
+                // 실행중에는 캡쳐버튼의 UI가 x로 변함.
+                self.captureButtonInner.image = UIImage(named: "x_temp")
+                
+                self.timeLeft.text = String(countDown - 1)
+                
+                UIView.transition(with: self.timeLeft, duration: 0.3, options: .transitionCrossDissolve, animations: .none, completion: nil)
+                
+                if(countDown == 1){
+                    self.capturePhoto()
+                    self.timeLeft.isHidden = true // * 0일때는 사라짐
+                }
+                else if (countDown == 0) {
+                    self.timeLeft.text = String(self.setTime) // * reset
+                    self.timeLeft.isHidden = false // * reSet 하고 다시 보여줌
+                    self.countTimer.invalidate()
+                    self.isCounting = false
+                    // !!!주의!!! 이 곳의 x_o_temp 이미지를 원래대로 돌려야 함.
+                    self.captureButtonInner.image = UIImage()
+                    self.captureButtonInner.backgroundColor = .systemRed
+                    // !!!주의!!!
+                }
+                countDown -= 1
+            }
+        } else {
+            capturePhoto()
+        }
+    }
+    
+    func capturePhoto() {
         let videoPreviewLayerOrientation = self.previewView.videoPreviewLayer.connection?.videoOrientation
-        sessionQueue.async {
+        self.sessionQueue.async {
             let connection = self.photoOutput.connection(with: .video)
             connection?.videoOrientation = videoPreviewLayerOrientation!
             connection?.videoOrientation = .portrait
             // 캡쳐 세션에 요청하는것
             let setting = AVCapturePhotoSettings()
+            setting.flashMode = self.getCurrentFlashMode(self.isOn_flash)
             self.photoOutput.capturePhoto(with: setting, delegate: self)
         }
     }
+
+//  [old] func capturePhoto() 으로 변경되었음.
+//    @IBAction func capturePhoto(_ sender: Any) {
+//        // TODO: photoOutput의 capturePhoto 메소드
+//        // orientation
+//        // photooutput
+//        let videoPreviewLayerOrientation = self.previewView.videoPreviewLayer.connection?.videoOrientation
+//        sessionQueue.async {
+//            let connection = self.photoOutput.connection(with: .video)
+//            connection?.videoOrientation = videoPreviewLayerOrientation!
+//            connection?.videoOrientation = .portrait
+//            // 캡쳐 세션에 요청하는것
+//            let setting = AVCapturePhotoSettings()
+//            self.photoOutput.capturePhoto(with: setting, delegate: self)
+//        }
+//    }
     
     // MARK: - 저장1. 화면비에 맞게 자르기
     // 사진 저장할 때 화면비에 맞게 잘라서 저장해주는 함수
@@ -199,42 +270,37 @@ extension CameraViewController {
         }
     }
     
-    //MARK: 화면비 변경 버튼
-    /*     이 함수에서 화면비 아이콘도 변경하고 previewView의 사이즈도 변경함. */
-    @IBAction func switchScreenRatio(_ sender: Any) {
-        // 0 == 1:1 || 1 == 3:4 || 2 == 9:16
-        
-        screenRatioSwitchedStatus += 1
-        screenRatioSwitchedStatus %= ScreenType.numberOfRatioType()
-        if let currentPosition = self.currentPosition {
-            switch screenRatioSwitchedStatus {
-            case ScreenType.Ratio.square.rawValue :
-                screenRatioBarButtonItem.image = UIImage(named: "screen_ratio_1_1")
-
-            case ScreenType.Ratio.retangle.rawValue :
-                screenRatioBarButtonItem.image = UIImage(named: "screen_ratio_3_4")
-            
-            case ScreenType.Ratio.full.rawValue :
-                screenRatioBarButtonItem.image = UIImage(named: "screen_ratio_9_16")
-
-            default:
-                break;
-            }
-            
-            setToolbarsUI()
-            
-            // getSizeBy... // 전후면 카메라 스위칭 될 때, 화면 비율을 넘기기 위한 함수임.
-            // 이거 필요없으면 나중에 삭제하는게 좋음 // extension으로 빼놨음.
-            getSizeByScreenRatio(with: currentPosition, at: screenRatioSwitchedStatus)
+    // MARK: 플래시 상태 + 버튼 UI 변경
+    @IBAction func flashTrigger(_ sender: Any) {
+        if(isOn_flash == false){
+            isOn_flash = true
+            flashButton.image = UIImage(named: "flashOn")
+        }
+        else if (isOn_flash == true){
+            isOn_flash = false
+            flashButton.image = UIImage(named: "flashOff")
         }
     }
     
-    //MARK: 타이머 버튼
-    //타이머 0초(기본값), 3초, 5초, 10초
+    // 현재 플래시 상태를 캡쳐세션에 전달하기 위한 함수
+    func getCurrentFlashMode(_ mode : Bool) -> AVCaptureDevice.FlashMode{
+        
+        var valueOfAVCaptureFlashMode: AVCaptureDevice.FlashMode = .off
+        
+        switch mode {
+        case false:
+            valueOfAVCaptureFlashMode = .off
+        case true:
+            valueOfAVCaptureFlashMode = .on
+        }
+        return valueOfAVCaptureFlashMode
+    }
     
-    /* func timerButton(_ sender: Any)
-     타이머의 시간과 타이머버튼UI를 설정하는 함수
-     */
+
+    
+    // MARK: 타이머 버튼
+    // 타이머 0초(기본값), 3초, 5초, 10초
+    // 타이머 시간, 버튼UI을 설정하는 Action
     @IBAction func timerButton(_ sender: Any) {
         
         timerStatus += 1
@@ -265,70 +331,38 @@ extension CameraViewController {
             break
         }
     }
+    
+    
+    
+    // MARK: 터치촬영
+    // touchCaptureTrigger: 버튼 On/Off 변경
+    @IBAction func touchCaptureTrigger(_ sender: Any) {
         
-    @IBAction func touchedStartTimerButton(_ sender: Any) {
-        //off(default) == 0 || 3초 == 1 || 5초 == 2 || 10초 == 3
-        //var timerID: Timer
-        if (timerStatus != 0) {
-            
-            var countDown = setTime
-            
-            if(isCounting == true) { // 타이머 동작 중간에 취소하고싶다면,
-                self.timeLeft.text = String(self.setTime) // * reset
-                self.timeLeft.isHidden = false // * reSet 하고 다시 보여줌
-                self.countTimer.invalidate()
-                
-                self.isCounting = false
-                self.captureButtonInner.image = UIImage()
-                self.captureButtonInner.backgroundColor = .systemRed
-                // !!!주의!!! 이 곳의 x_o_temp 이미지를 원래대로 돌려야 함.
-                return
-            }
-
-            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-                self.countTimer = timer
-                
-                self.isCounting = true
-                // 실행중에는 캡쳐버튼의 UI가 x로 변함.
-                self.captureButtonInner.image = UIImage(named: "x_temp")
-                
-                self.timeLeft.text = String(countDown - 1)
-                
-                UIView.transition(with: self.timeLeft, duration: 0.3, options: .transitionCrossDissolve, animations: .none, completion: nil)
-                
-                if(countDown == 1){
-                    self.capturePhoto()
-                    self.timeLeft.isHidden = true // * 0일때는 사라짐
-                }
-                else if (countDown == 0) {
-                    self.timeLeft.text = String(self.setTime) // * reset
-                    self.timeLeft.isHidden = false // * reSet 하고 다시 보여줌
-                    self.countTimer.invalidate()
-                    self.isCounting = false
-                    // !!!주의!!! 이 곳의 x_o_temp 이미지를 원래대로 돌려야 함.
-                    self.captureButtonInner.image = UIImage()
-                    self.captureButtonInner.backgroundColor = .systemRed
-                    // !!!주의!!!
-                }
-                countDown -= 1
-            }
+        if touchCaptureStatus {
+            touchCaptureStatus = !touchCaptureStatus
+            touchCaptureButton.image = UIImage(named: "touchCaptureOff")
         } else {
-            capturePhoto()
+            touchCaptureStatus = !touchCaptureStatus
+            touchCaptureButton.image = UIImage(named: "touchCaptureOn")
         }
     }
-    func capturePhoto() {
-        let videoPreviewLayerOrientation = self.previewView.videoPreviewLayer.connection?.videoOrientation
-        self.sessionQueue.async {
-            let connection = self.photoOutput.connection(with: .video)
-            connection?.videoOrientation = videoPreviewLayerOrientation!
-            connection?.videoOrientation = .portrait
-            // 캡쳐 세션에 요청하는것
-            let setting = AVCapturePhotoSettings()
-            self.photoOutput.capturePhoto(with: setting, delegate: self)
+
+    // touchCaptureTrigger: 터치촬영 동작!
+    @IBAction func touchCapture(_ sender: Any) {
+        
+        // return to main View
+        if (!moreView.isHidden) {
+            moreView.isHidden = true
+            return
         }
+        else if touchCaptureStatus {
+            capturePhotoWithOptions()
+        }
+        
     }
     
-    //MARK: 그리드를 그리는 함수
+    
+    //MARK: Grid Button
     //그리드 뷰 && 버튼 활성화 비활성화
     //버튼 크기 조정이 필요할것 같습니다. 터치미스가 잘나는데, 버튼 크기조절 고민필요! -> (동현) 제가 마지막에 하겠습니다!
     //현재는 어플을 키면 바로 격자가 on상태인데, 최종완성시에는 사용성에따라 off로 할지 on으로 할지 고민필요함
@@ -344,24 +378,54 @@ extension CameraViewController {
             gridButton.setImage(UIImage(named: "offGrid"), for: .normal)
         }
     }
+//[old] 인재님이 구현하셨던건데, 제가 간단한 버전(화면비변경part에)을 만들어서 넣어놨습니다.
+//    func addGridView() {
+//        // grideView is my view where you want to show the grid view
+//        let horizontalMargin = gridviewView.bounds.size.width / 4
+//        let verticalMargin = gridviewView.bounds.size.height / 4
+//
+//        let gridView = GridView()
+//
+//        gridView.translatesAutoresizingMaskIntoConstraints = false
+//
+//        gridviewView.addSubview(gridView)
+//
+//        gridView.backgroundColor = UIColor.clear
+//        gridView.leftAnchor.constraint(equalTo: previewView.leftAnchor, constant: horizontalMargin).isActive = true
+//        gridView.rightAnchor.constraint(equalTo: previewView.rightAnchor, constant: -1 * horizontalMargin).isActive = true
+//        gridView.topAnchor.constraint(equalTo: previewView.topAnchor, constant: verticalMargin).isActive = true
+//        gridView.bottomAnchor.constraint(equalTo: previewView.bottomAnchor, constant: -1 * verticalMargin).isActive = true
+//
+//    }
     
-    func addGridView() {
-        // grideView is my view where you want to show the grid view
-        let horizontalMargin = gridviewView.bounds.size.width / 4
-        let verticalMargin = gridviewView.bounds.size.height / 4
+    //MARK: 화면비 변경 버튼
+    /*     이 함수에서 화면비 아이콘도 변경하고 previewView의 사이즈도 변경함. */
+    @IBAction func switchScreenRatio(_ sender: Any) {
+        // 0 == 1:1 || 1 == 3:4 || 2 == 9:16
+        
+        screenRatioSwitchedStatus += 1
+        screenRatioSwitchedStatus %= ScreenType.numberOfRatioType()
+        if let currentPosition = self.currentPosition {
+            switch screenRatioSwitchedStatus {
+            case ScreenType.Ratio.square.rawValue :
+                screenRatioBarButtonItem.image = UIImage(named: "screen_ratio_1_1")
 
-        let gridView = GridView()
+            case ScreenType.Ratio.retangle.rawValue :
+                screenRatioBarButtonItem.image = UIImage(named: "screen_ratio_3_4")
+            
+            case ScreenType.Ratio.full.rawValue :
+                screenRatioBarButtonItem.image = UIImage(named: "screen_ratio_9_16")
 
-        gridView.translatesAutoresizingMaskIntoConstraints = false
-
-        gridviewView.addSubview(gridView)
-
-        gridView.backgroundColor = UIColor.clear
-        gridView.leftAnchor.constraint(equalTo: previewView.leftAnchor, constant: horizontalMargin).isActive = true
-        gridView.rightAnchor.constraint(equalTo: previewView.rightAnchor, constant: -1 * horizontalMargin).isActive = true
-        gridView.topAnchor.constraint(equalTo: previewView.topAnchor, constant: verticalMargin).isActive = true
-        gridView.bottomAnchor.constraint(equalTo: previewView.bottomAnchor, constant: -1 * verticalMargin).isActive = true
-
+            default:
+                break;
+            }
+            
+            setToolbarsUI()
+            
+            // getSizeBy... // 전후면 카메라 스위칭 될 때, 화면 비율을 넘기기 위한 함수임.
+            // 이거 필요없으면 나중에 삭제하는게 좋음 // extension으로 빼놨음.
+            getSizeByScreenRatio(with: currentPosition, at: screenRatioSwitchedStatus)
+        }
     }
     
     //MARK: 상하단 툴바 설정 + Draw Grid
@@ -501,7 +565,7 @@ extension CameraViewController {
         /// 팀원들에게 테스트해보고 결정할 것. ex) let sin_x = sin( x * (.pi/2) )
 
         motionKit.getGravityAccelerationFromDeviceMotion(interval: 0.02) { (x, y, z) in
-            // x가 좌-1 우+1, z가 앞-1 뒤+1
+            // x(H)가 좌-1 우+1, z(V)가 앞-1 뒤+1
             let roundedX = Float(round(x * 100)) / 100.0
             let roundedZ = Float(round(z * 100)) / 100.0
             
@@ -509,6 +573,26 @@ extension CameraViewController {
             var transform: CATransform3D
             
             current = roundedX * 90
+            
+            if (current < 2 && current > -2) { // 임계값 도달
+                self.horizonIndicatorInner.tintColor = .systemGreen
+                self.horizonIndicatorOuter.tintColor = .systemGreen
+                current = 0
+                
+                if isImpactH {
+                    Haptic.play("ooo--OOOOO-", delay: 0.1)
+                    isImpactH = false
+                }
+            }
+            else { // 임계값 이탈
+                self.horizonIndicatorInner.tintColor = .systemRed
+                self.horizonIndicatorOuter.tintColor = .systemRed
+                if (!isImpactH) {
+                    Haptic.play("-", delay: 0.1)
+                    isImpactH = true
+                }
+            }
+            
             transform = CATransform3DIdentity;
             transform.m34 = 1.0/500
             transform = CATransform3DRotate(
@@ -517,41 +601,14 @@ extension CameraViewController {
             )
             self.horizonIndicator.transform3D = transform
             
-            if (current < 2 && current > -2) { // 임계값 도달
-                self.horizonIndicatorInner.tintColor = .systemGreen
-                self.horizonIndicatorOuter.tintColor = .systemGreen
-                
-                if isImpactH {
-                    Haptic.play("O", delay: 0.1)
-                    isImpactH = false
-                }
-            }
-            else { // 임계값 이탈
-                self.horizonIndicatorInner.tintColor = .systemRed
-                self.horizonIndicatorOuter.tintColor = .systemRed
-                if (!isImpactH) {
-                    Haptic.play("O", delay: 0.1)
-                    isImpactH = true
-                }
-            }
-            
             current = roundedZ * 90
-            transform = CATransform3DIdentity;
-            transform.m34 = 1.0/500
-            transform = CATransform3DRotate(
-                transform,
-                CGFloat(current * Float.pi / 180), 1, 0, 0
-            )
-            self.captureButtonInner.transform3D = transform
-            
-            
             if (current < 3 && current > -3) { // 임계값 도달
                 self.captureButtonInner.alpha = 1.0
                 self.captureButtonInner.tintColor = .systemGreen
                 self.captureButtonOuter.tintColor = .systemGreen
                 
                 if isImpactV {
-                    Haptic.play("O", delay: 0.1)
+                    Haptic.play("o-Oo", delay: 0.1)
                     isImpactV = false
                 }
             }
@@ -561,10 +618,17 @@ extension CameraViewController {
                 self.captureButtonOuter.tintColor = .systemRed
                 
                 if !isImpactV {
-                    Haptic.play("O", delay: 0.1)
+                    Haptic.play("-", delay: 0.1)
                     isImpactV = true
                 }
             }
+            transform = CATransform3DIdentity;
+            transform.m34 = 1.0/500
+            transform = CATransform3DRotate(
+                transform,
+                CGFloat(current * Float.pi / 180), 1, 0, 0
+            )
+            self.captureButtonInner.transform3D = transform
         }
     }
 }

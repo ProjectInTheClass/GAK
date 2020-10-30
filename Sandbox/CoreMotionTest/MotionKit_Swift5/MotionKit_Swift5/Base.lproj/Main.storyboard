@@ -16,17 +16,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T7Y-Vt-G60" userLabel="CaptureButton">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T7Y-Vt-G60" userLabel="CenterButton">
                                 <rect key="frame" x="132" y="293" width="150" height="150"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="2Si-O1-fF7">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="2Si-O1-fF7" userLabel="Center Button Outline">
                                         <rect key="frame" x="0.0" y="1" width="150" height="148.66666666666666"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="150" id="SC6-fi-32m"/>
                                             <constraint firstAttribute="width" constant="150" id="fWM-dU-jkc"/>
                                         </constraints>
                                     </imageView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="ZMc-Dv-FiA">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="ZMc-Dv-FiA" userLabel="Center Button">
                                         <rect key="frame" x="15" y="15.999999999999993" width="120" height="118.66666666666666"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="120" id="Qgk-MY-R6d"/>
