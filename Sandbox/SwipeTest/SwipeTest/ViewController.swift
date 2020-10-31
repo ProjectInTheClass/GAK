@@ -9,8 +9,6 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    let numOfTouchs = 2
-    
     @IBOutlet weak var imageViewLeft: UIImageView!
     @IBOutlet weak var imageViewRight: UIImageView!
     
@@ -43,6 +41,8 @@ class ViewController: UIViewController {
               self.view.addGestureRecognizer(swipeRight)
         
     }
+    
+     /// 실험중 한다.
     // 한 손가락 스와이프 제스쳐를 행했을 때 실행할 액션 메서드
     @objc func respondToSwipeGesture(_ gesture: UIGestureRecognizer) {
         // 만일 제스쳐가 있다면
