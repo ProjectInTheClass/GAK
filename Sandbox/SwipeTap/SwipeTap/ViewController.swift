@@ -122,6 +122,7 @@ class ViewController: UIViewController, UIScrollViewDelegate {
             pageControl.currentPage = Int(scrollView.contentOffset.x / scrollView.frame.maxX)
             
             // control indicator tint color
+            pageControl.currentPageIndicatorTintColor = .yellow
             pageControl.currentPageIndicatorTintColor = .orange
             pageControl.pageIndicatorTintColor = .white
         }

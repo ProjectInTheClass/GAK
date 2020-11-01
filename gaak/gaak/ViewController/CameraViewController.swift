@@ -10,6 +10,7 @@ import UIKit
 import AVFoundation
 import Photos
 import SnapKit
+import Haptica
 import Foundation
 
 class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
@@ -23,7 +24,10 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     // - AVCaptureDevice DiscoverySession // 폰에서 카메라를 가져올때 도와주는 요소
     
     let captureSession = AVCaptureSession() // 캡쳐세션을 만들었고
+    var captureDevice: AVCaptureDevice? // AVCaptureDevice 객체는 물리적 캡처 장치와 해당 장치와 관련된 속성을 나타냅니다. 캡처 장치를 사용하여 기본 하드웨어의 속성을 구성합니다. 캡처 장치는 또한 AVCaptureSession 객체에 입력 데이터 (예 : 오디오 또는 비디오)를 제공합니다.
+
     var videoDeviceInput: AVCaptureDeviceInput! // 디바이스 인풋(을 담을 변수 생성, but 아직 카메라가 연결되지는 않음.)
+    
     let photoOutput = AVCapturePhotoOutput()
     let sessionQueue = DispatchQueue(label: "session Queue")
     let videoDeviceDiscoverySession = AVCaptureDevice.DiscoverySession(
@@ -37,7 +41,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     var currentPosition: AVCaptureDevice.Position? // 카메라 포지션을 저장할 프로퍼티
     var rectOfpreviewImage: CGRect? // previewImage의 CGRect
     var cameraViewPhotoSize: CameraViewPhotoSize? // 카메라 뷰에 담길 촬영 포토 사이즈를 위한 프로퍼티
-    var isOn = true //그리드 뷰 && 버튼 활성화 비활성화 flow controll value
+    var focusBox: UIView! // 초점 박스
     var assetsFetchResults: PHFetchResult<PHAsset>! // 포토앨범 썸네일 1장 불러오기 위한 프로퍼티-1
     var imageManger: PHCachingImageManager?         // 포토앨범 썸네일 1장 불러오기 위한 프로퍼티-2
     var authorizationStatus: PHAuthorizationStatus? // 포토앨범 썸네일 1장 불러오기 위한 프로퍼티-3
@@ -46,7 +50,9 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     var countTimer: Timer! // 동적 타이머 프로퍼티를 컨트롤하기 위한 정적 프로퍼티
     var isCounting: Bool = false // 타이머가 동작중인지 확인하는 프로퍼티
     var isOn_flash: Bool = false // 플래시 상태 프로퍼티
-    var touchCaptureStatus: Bool = false // 터치촬영 상태 프로퍼티
+    var isOn_Grid = true //그리드 뷰 && 버튼 활성화 비활성화 flow controll value
+    var isOn_touchCapture: Bool = false // 터치촬영모드 상태 프로퍼티
+
 
     // 상단 툴 바
     @IBOutlet weak var settingToolbar: UIToolbar! // 화면 비율 버튼이 있는 툴바
@@ -56,8 +62,8 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     @IBOutlet weak var switchButton: UIButton! // 카메라 전환 버튼
     @IBOutlet weak var timerButton: UIButton! // 타이머, 더보기에 있는 버튼 이미지
     @IBOutlet weak var timeLeft: UILabel! // 타이머, 동작할 때 화면중앙에 남은 시간 안내
-    @IBOutlet weak var flashButton: UIImageView! // 플래시 on/off 버튼
-    @IBOutlet weak var touchCaptureButton: UIImageView! // 터치촬영 on/off 버튼
+    @IBOutlet weak var flashButton: UIButton! // 플래시 on/off 버튼
+    @IBOutlet weak var touchCaptureButton: UIButton! // 터치촬영 on/off 버튼
     
 
     // 화면 중앙에 위치한 기능들
@@ -79,11 +85,59 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     @IBOutlet weak var captureButtonOuter: UIImageView! // 캡쳐버튼 테두리
     @IBOutlet weak var horizonIndicatorInner: UIImageView! // 회전하는 객체
     @IBOutlet weak var horizonIndicatorOuter: UIImageView! // 수평 100%
-
     
     override var prefersStatusBarHidden: Bool {
         return true // 아이폰 상단 정보 (시간, 배터리 등)을 숨겨줌
     }
+    
+    ///
+    
+    
+    // MARK: 플래시 상태 + 버튼 UI 변경
+    @IBAction func flashTrigger(_ sender: Any) {
+        if(isOn_flash == false){
+            isOn_flash = true
+            flashButton.setImage(UIImage(named: "flashOn"), for: .normal)
+            
+        }
+        else if (isOn_flash == true){
+            isOn_flash = false
+            flashButton.setImage(UIImage(named: "flashOff"), for: .normal)
+        }
+    }
+    
+    // MARK: 터치촬영
+    // touchCaptureTrigger: 버튼 On/Off 변경
+    @IBAction func touchCaptureTrigger(_ sender: Any) {
+        
+        
+    }
+
+    
+    @IBAction func touchedFlashBtn(_ sender: Any) {
+        if(isOn_flash == false){
+            isOn_flash = true
+            flashButton.setImage(UIImage(named: "flashOn"), for: .normal)
+            
+        }
+        else if (isOn_flash == true){
+            isOn_flash = false
+            flashButton.setImage(UIImage(named: "flashOff"), for: .normal)
+        }
+    }
+    
+    
+    @IBAction func touchedTouchCapterBtn(_ sender: Any) {
+        if isOn_touchCapture {
+            isOn_touchCapture = !isOn_touchCapture
+            touchCaptureButton.setImage(UIImage(named: "touchCaptureOff"), for: .normal)
+        } else {
+            isOn_touchCapture = !isOn_touchCapture
+            touchCaptureButton.setImage(UIImage(named: "touchCaptureOn"), for: .normal)
+        }
+    }
+    
+    ///
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -179,16 +233,17 @@ extension CameraViewController {
         
         // Add video input //
         do {
-            var defaultVideoDevice: AVCaptureDevice?
+            /// defaultVideoDevice -> captureDevice
+//            var defaultVideoDevice: AVCaptureDevice?
             if let dualCameraDevice = AVCaptureDevice.default(.builtInDualCamera, for: .video, position: .back) {
-                defaultVideoDevice = dualCameraDevice
+                captureDevice = dualCameraDevice
             } else if let backCameraDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) {
-                defaultVideoDevice = backCameraDevice
+                captureDevice = backCameraDevice
             } else if let frontCameraDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front) {
-                defaultVideoDevice = frontCameraDevice
+                captureDevice = frontCameraDevice
             }
                         
-            guard let camera = defaultVideoDevice else {
+            guard let camera = captureDevice else {
                 captureSession.commitConfiguration()
                 return
             }
