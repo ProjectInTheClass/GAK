@@ -26,20 +26,36 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         // Set the current page.
         pageControl.currentPage = 0
         pageControl.isUserInteractionEnabled = false
-
-
+        
+        
         var indicators: [UIView] = []
-
+        
         if #available(iOS 14.0, *) {
             indicators = pageControl.subviews.first?.subviews.first?.subviews ?? []
         } else {
             indicators = pageControl.subviews
         }
-
+        
         for (index, indicator) in indicators.enumerated() {
-            let image = pageControl.currentPage == index ? UIImage.init(named: "ArrowRight2") : UIImage.init(named: "timer0")
-//            하단 페이지 컨트롤 이곳에 기본사진, 전신사진, 반신사진 안내를 이미지 형태로 넣어준다.
-//             삼항 연산자로 표현하면 안될듯, case로 수정해야할듯
+            
+            var image: UIImage
+            image = UIImage()
+            
+            //하단 페이지 컨트롤 이곳에 기본사진, 전신사진, 반신사진 안내를 이미지 형태로 넣어준다
+            
+            switch index {
+            case 0:
+                image = UIImage.init(named: "ArrowRight2")!
+                
+            case 1:
+                image = UIImage.init(named: "timer0")!
+                
+            case 2:
+                image = UIImage.init(named: "ArrowRight1")!
+                
+            default:
+                break
+            }
             
             
             if let dot = indicator as? UIImageView {
@@ -83,7 +99,7 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         
         // Set the background color to Cyan.
         // 전체 뷰의 백그라운드 컬러 변경
-//        self.view.backgroundColor = .clear
+        //        self.view.backgroundColor = .clear
         self.view.backgroundColor = .gray //clear로하면 스와이핑이 안됨. 실제 구현시에는 뷰자체를 클리어로 바꿀것, 코드로하지말고.
         
         // Get the vertical and horizontal sizes of the view.
