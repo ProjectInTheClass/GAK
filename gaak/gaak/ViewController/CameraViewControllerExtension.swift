@@ -609,7 +609,7 @@ extension CameraViewController {
     }
     
     // MARK:- FocusMode, draw and move focus Box.
-    // 초점 맞추기
+    // 초점맞추는 기능
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 
         // 더보기 창이 켜져있다면 더보기창을 닫습니다.
