@@ -15,8 +15,10 @@ class ViewController: UIViewController, UIScrollViewDelegate {
     lazy var pageControl: UIPageControl = {
         // Create a UIPageControl.
         let pageControl = UIPageControl(frame: CGRect(x: 0, y: self.view.frame.maxY - 100, width: self.view.frame.maxX, height:50))
-//        pageControl.backgroundColor = UIColor.clear  -> 실제 구현할때는 클리어컬러로 해야한다.
+        // pageControl.backgroundColor = UIColor.clear  -> 실제 구현할때는 클리어컬러로 해야한다.
         pageControl.backgroundColor = UIColor.black
+        pageControl.pageIndicatorTintColor = .white
+        pageControl.currentPageIndicatorTintColor = .orange
         
         // Set the number of pages to page control.
         pageControl.numberOfPages = pageSize
@@ -25,7 +27,7 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         pageControl.currentPage = 0
         pageControl.isUserInteractionEnabled = false
 
-        ///
+
         var indicators: [UIView] = []
 
         if #available(iOS 14.0, *) {
@@ -36,8 +38,9 @@ class ViewController: UIViewController, UIScrollViewDelegate {
 
         for (index, indicator) in indicators.enumerated() {
             let image = pageControl.currentPage == index ? UIImage.init(named: "ArrowRight2") : UIImage.init(named: "timer0")
-            //하단 페이지 컨트롤 이곳에 기본사진, 전신사진, 반신사진 안내를 이미지 형태로 넣어준다.
-            // 삼항 연산자로 표현하면 안될듯, if문으로 수정해야할듯
+//            하단 페이지 컨트롤 이곳에 기본사진, 전신사진, 반신사진 안내를 이미지 형태로 넣어준다.
+//             삼항 연산자로 표현하면 안될듯, case로 수정해야할듯
+            
             
             if let dot = indicator as? UIImageView {
                 dot.image = image
@@ -81,7 +84,7 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         // Set the background color to Cyan.
         // 전체 뷰의 백그라운드 컬러 변경
 //        self.view.backgroundColor = .clear
-        self.view.backgroundColor = .gray //clear로하면 스와이핑이 안됨. 실제 구현시에는 클리어로 해야하는데 왜그러지?
+        self.view.backgroundColor = .gray //clear로하면 스와이핑이 안됨. 실제 구현시에는 뷰자체를 클리어로 바꿀것, 코드로하지말고.
         
         // Get the vertical and horizontal sizes of the view.
         let width = self.view.frame.maxX, height = self.view.frame.maxY
@@ -94,6 +97,11 @@ class ViewController: UIViewController, UIScrollViewDelegate {
             let layoutImage: UIImageView = UIImageView(frame: CGRect(x: CGFloat(i) * width + width/2 - +150, y: height/2 - -100, width: 300, height: 80))
             layoutImage.image = UIImage(named: "GuideLine\(i)") // 기본, 반신, 전신의 가이드 라인을 보여주는 곳/ 화면상 위다!
             scrollView.addSubview(layoutImage)
+            
+            
+            //let 하나더 선언해서
+            //scrollView.addSubview(만들었다치고)
+            
         }
         
         // Add UIScrollView, UIPageControl on view
@@ -115,6 +123,8 @@ class ViewController: UIViewController, UIScrollViewDelegate {
             
             // control indicator tint color
             pageControl.currentPageIndicatorTintColor = .yellow
+            pageControl.currentPageIndicatorTintColor = .orange
+            pageControl.pageIndicatorTintColor = .white
         }
     }
 }
