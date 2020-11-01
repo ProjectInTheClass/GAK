@@ -112,6 +112,9 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         if fmod(scrollView.contentOffset.x, scrollView.frame.maxX) == 0 {
             // Switch the location of the page.
             pageControl.currentPage = Int(scrollView.contentOffset.x / scrollView.frame.maxX)
+            
+            // control indicator tint color
+            pageControl.currentPageIndicatorTintColor = .white
         }
     }
 }
