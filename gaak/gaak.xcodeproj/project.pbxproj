@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4C9EEAB72540437600E31C12 /* GridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9EEAB62540437600E31C12 /* GridView.swift */; };
+		9F0DABD1254ED15A007F00B5 /* CGREctExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0DABD0254ED15A007F00B5 /* CGREctExtension.swift */; };
 		9F22AD9E2544114E006EE203 /* CoreMotionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F22AD9D2544114E006EE203 /* CoreMotionExtension.swift */; };
 		9F2A2A96251C81F3002147A8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2A2A95251C81F3002147A8 /* Constants.swift */; };
 		9F5ACF8A250F4AA000516A9B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F5ACF89250F4AA000516A9B /* AppDelegate.swift */; };
@@ -29,6 +30,7 @@
 /* Begin PBXFileReference section */
 		4C9EEAB62540437600E31C12 /* GridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridView.swift; sourceTree = "<group>"; };
 		83DA72BD64D8699618841424 /* Pods-gaak.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gaak.debug.xcconfig"; path = "Target Support Files/Pods-gaak/Pods-gaak.debug.xcconfig"; sourceTree = "<group>"; };
+		9F0DABD0254ED15A007F00B5 /* CGREctExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGREctExtension.swift; sourceTree = "<group>"; };
 		9F22AD9D2544114E006EE203 /* CoreMotionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreMotionExtension.swift; sourceTree = "<group>"; };
 		9F2A2A95251C81F3002147A8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		9F5ACF86250F4AA000516A9B /* gaak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gaak.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -153,6 +155,7 @@
 			children = (
 				9FD87EC825273ED6001FF3F9 /* ImageExtension.swift */,
 				9F22AD9D2544114E006EE203 /* CoreMotionExtension.swift */,
+				9F0DABD0254ED15A007F00B5 /* CGREctExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -283,6 +286,7 @@
 				9FE00E53252CA5FD000E6F9A /* ImageZoomViewController.swift in Sources */,
 				9F5ACF8C250F4AA000516A9B /* SceneDelegate.swift in Sources */,
 				9F5ACF9E250F508A00516A9B /* CameraViewController.swift in Sources */,
+				9F0DABD1254ED15A007F00B5 /* CGREctExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

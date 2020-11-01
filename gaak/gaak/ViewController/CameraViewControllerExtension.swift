@@ -270,17 +270,7 @@ extension CameraViewController {
         }
     }
     
-    // MARK: 플래시 상태 + 버튼 UI 변경
-    @IBAction func flashTrigger(_ sender: Any) {
-        if(isOn_flash == false){
-            isOn_flash = true
-            flashButton.image = UIImage(named: "flashOn")
-        }
-        else if (isOn_flash == true){
-            isOn_flash = false
-            flashButton.image = UIImage(named: "flashOff")
-        }
-    }
+    
     
     // 현재 플래시 상태를 캡쳐세션에 전달하기 위한 함수
     func getCurrentFlashMode(_ mode : Bool) -> AVCaptureDevice.FlashMode{
@@ -332,21 +322,6 @@ extension CameraViewController {
         }
     }
     
-    
-    
-    // MARK: 터치촬영
-    // touchCaptureTrigger: 버튼 On/Off 변경
-    @IBAction func touchCaptureTrigger(_ sender: Any) {
-        
-        if touchCaptureStatus {
-            touchCaptureStatus = !touchCaptureStatus
-            touchCaptureButton.image = UIImage(named: "touchCaptureOff")
-        } else {
-            touchCaptureStatus = !touchCaptureStatus
-            touchCaptureButton.image = UIImage(named: "touchCaptureOn")
-        }
-    }
-
     // touchCaptureTrigger: 터치촬영 동작!
     @IBAction func touchCapture(_ sender: Any) {
         
@@ -355,7 +330,8 @@ extension CameraViewController {
             moreView.isHidden = true
             return
         }
-        else if touchCaptureStatus {
+        else if isOn_touchCapture {
+            // isOn_touchCapture == true
             capturePhotoWithOptions()
         }
         
@@ -369,8 +345,8 @@ extension CameraViewController {
     
     // 그리드버튼 On/Off
     @IBAction func gridButton(_ sender: Any) {
-        isOn = !isOn
-        if isOn {
+        isOn_Grid = !isOn_Grid
+        if isOn_Grid {
             gridviewView.isHidden = false
             gridButton.setImage(UIImage(named: "onGrid" ), for: .normal)
         } else {
@@ -631,4 +607,148 @@ extension CameraViewController {
             self.captureButtonInner.transform3D = transform
         }
     }
+    
+    // MARK:- FocusMode, draw and move focus Box.
+    // 초점 맞추기
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+
+        // 더보기 창이 켜져있다면 더보기창을 닫습니다.
+        if (!moreView.isHidden) {
+            moreView.isHidden = true
+            return
+        }
+        // 터치촬영모드일 경우 초점을 재조정할 수 없습니다.
+        else if isOn_touchCapture {
+            return
+        }
+        
+        if let coordinates = touches.first, let device = captureDevice {
+            
+            // 터치 가능 영역을 벗어났을 경우입니다.
+            if (coordinates.location(in: self.view).y < gridviewView.frame.minY || coordinates.location(in: self.view).y > gridviewView.frame.maxY){
+                return // 현재 터치된 곳은 초점을 맞출 수 없는 곳입니다.
+            }
+            
+            // 전면 카메라는 FocusPointOfInterest를 지원하지 않습니다.
+            if device.isFocusPointOfInterestSupported, device.isFocusModeSupported(AVCaptureDevice.FocusMode.autoFocus) {
+                let focusPoint = touchPercent(touch : coordinates)
+                dump(focusPoint)
+
+                do {
+                    try device.lockForConfiguration()
+
+                    // FocusPointOfInterest 를 통해 초점을 잡아줌.
+                    device.focusPointOfInterest = focusPoint
+                    device.focusMode = .autoFocus
+                    device.exposurePointOfInterest = focusPoint
+                    device.exposureMode = AVCaptureDevice.ExposureMode.continuousAutoExposure
+                    device.unlockForConfiguration()
+
+                    if focusBox != nil {
+                        // 초점 박스가 있으면 위치를 바꿔줌
+                        changeFocusBoxCenter(for: coordinates.location(in: previewView))
+                    } else {
+                        // 초점 박스가 없으면 그려줌
+                        makeRectangle(at : coordinates)
+                    }
+
+                    previewView.addSubview(self.focusBox)
+                    
+                    zoomFocusOutIn(view: self.focusBox, delay: 1)
+                    // fadeViewInThenOut(view: self.focusBox, delay: 1)
+                    
+                } catch{
+                    fatalError()
+                }
+            }
+            // 전면 카메라에서는 FocusPointOfInterest 를 지원하지 않는다.
+
+        }
+    }
+    
+    // 초점 박스를 이동하는 메소드
+    func changeFocusBoxCenter(for location: CGPoint )
+    {
+        self.focusBox.center.x = location.x
+        self.focusBox.center.y = location.y
+    }
+    
+    func touchPercent(touch coordinates: UITouch) -> CGPoint {
+        
+        // 0~1.0 으로 x, y 화면대비 비율 구하기
+        let x = coordinates.location(in: previewView).y / previewView.bounds.height
+        let y = 1.0 - coordinates.location(in: previewView).x / previewView.bounds.width
+        let ratioOfPoint = CGPoint(x: x, y: y)
+        
+        return ratioOfPoint
+    }
+    
+    func makeRectangle(at coordinates : UITouch) {
+        
+        // 화면 사이즈 구하기
+        let screenBounds = previewView.bounds
+        
+        // 화면 비율에 맞게 정사각형의 focus box 그리기
+        var rectangleBounds = screenBounds
+        rectangleBounds.size.width = screenBounds.size.width / 6
+        rectangleBounds.size.height = screenBounds.size.width / 6
+        
+        // 터치된 좌표에 focusBox의 높이, 너비의 절반 값을 빼주어서 터치한 좌표를 중심으로 그려지게 설정
+        rectangleBounds.origin.x = coordinates.location(in: previewView).x - (rectangleBounds.size.width / 2)
+        rectangleBounds.origin.y = coordinates.location(in: previewView).y - (rectangleBounds.size.height / 2)
+        
+        self.focusBox = UIView(frame: rectangleBounds)
+        self.focusBox.layer.borderColor = UIColor.init(red: 1.0, green: 1.0, blue: 0, alpha: 1).cgColor
+        self.focusBox.layer.borderWidth = 1
+        self.focusBox.alpha = 0.25
+
+    }
+    
+    // MARK: - Animation Focus Rect
+    func zoomFocusOutIn(view: UIView, delay: TimeInterval) {
+        let animationDuration = 0.25
+        
+        let viewFrame = view.frame
+        
+        view.frame.centerX = viewFrame.centerX - viewFrame.width / 4
+        view.frame.centerY = viewFrame.centerY - viewFrame.height / 4
+        
+        // Fade in the view
+        UIView.animate(withDuration: animationDuration, animations: { () -> Void in
+            view.frame.centerX = viewFrame.centerX + 0
+            view.frame.centerY = viewFrame.centerY + 0
+            view.frame.size = CGSize(width: view.frame.width / 2, height: view.frame.width / 2)
+            view.alpha = 1
+        }) { (Bool) -> Void in
+            // After the animation completes, fade out the view after a delay
+            UIView.animate(withDuration: animationDuration, delay: delay, options: .curveEaseInOut, animations: { () -> Void in
+                view.alpha = 0.25
+                },
+            completion: nil
+            )
+        }
+
+        view.frame.size =  CGSize(width: view.frame.width * 2, height: view.frame.width * 2)
+    }
+    
+    func fadeViewInThenOut(view : UIView, delay: TimeInterval) {
+        
+        let animationDuration = 0.1
+        
+        // Fade in the view
+        UIView.animate(withDuration: animationDuration, animations: { () -> Void in
+            view.alpha = 1
+        }) { (Bool) -> Void in
+            
+            // After the animation completes, fade out the view after a delay
+            
+            UIView.animate(withDuration: animationDuration, delay: delay, options: .curveEaseInOut, animations: { () -> Void in
+                view.alpha = 0.25
+                },
+            completion: nil
+            )
+        }
+    }
+    
+    
 }
