@@ -1,15 +1,17 @@
 {
   "images" : [
     {
+      "filename" : "touch_off.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "touchCaptureOff.png",
+      "filename" : "touch_off@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "touch_off@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

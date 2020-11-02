@@ -40,7 +40,7 @@ struct CustomColor {
     static func uiColor(_ color: String) -> UIColor {
         switch color {
         case "black":
-            return UIColor(red: 1, green: 1, blue: 1, alpha: 1)
+            return UIColor(red: 0, green: 0, blue: 0, alpha: 1)
             
         case "clear":
             return UIColor(white: 1, alpha: 0)

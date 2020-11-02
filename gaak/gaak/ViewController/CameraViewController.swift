@@ -90,55 +90,6 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         return true // 아이폰 상단 정보 (시간, 배터리 등)을 숨겨줌
     }
     
-    ///
-    
-    
-    // MARK: 플래시 상태 + 버튼 UI 변경
-    @IBAction func flashTrigger(_ sender: Any) {
-        if(isOn_flash == false){
-            isOn_flash = true
-            flashButton.setImage(UIImage(named: "flashOn"), for: .normal)
-            
-        }
-        else if (isOn_flash == true){
-            isOn_flash = false
-            flashButton.setImage(UIImage(named: "flashOff"), for: .normal)
-        }
-    }
-    
-    // MARK: 터치촬영
-    // touchCaptureTrigger: 버튼 On/Off 변경
-    @IBAction func touchCaptureTrigger(_ sender: Any) {
-        
-        
-    }
-
-    
-    @IBAction func touchedFlashBtn(_ sender: Any) {
-        if(isOn_flash == false){
-            isOn_flash = true
-            flashButton.setImage(UIImage(named: "flashOn"), for: .normal)
-            
-        }
-        else if (isOn_flash == true){
-            isOn_flash = false
-            flashButton.setImage(UIImage(named: "flashOff"), for: .normal)
-        }
-    }
-    
-    
-    @IBAction func touchedTouchCapterBtn(_ sender: Any) {
-        if isOn_touchCapture {
-            isOn_touchCapture = !isOn_touchCapture
-            touchCaptureButton.setImage(UIImage(named: "touchCaptureOff"), for: .normal)
-        } else {
-            isOn_touchCapture = !isOn_touchCapture
-            touchCaptureButton.setImage(UIImage(named: "touchCaptureOn"), for: .normal)
-        }
-    }
-    
-    ///
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -154,18 +105,17 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
         /* 노치가 있는 폰에서는 safeArea를 고려해서 UI를 배치해야하는데
          viewDidAppear 에서부터 safeArea를 선언할 수 있음. */
         setupUI() /// 따라서 setupUI()를 한 번 더 선언함.
         
-        /// test
+        // 수평수직계 셋업
         setGravityAccelerator()
-        /// test end
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -182,10 +132,6 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         
         setLatestPhoto() // 앨범버튼 썸네일 설정
 
-        
-        //captureButton.layer.cornerRadius = captureButton.bounds.height/2 //old
-        //captureButton.layer.masksToBounds = true // old
-        
         setToolbarsUI() // 상, 하단 툴 바 설정
     }
     

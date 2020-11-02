@@ -1,15 +1,17 @@
 {
   "images" : [
     {
+      "filename" : "light_off.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "FlashOff.png",
+      "filename" : "light_off@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "light_off@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

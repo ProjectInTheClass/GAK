@@ -1,15 +1,17 @@
 {
   "images" : [
     {
+      "filename" : "grid.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "free-icon-grid-3603721.png",
+      "filename" : "grid@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "grid@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

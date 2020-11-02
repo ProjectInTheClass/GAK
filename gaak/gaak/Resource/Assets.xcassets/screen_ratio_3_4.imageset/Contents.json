@@ -1,15 +1,17 @@
 {
   "images" : [
     {
+      "filename" : "ratio43.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "screen_ratio_1_33.png",
+      "filename" : "ratio43@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "ratio43@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

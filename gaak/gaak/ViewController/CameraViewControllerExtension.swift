@@ -250,19 +250,17 @@ extension CameraViewController {
     }
     
     
-    //MARK: 더보기 func
-    // gesture control
+    //MARK: 더보기 상태 + 버튼 UI 컨트롤
+    // gesture recognizer, 더보기창을 켜고 끔
     @IBAction func seeMore(_ sender: Any) {
-        if(moreView.isHidden) {
+        if(moreView.isHidden == true) {
             moreView.isHidden = false
             moreView.alpha = 1
-        } else {
+        } else if (moreView.isHidden == false) {
             moreView.isHidden = true
         }
-        
-        
     }
-    // gesture control
+    // gesture recognizer, 더보기창이 켜져있다면 끔
     @IBAction func returnToMain(_ sender: Any) {
         // return to main View
         if (!moreView.isHidden) {
@@ -270,7 +268,18 @@ extension CameraViewController {
         }
     }
     
-    
+    // MARK: 플래시 상태 + 버튼 UI 컨트롤
+    // gesture recognizer, 플래시를 켜고 끔
+    @IBAction func touchedFlashBtn(_ sender: Any) {
+        if(isOn_flash == false){
+            isOn_flash = true
+            flashButton.setImage(UIImage(named: "flashOn"), for: .normal)
+        }
+        else if (isOn_flash == true){
+            isOn_flash = false
+            flashButton.setImage(UIImage(named: "flashOff"), for: .normal)
+        }
+    }
     
     // 현재 플래시 상태를 캡쳐세션에 전달하기 위한 함수
     func getCurrentFlashMode(_ mode : Bool) -> AVCaptureDevice.FlashMode{
@@ -286,11 +295,37 @@ extension CameraViewController {
         return valueOfAVCaptureFlashMode
     }
     
-
+    // MARK: 터치촬영 상태 + 버튼 UI 컨트롤
+    // gesture recognizer, 플래시를 켜고 끔
+    @IBAction func touchedTouchCapterBtn(_ sender: Any) {
+                if (isOn_touchCapture == false) {
+            isOn_touchCapture = true
+            touchCaptureButton.setImage(#imageLiteral(resourceName: "touchCaptureOn"), for: .normal)
+        } else if (isOn_touchCapture == true){
+            isOn_touchCapture = false
+            touchCaptureButton.setImage(#imageLiteral(resourceName: "touchCaptureOff"), for: .normal)
+        }
+    }
     
-    // MARK: 타이머 버튼
-    // 타이머 0초(기본값), 3초, 5초, 10초
-    // 타이머 시간, 버튼UI을 설정하는 Action
+    // touchCaptureTrigger: 터치촬영 동작!
+    @IBAction func touchCapture(_ sender: Any) {
+        
+        // return to main View
+        // 더보기창이 켜져있다면 더보기창을 닫고 return
+        if (moreView.isHidden == false) {
+            moreView.isHidden = true
+            return
+        }
+        /// 물리적으로 touch 를 1번만 할 수는 없기에, 2번째에는 이게 활성화됨
+        /// 즉 장ㅊㅣ를 하나 더 만들어야함.
+        if isOn_touchCapture {
+            // isOn_touchCapture == true
+            capturePhotoWithOptions()
+        }
+    }
+    
+    // MARK: 타이머 상태 + 버튼 UI + 중앙UILabel
+    // gesture recognizer, 타이머 0초(기본값), 3초, 5초, 10초
     @IBAction func timerButton(_ sender: Any) {
         
         timerStatus += 1
@@ -322,59 +357,21 @@ extension CameraViewController {
         }
     }
     
-    // touchCaptureTrigger: 터치촬영 동작!
-    @IBAction func touchCapture(_ sender: Any) {
-        
-        // return to main View
-        if (!moreView.isHidden) {
-            moreView.isHidden = true
-            return
-        }
-        else if isOn_touchCapture {
-            // isOn_touchCapture == true
-            capturePhotoWithOptions()
-        }
-        
-    }
-    
-    
-    //MARK: Grid Button
-    //그리드 뷰 && 버튼 활성화 비활성화
-    //버튼 크기 조정이 필요할것 같습니다. 터치미스가 잘나는데, 버튼 크기조절 고민필요! -> (동현) 제가 마지막에 하겠습니다!
-    //현재는 어플을 키면 바로 격자가 on상태인데, 최종완성시에는 사용성에따라 off로 할지 on으로 할지 고민필요함
-    
-    // 그리드버튼 On/Off
+    // MARK: 그리드 상태 + 버튼 UI 컨트롤
+    // gesture recognizer
     @IBAction func gridButton(_ sender: Any) {
         isOn_Grid = !isOn_Grid
         if isOn_Grid {
             gridviewView.isHidden = false
-            gridButton.setImage(UIImage(named: "onGrid" ), for: .normal)
+            gridButton.setImage(#imageLiteral(resourceName: "onGrid"), for: .normal)
         } else {
             gridviewView.isHidden = true
-            gridButton.setImage(UIImage(named: "offGrid"), for: .normal)
+            gridButton.setImage(#imageLiteral(resourceName: "offGrid"), for: .normal)
         }
     }
-//[old] 인재님이 구현하셨던건데, 제가 간단한 버전(화면비변경part에)을 만들어서 넣어놨습니다.
-//    func addGridView() {
-//        // grideView is my view where you want to show the grid view
-//        let horizontalMargin = gridviewView.bounds.size.width / 4
-//        let verticalMargin = gridviewView.bounds.size.height / 4
-//
-//        let gridView = GridView()
-//
-//        gridView.translatesAutoresizingMaskIntoConstraints = false
-//
-//        gridviewView.addSubview(gridView)
-//
-//        gridView.backgroundColor = UIColor.clear
-//        gridView.leftAnchor.constraint(equalTo: previewView.leftAnchor, constant: horizontalMargin).isActive = true
-//        gridView.rightAnchor.constraint(equalTo: previewView.rightAnchor, constant: -1 * horizontalMargin).isActive = true
-//        gridView.topAnchor.constraint(equalTo: previewView.topAnchor, constant: verticalMargin).isActive = true
-//        gridView.bottomAnchor.constraint(equalTo: previewView.bottomAnchor, constant: -1 * verticalMargin).isActive = true
-//
-//    }
     
-    //MARK: 화면비 변경 버튼
+    //MARK: 화면비 상태 + 변경 UI 컨트롤
+    // gesture recognizer
     /*     이 함수에서 화면비 아이콘도 변경하고 previewView의 사이즈도 변경함. */
     @IBAction func switchScreenRatio(_ sender: Any) {
         // 0 == 1:1 || 1 == 3:4 || 2 == 9:16
@@ -413,17 +410,17 @@ extension CameraViewController {
         let safeAreaHeight = self.view.frame.height - verticalSafeAreaInset
         
         settingToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
-        cameraToolsView.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
+        //cameraToolsView.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
         settingToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
         
         
         // 화면비에 따른 상, 하단 툴바 상태 조절
         switch screenRatioSwitchedStatus {
         case ScreenType.Ratio.square.rawValue :
-            // setToolbarsUI // tool bar UI 설정하는 부분
+            // 1:1 // tool bar UI 설정하는 부분
             
-            cameraToolsView.backgroundColor = CustomColor.uiColor("black")
             settingToolbar.isTranslucent = false
+            cameraToolsView.backgroundColor = CustomColor.uiColor("black")
             
             previewViewHeight.constant = view.frame.width * (4.0/3.0)
             gridViewHeight.constant = view.frame.width
@@ -432,15 +429,14 @@ extension CameraViewController {
                 $0.height.equalTo(safeAreaHeight - (view.frame.width + settingToolbar.frame.size.height))
             }
             
-            /// draw grid (simple.ver)
+            // draw grid (simple.ver)
             gridH1.constant = gridviewView.frame.width / 3
             gridH2.constant = -(gridviewView.frame.width / 3)
             gridV1.constant = gridviewView.frame.width / 3
             gridV2.constant = -(gridviewView.frame.width / 3)
-            ///
         
         case ScreenType.Ratio.retangle.rawValue :
-            //print("-> UI setup: screen_ratio 3_4")
+            // 3:4
             settingToolbar.isTranslucent = true
             cameraToolsView.backgroundColor = CustomColor.uiColor("clear")
             
@@ -456,9 +452,8 @@ extension CameraViewController {
             gridV1.constant = previewView.frame.width / 3
             gridV2.constant = -(previewView.frame.width / 3)
 
-
         case ScreenType.Ratio.full.rawValue :
-            //print("-> UI setup: screen_ratio 9:16")
+            // 9:16
             settingToolbar.isTranslucent = true
             cameraToolsView.backgroundColor = CustomColor.uiColor("clear")
             
@@ -612,13 +607,16 @@ extension CameraViewController {
     // 초점맞추는 기능
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 
-        // 더보기 창이 켜져있다면 더보기창을 닫습니다.
-        if (!moreView.isHidden) {
-            moreView.isHidden = true
+        
+        // 또는 터치촬영모드일 경우 초점을 재조정할 수 없습니다.
+        if isOn_touchCapture {
             return
         }
-        // 터치촬영모드일 경우 초점을 재조정할 수 없습니다.
-        else if isOn_touchCapture {
+        
+        // 더보기 창이 켜져있다면 초점을 재조정할 수 없습니다.
+        // 더보기창을 닫습니다.
+        if (!moreView.isHidden) {
+            moreView.isHidden = true
             return
         }
         
