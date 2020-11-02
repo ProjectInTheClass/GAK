@@ -30,7 +30,7 @@
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nvU-pP-YOt">
                                         <rect key="frame" x="207" y="283" width="0.0" height="0.0"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="50"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -108,7 +108,7 @@
                                         <rect key="frame" x="20" y="0.0" width="354" height="100"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" pointerInteraction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EaD-eS-n5W">
-                                                <rect key="frame" x="0.0" y="34.5" width="68" height="31"/>
+                                                <rect key="frame" x="0.0" y="34.5" width="64" height="31"/>
                                                 <gestureRecognizers/>
                                                 <state key="normal" image="flashOff">
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default"/>
@@ -118,7 +118,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="he2-W9-8XC" userLabel="timerButton">
-                                                <rect key="frame" x="68" y="24.5" width="70.5" height="51"/>
+                                                <rect key="frame" x="64" y="24.5" width="66.5" height="51"/>
                                                 <gestureRecognizers/>
                                                 <state key="normal" image="timer0"/>
                                                 <connections>
@@ -126,7 +126,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kiY-5l-JJe">
-                                                <rect key="frame" x="138.5" y="24" width="99" height="52"/>
+                                                <rect key="frame" x="130.5" y="24" width="93" height="52"/>
                                                 <gestureRecognizers/>
                                                 <state key="normal" image="touchCaptureOff"/>
                                                 <connections>
@@ -134,16 +134,19 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jc0-Mv-gLN" userLabel="gridbtn">
-                                                <rect key="frame" x="237.5" y="24" width="70.5" height="52"/>
+                                                <rect key="frame" x="223.5" y="24" width="66.5" height="52"/>
                                                 <state key="normal" image="onGrid"/>
                                                 <connections>
                                                     <action selector="gridButton:" destination="Su1-Ld-wf4" eventType="touchUpInside" id="hCE-RR-OBq"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3LG-g3-BhH" userLabel="settin Button">
-                                                <rect key="frame" x="308" y="39" width="46" height="22"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3LG-g3-BhH" userLabel="CaptureFiveTimes">
+                                                <rect key="frame" x="290" y="34.5" width="64" height="31"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" image="gearshape" catalog="system"/>
+                                                <state key="normal" image="live_off"/>
+                                                <connections>
+                                                    <action selector="fiveTimesCapturPhoto:" destination="Su1-Ld-wf4" eventType="touchUpInside" id="ANI-Dj-KUa"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -365,6 +368,7 @@
                         <outlet property="cameraToolsView" destination="lNm-wV-Pti" id="Xra-Q5-yWo"/>
                         <outlet property="captureButtonInner" destination="79T-DZ-xn8" id="Ec3-vm-MYd"/>
                         <outlet property="captureButtonOuter" destination="ifb-KP-SHf" id="41m-As-efF"/>
+                        <outlet property="fiveTiemsCapturButton" destination="3LG-g3-BhH" id="9qT-bI-wuZ"/>
                         <outlet property="flashButton" destination="EaD-eS-n5W" id="Zib-NZ-Y5K"/>
                         <outlet property="gridButton" destination="Jc0-Mv-gLN" id="DYz-Of-3MP"/>
                         <outlet property="gridH1" destination="jkn-Oa-x58" id="6P2-4u-ghV"/>
@@ -586,8 +590,8 @@
         <image name="circle" catalog="system" width="128" height="121"/>
         <image name="circle.fill" catalog="system" width="128" height="121"/>
         <image name="flashOff" width="31" height="31"/>
-        <image name="gearshape" catalog="system" width="128" height="121"/>
         <image name="ic_camera_front" width="31" height="31"/>
+        <image name="live_off" width="31" height="31"/>
         <image name="more_icon_temp" width="31" height="31"/>
         <image name="onGrid" width="32" height="52"/>
         <image name="photos" width="50" height="50"/>
