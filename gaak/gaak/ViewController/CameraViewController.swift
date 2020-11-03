@@ -67,17 +67,6 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     @IBOutlet weak var touchCaptureButton: UIButton! // 터치촬영 on/off 버튼
     @IBOutlet weak var fiveTiemsCapturButton: UIButton!// 5장 연속촬영 버튼
     
-    @IBAction func fiveTimesCapturPhoto(_ sender: Any) {
-        if(isOn_fiveTimesCapture == false){
-            isOn_fiveTimesCapture = true
-            fiveTiemsCapturButton.setImage(UIImage(named: "live" ), for: .normal)
-        }
-        else if (isOn_fiveTimesCapture == true){
-            isOn_fiveTimesCapture = false
-            fiveTiemsCapturButton.setImage(UIImage(named: "live_off" ), for: .normal)
-        }
-    }
-    
 
     // 화면 중앙에 위치한 기능들
     @IBOutlet weak var previewView: PreviewView!

@@ -539,6 +539,18 @@ extension CameraViewController {
         }
     }
     
+    // MARK: 5장 연속 촬영 상태 + UI 컨트롤
+    @IBAction func fiveTimesCapturPhoto(_ sender: Any) {
+        if(isOn_fiveTimesCapture == false){
+            isOn_fiveTimesCapture = true
+            fiveTiemsCapturButton.setImage(UIImage(named: "live" ), for: .normal)
+        }
+        else if (isOn_fiveTimesCapture == true){
+            isOn_fiveTimesCapture = false
+            fiveTiemsCapturButton.setImage(UIImage(named: "live_off" ), for: .normal)
+        }
+    }
+    
     // MARK: 앨범버튼 썸네일 설정
     func setLatestPhoto(){
         PHPhotoLibrary.authorizationStatus()
@@ -812,6 +824,4 @@ extension CameraViewController {
             )
         }
     }
-    
-    
 }
