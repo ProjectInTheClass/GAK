@@ -20,11 +20,7 @@ extension CameraViewController {
     
     // 촬영 버튼 Tap !
     @IBAction func tapCaptureButton(_ sender: Any) {
-        if isOn_fiveTimesCapture == true {
-            capturePhotoWithOptionsAndFiveTimes()
-        } else if isOn_fiveTimesCapture == false {
-            capturePhotoWithOptions()
-        }
+        capturePhotoWithOptions()
     }
     
     func capturePhotoWithOptions(){
@@ -46,7 +42,7 @@ extension CameraViewController {
                 return
             }
 
-            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [self] timer in
                 self.countTimer = timer
                 
                 self.isCounting = true
@@ -58,77 +54,35 @@ extension CameraViewController {
                 UIView.transition(with: self.timeLeft, duration: 0.3, options: .transitionCrossDissolve, animations: .none, completion: nil)
                 
                 if(countDown == 1){
+                    if self.isOn_continuousCapture {
+                        for _ in 1...5{
+                            self.capturePhoto()
+                        }
+                    }
+                    else { self.capturePhoto() }
+                    self.timeLeft.isHidden = true // * 0일때는 사라짐
+                }
+                else if (countDown == 0) {
+                    self.timeLeft.text = String(self.setTime) // * reset
+                    self.timeLeft.isHidden = false // * reSet 하고 다시 보여줌
+                    self.countTimer.invalidate()
+                    self.isCounting = false
+                    // !!!주의!!! 이 곳의 x_o_temp 이미지를 원래대로 돌려야 함.
+                    self.captureButtonInner.image = UIImage()
+                    self.captureButtonInner.backgroundColor = .systemRed
+                    // !!!주의!!!
+                }
+                countDown -= 1
+            }
+        } else {
+            if self.isOn_continuousCapture {
+                for _ in 1...5{
                     self.capturePhoto()
-                    self.timeLeft.isHidden = true // * 0일때는 사라짐
                 }
-                else if (countDown == 0) {
-                    self.timeLeft.text = String(self.setTime) // * reset
-                    self.timeLeft.isHidden = false // * reSet 하고 다시 보여줌
-                    self.countTimer.invalidate()
-                    self.isCounting = false
-                    // !!!주의!!! 이 곳의 x_o_temp 이미지를 원래대로 돌려야 함.
-                    self.captureButtonInner.image = UIImage()
-                    self.captureButtonInner.backgroundColor = .systemRed
-                    // !!!주의!!!
-                }
-                countDown -= 1
             }
-        } else {
-            capturePhoto()
+            else { self.capturePhoto() }
         }
     }
-    
-    func capturePhotoWithOptionsAndFiveTimes(){
-        //off(default) == 0 || 3초 == 1 || 5초 == 2 || 10초 == 3
-        //var timerID: Timer
-        if (timerStatus != 0) {
-            
-            var countDown = setTime
-            
-            if(isCounting == true) { // 타이머 동작 중간에 취소하고싶다면,
-                self.timeLeft.text = String(self.setTime) // * reset
-                self.timeLeft.isHidden = false // * reSet 하고 다시 보여줌
-                self.countTimer.invalidate()
-                
-                self.isCounting = false
-                self.captureButtonInner.image = UIImage(systemName: "circle.fill", withConfiguration: .none)
-                self.captureButtonInner.tintColor = .systemRed
-                // !!!주의!!! 이 곳의 x_o_temp 이미지를 원래대로 돌려야 함.
-                return
-            }
-
-            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-                self.countTimer = timer
-                
-                self.isCounting = true
-                // 실행중에는 캡쳐버튼의 UI가 x로 변함.
-                self.captureButtonInner.image = UIImage(named: "x_temp")
-                
-                self.timeLeft.text = String(countDown - 1)
-                
-                UIView.transition(with: self.timeLeft, duration: 0.3, options: .transitionCrossDissolve, animations: .none, completion: nil)
-                
-                if(countDown == 1){
-                    self.capturerPhotoFiveTimes()
-                    self.timeLeft.isHidden = true // * 0일때는 사라짐
-                }
-                else if (countDown == 0) {
-                    self.timeLeft.text = String(self.setTime) // * reset
-                    self.timeLeft.isHidden = false // * reSet 하고 다시 보여줌
-                    self.countTimer.invalidate()
-                    self.isCounting = false
-                    // !!!주의!!! 이 곳의 x_o_temp 이미지를 원래대로 돌려야 함.
-                    self.captureButtonInner.image = UIImage()
-                    self.captureButtonInner.backgroundColor = .systemRed
-                    // !!!주의!!!
-                }
-                countDown -= 1
-            }
-        } else {
-            capturerPhotoFiveTimes()
-        }
-    }
-    
     
     func capturePhoto() {
         let videoPreviewLayerOrientation = self.previewView.videoPreviewLayer.connection?.videoOrientation
@@ -141,15 +95,6 @@ extension CameraViewController {
             setting.flashMode = self.getCurrentFlashMode(self.isOn_flash)
             self.photoOutput.capturePhoto(with: setting, delegate: self)
         }
-    }
-    
-    //사진 연속 5장 촬영
-    func capturerPhotoFiveTimes() {
-        capturePhoto()
-        capturePhoto()
-        capturePhoto()
-        capturePhoto()
-        capturePhoto()
     }
 
 //  [old] func capturePhoto() 으로 변경되었음.
@@ -243,77 +188,7 @@ extension CameraViewController {
         UIGraphicsEndImageContext()
         return newImage
     }
-    
-    //MARK: 카메라 전후 전환 icon
-    func updateSwitchCameraIcon(position: AVCaptureDevice.Position) {
-        // TODO: Update ICON
-        switch position {
-        case .front:
-            let image = #imageLiteral(resourceName: "ic_camera_front")
-            switchButton.setImage(image, for: .normal)
-        case .back:
-            let image = #imageLiteral(resourceName: "ic_camera_rear")
-            switchButton.setImage(image, for: .normal)
-        default:
-            break
-        }
-    }
-    //MARK: 카메라 전후 전환 func
-    @IBAction func switchCamera(sender: Any) {
-        // TODO: 카메라는 2개 이상이어야함
-        guard videoDeviceDiscoverySession.devices.count > 1 else { return }
-        
-        // TODO: 반대 카메라 찾아서 재설정
-        // - 반대 카메라 찾고
-        // - 새로운 디바이스를 가지고 세션을 업데이트
-        // - 카메라 전환 토글 버튼 업데이트
-        
-        sessionQueue.async {
-            let currentVideoDevice = self.videoDeviceInput.device
-            self.currentPosition = currentVideoDevice.position
-            let isFront = self.currentPosition == .front
-            // isFront이면 back에 있는걸, front가 아니면 front를 -> prefferedPosition
-            let preferredPosition: AVCaptureDevice.Position = isFront ? .back : .front
-            
-            let devices = self.videoDeviceDiscoverySession.devices
-            var newVideoDevice: AVCaptureDevice?
-            
-            newVideoDevice = devices.first(where: { device in
-                return preferredPosition == device.position
-            })
-            // -> 지금까지는 새로운 카메라를 찾음.
-            
-            // update capture session
-            if let newDevice = newVideoDevice {
-                
-                do {
-                    let videoDeviceInput = try AVCaptureDeviceInput(device: newDevice)
-                    self.captureSession.beginConfiguration()
-                    self.captureSession.removeInput(self.videoDeviceInput)
-                    
-                    // 새로 찾은 videoDeviceInput을 넣을 수 있으면 // 새로운 디바이스 인풋을 넣음
-                    if self.captureSession.canAddInput(videoDeviceInput) {
-                        self.captureSession.addInput(videoDeviceInput)
-                        self.videoDeviceInput = videoDeviceInput
-                    } else { // 아니면 그냥 원래 있던거 다시 넣고
-                        self.captureSession.addInput(self.videoDeviceInput) // 이 조건문 다시보기
-                    }
-                    self.captureSession.commitConfiguration()
-                    
-                    // 카메라 전환 토글 버튼 업데이트
-                    // UI관련 작업은 Main Queue에서 수행되어야 함
-                    // 카메라 기능과 충돌이 생기면 안 되기 때문
-                    DispatchQueue.main.async {
-                        self.updateSwitchCameraIcon(position: preferredPosition)
-                    }
-                    
-                } catch let error {
-                    print("error occured while creating device input: \(error.localizedDescription)")
-                }
-            }
-        }
-    }
-    
+
     
     //MARK: 더보기 상태 + 버튼 UI 컨트롤
     // gesture recognizer, 더보기창을 켜고 끔
@@ -360,35 +235,6 @@ extension CameraViewController {
         return valueOfAVCaptureFlashMode
     }
     
-    // MARK: 터치촬영 상태 + 버튼 UI 컨트롤
-    // gesture recognizer, 플래시를 켜고 끔
-    @IBAction func touchedTouchCapterBtn(_ sender: Any) {
-                if (isOn_touchCapture == false) {
-            isOn_touchCapture = true
-            touchCaptureButton.setImage(#imageLiteral(resourceName: "touchCaptureOn"), for: .normal)
-        } else if (isOn_touchCapture == true){
-            isOn_touchCapture = false
-            touchCaptureButton.setImage(#imageLiteral(resourceName: "touchCaptureOff"), for: .normal)
-        }
-    }
-    
-    // touchCaptureTrigger: 터치촬영 동작!
-    @IBAction func touchCapture(_ sender: Any) {
-        
-        // return to main View
-        // 더보기창이 켜져있다면 더보기창을 닫고 return
-        if (moreView.isHidden == false) {
-            moreView.isHidden = true
-            return
-        }
-        /// 물리적으로 touch 를 1번만 할 수는 없기에, 2번째에는 이게 활성화됨
-        /// 즉 장ㅊㅣ를 하나 더 만들어야함.
-        if isOn_touchCapture {
-            // isOn_touchCapture == true
-            capturePhotoWithOptions()
-        }
-    }
-    
     // MARK: 타이머 상태 + 버튼 UI + 중앙UILabel
     // gesture recognizer, 타이머 0초(기본값), 3초, 5초, 10초
     @IBAction func timerButton(_ sender: Any) {
@@ -422,6 +268,35 @@ extension CameraViewController {
         }
     }
     
+    // MARK: 터치촬영 상태 + 버튼 UI 컨트롤
+    // gesture recognizer, 플래시를 켜고 끔
+    @IBAction func touchedTouchCapterBtn(_ sender: Any) {
+                if (isOn_touchCapture == false) {
+            isOn_touchCapture = true
+            touchCaptureButton.setImage(#imageLiteral(resourceName: "touchCaptureOn"), for: .normal)
+        } else if (isOn_touchCapture == true){
+            isOn_touchCapture = false
+            touchCaptureButton.setImage(#imageLiteral(resourceName: "touchCaptureOff"), for: .normal)
+        }
+    }
+    
+    // touchCaptureTrigger: 터치촬영 동작!
+    @IBAction func touchCapture(_ sender: Any) {
+        
+        // return to main View
+        // 더보기창이 켜져있다면 더보기창을 닫고 return
+        if (moreView.isHidden == false) {
+            moreView.isHidden = true
+            return
+        }
+        /// 물리적으로 touch 를 1번만 할 수는 없기에, 2번째에는 이게 활성화됨
+        /// 즉 장ㅊㅣ를 하나 더 만들어야함.
+        if isOn_touchCapture {
+            // isOn_touchCapture == true
+            capturePhotoWithOptions()
+        }
+    }
+    
     // MARK: 그리드 상태 + 버튼 UI 컨트롤
     // gesture recognizer
     @IBAction func gridButton(_ sender: Any) {
@@ -432,6 +307,19 @@ extension CameraViewController {
         } else {
             gridviewView.isHidden = true
             gridButton.setImage(#imageLiteral(resourceName: "offGrid"), for: .normal)
+        }
+    }
+    
+    // MARK: 연속촬영 상태 + 버튼 UI 컨트롤
+    // gesture recognizer // To do: 이미지 변경 필요
+    @IBAction func continuousCaptureButton(_ sender: Any) {
+        if(isOn_continuousCapture == false){
+            isOn_continuousCapture = true
+            continuousCaptureButton.setImage(UIImage(named: "live" ), for: .normal)
+        }
+        else if (isOn_continuousCapture == true){
+            isOn_continuousCapture = false
+            continuousCaptureButton.setImage(UIImage(named: "live_off" ), for: .normal)
         }
     }
     
@@ -539,15 +427,219 @@ extension CameraViewController {
         }
     }
     
-    // MARK: 5장 연속 촬영 상태 + UI 컨트롤
-    @IBAction func fiveTimesCapturPhoto(_ sender: Any) {
-        if(isOn_fiveTimesCapture == false){
-            isOn_fiveTimesCapture = true
-            fiveTiemsCapturButton.setImage(UIImage(named: "live" ), for: .normal)
+    
+    //MARK: 카메라 전후 전환 icon
+    func updateSwitchCameraIcon(position: AVCaptureDevice.Position) {
+        // TODO: Update ICON
+        switch position {
+        case .front:
+            switchButton.setImage(#imageLiteral(resourceName: "ic_camera_front"), for: .normal)
+        case .back:
+            switchButton.setImage(#imageLiteral(resourceName: "ic_camera_rear"), for: .normal)
+        default:
+            break
         }
-        else if (isOn_fiveTimesCapture == true){
-            isOn_fiveTimesCapture = false
-            fiveTiemsCapturButton.setImage(UIImage(named: "live_off" ), for: .normal)
+    }
+    //MARK: 카메라 전후 전환 func
+    @IBAction func switchCamera(sender: Any) {
+        // 카메라는 2개 이상이어야함
+        guard videoDeviceDiscoverySession.devices.count > 1 else { return }
+        
+        // seq: 반대 카메라 찾아서 재설정
+        // - 반대 카메라 찾고
+        // - 새로운 디바이스를 가지고 세션을 업데이트
+        // - 카메라 전환 토글 버튼 업데이트
+        
+        sessionQueue.async {
+            let currentVideoDevice = self.videoDeviceInput.device
+            self.currentPosition = currentVideoDevice.position
+            let isFront = self.currentPosition == .front
+            // isFront이면 back에 있는걸, front가 아니면 front를 -> prefferedPosition
+            let preferredPosition: AVCaptureDevice.Position = isFront ? .back : .front
+            
+            let devices = self.videoDeviceDiscoverySession.devices
+            var newVideoDevice: AVCaptureDevice?
+            
+            newVideoDevice = devices.first(where: { device in
+                return preferredPosition == device.position
+            })
+            // -> 지금까지는 새로운 카메라를 찾음.
+            
+            // update capture session
+            if let newDevice = newVideoDevice {
+                
+                do {
+                    let videoDeviceInput = try AVCaptureDeviceInput(device: newDevice)
+                    self.captureSession.beginConfiguration()
+                    self.captureSession.removeInput(self.videoDeviceInput)
+                    
+                    // 새로 찾은 videoDeviceInput을 넣을 수 있으면 // 새로운 디바이스 인풋을 넣음
+                    if self.captureSession.canAddInput(videoDeviceInput) {
+                        self.captureSession.addInput(videoDeviceInput)
+                        self.videoDeviceInput = videoDeviceInput
+                    } else { // 아니면 그냥 원래 있던거 다시 넣고
+                        self.captureSession.addInput(self.videoDeviceInput) // 이 조건문 다시보기
+                    }
+                    self.captureSession.commitConfiguration()
+                    
+                    // 카메라 전환 토글 버튼 업데이트
+                    // UI관련 작업은 Main Queue에서 수행되어야 함
+                    // 카메라 기능과 충돌이 생기면 안 되기 때문
+                    DispatchQueue.main.async {
+                        self.updateSwitchCameraIcon(position: preferredPosition)
+                    }
+                    
+                } catch let error {
+                    print("error occured while creating device input: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+    
+    
+    
+    // MARK:- FocusMode, draw and move focus Box.
+    // 초점맞추는 기능
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+
+        
+        // 또는 터치촬영모드일 경우 초점을 재조정할 수 없습니다.
+        if isOn_touchCapture {
+            return
+        }
+        
+        // 더보기 창이 켜져있다면 초점을 재조정할 수 없습니다.
+        // 더보기창을 닫습니다.
+        if (!moreView.isHidden) {
+            moreView.isHidden = true
+            return
+        }
+        
+        if let coordinates = touches.first, let device = captureDevice {
+            
+            // 터치 가능 영역을 벗어났을 경우입니다.
+            if (coordinates.location(in: self.view).y < gridviewView.frame.minY || coordinates.location(in: self.view).y > gridviewView.frame.maxY){
+                return // 현재 터치된 곳은 초점을 맞출 수 없는 곳입니다.
+            }
+            
+            // 전면 카메라는 FocusPointOfInterest를 지원하지 않습니다.
+            if device.isFocusPointOfInterestSupported, device.isFocusModeSupported(AVCaptureDevice.FocusMode.autoFocus) {
+                let focusPoint = touchPercent(touch : coordinates)
+                dump(focusPoint)
+
+                do {
+                    try device.lockForConfiguration()
+
+                    // FocusPointOfInterest 를 통해 초점을 잡아줌.
+                    device.focusPointOfInterest = focusPoint
+                    device.focusMode = .autoFocus
+                    device.exposurePointOfInterest = focusPoint
+                    device.exposureMode = AVCaptureDevice.ExposureMode.continuousAutoExposure
+                    device.unlockForConfiguration()
+
+                    if focusBox != nil {
+                        // 초점 박스가 있으면 위치를 바꿔줌
+                        changeFocusBoxCenter(for: coordinates.location(in: previewView))
+                    } else {
+                        // 초점 박스가 없으면 그려줌
+                        makeRectangle(at : coordinates)
+                    }
+
+                    previewView.addSubview(self.focusBox)
+                    
+                    zoomFocusOutIn(view: self.focusBox, delay: 1)
+                    // fadeViewInThenOut(view: self.focusBox, delay: 1)
+                    
+                } catch{
+                    fatalError()
+                }
+            }
+            // 전면 카메라에서는 FocusPointOfInterest 를 지원하지 않는다.
+
+        }
+    }
+    // 초점 박스를 이동하는 메소드
+    func changeFocusBoxCenter(for location: CGPoint )
+    {
+        self.focusBox.center.x = location.x
+        self.focusBox.center.y = location.y
+    }
+    // 터치된 곳 좌표 0~1 매핑
+    func touchPercent(touch coordinates: UITouch) -> CGPoint {
+        
+        // 0~1.0 으로 x, y 화면대비 비율 구하기
+        let x = coordinates.location(in: previewView).y / previewView.bounds.height
+        let y = 1.0 - coordinates.location(in: previewView).x / previewView.bounds.width
+        let ratioOfPoint = CGPoint(x: x, y: y)
+        
+        return ratioOfPoint
+    }
+    // Focus rectangle 만듦
+    func makeRectangle(at coordinates : UITouch) {
+        
+        // 화면 사이즈 구하기
+        let screenBounds = previewView.bounds
+        
+        // 화면 비율에 맞게 정사각형의 focus box 그리기
+        var rectangleBounds = screenBounds
+        rectangleBounds.size.width = screenBounds.size.width / 6
+        rectangleBounds.size.height = screenBounds.size.width / 6
+        
+        // 터치된 좌표에 focusBox의 높이, 너비의 절반 값을 빼주어서 터치한 좌표를 중심으로 그려지게 설정
+        rectangleBounds.origin.x = coordinates.location(in: previewView).x - (rectangleBounds.size.width / 2)
+        rectangleBounds.origin.y = coordinates.location(in: previewView).y - (rectangleBounds.size.height / 2)
+        
+        self.focusBox = UIView(frame: rectangleBounds)
+        self.focusBox.layer.borderColor = UIColor.init(red: 1.0, green: 1.0, blue: 0, alpha: 1).cgColor
+        self.focusBox.layer.borderWidth = 1
+        self.focusBox.alpha = 0.25
+
+    }
+    
+    // MARK: - Animation Focus Rect
+    func zoomFocusOutIn(view: UIView, delay: TimeInterval) {
+        let animationDuration = 0.25
+        
+        let viewFrame = view.frame
+        
+        view.frame.centerX = viewFrame.centerX - viewFrame.width / 4
+        view.frame.centerY = viewFrame.centerY - viewFrame.height / 4
+        
+        // Fade in the view
+        UIView.animate(withDuration: animationDuration, animations: { () -> Void in
+            view.frame.centerX = viewFrame.centerX + 0
+            view.frame.centerY = viewFrame.centerY + 0
+            view.frame.size = CGSize(width: view.frame.width / 2, height: view.frame.width / 2)
+            view.alpha = 1
+        }) { (Bool) -> Void in
+            // After the animation completes, fade out the view after a delay
+            UIView.animate(withDuration: animationDuration, delay: delay, options: .curveEaseInOut, animations: { () -> Void in
+                view.alpha = 0.25
+                },
+            completion: nil
+            )
+        }
+
+        view.frame.size =  CGSize(width: view.frame.width * 2, height: view.frame.width * 2)
+    }
+    // MARK: - Animation fade in and out
+    // 현재 사용되지 않는 함수임
+    func fadeViewInThenOut(view : UIView, delay: TimeInterval) {
+        
+        let animationDuration = 0.1
+        
+        // Fade in the view
+        UIView.animate(withDuration: animationDuration, animations: { () -> Void in
+            view.alpha = 1
+        }) { (Bool) -> Void in
+            
+            // After the animation completes, fade out the view after a delay
+            
+            UIView.animate(withDuration: animationDuration, delay: delay, options: .curveEaseInOut, animations: { () -> Void in
+                view.alpha = 0.25
+                },
+            completion: nil
+            )
         }
     }
     
@@ -680,148 +772,5 @@ extension CameraViewController {
         }
     }
     
-    // MARK:- FocusMode, draw and move focus Box.
-    // 초점맞추는 기능
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 
-        
-        // 또는 터치촬영모드일 경우 초점을 재조정할 수 없습니다.
-        if isOn_touchCapture {
-            return
-        }
-        
-        // 더보기 창이 켜져있다면 초점을 재조정할 수 없습니다.
-        // 더보기창을 닫습니다.
-        if (!moreView.isHidden) {
-            moreView.isHidden = true
-            return
-        }
-        
-        if let coordinates = touches.first, let device = captureDevice {
-            
-            // 터치 가능 영역을 벗어났을 경우입니다.
-            if (coordinates.location(in: self.view).y < gridviewView.frame.minY || coordinates.location(in: self.view).y > gridviewView.frame.maxY){
-                return // 현재 터치된 곳은 초점을 맞출 수 없는 곳입니다.
-            }
-            
-            // 전면 카메라는 FocusPointOfInterest를 지원하지 않습니다.
-            if device.isFocusPointOfInterestSupported, device.isFocusModeSupported(AVCaptureDevice.FocusMode.autoFocus) {
-                let focusPoint = touchPercent(touch : coordinates)
-                dump(focusPoint)
-
-                do {
-                    try device.lockForConfiguration()
-
-                    // FocusPointOfInterest 를 통해 초점을 잡아줌.
-                    device.focusPointOfInterest = focusPoint
-                    device.focusMode = .autoFocus
-                    device.exposurePointOfInterest = focusPoint
-                    device.exposureMode = AVCaptureDevice.ExposureMode.continuousAutoExposure
-                    device.unlockForConfiguration()
-
-                    if focusBox != nil {
-                        // 초점 박스가 있으면 위치를 바꿔줌
-                        changeFocusBoxCenter(for: coordinates.location(in: previewView))
-                    } else {
-                        // 초점 박스가 없으면 그려줌
-                        makeRectangle(at : coordinates)
-                    }
-
-                    previewView.addSubview(self.focusBox)
-                    
-                    zoomFocusOutIn(view: self.focusBox, delay: 1)
-                    // fadeViewInThenOut(view: self.focusBox, delay: 1)
-                    
-                } catch{
-                    fatalError()
-                }
-            }
-            // 전면 카메라에서는 FocusPointOfInterest 를 지원하지 않는다.
-
-        }
-    }
-    
-    // 초점 박스를 이동하는 메소드
-    func changeFocusBoxCenter(for location: CGPoint )
-    {
-        self.focusBox.center.x = location.x
-        self.focusBox.center.y = location.y
-    }
-    
-    func touchPercent(touch coordinates: UITouch) -> CGPoint {
-        
-        // 0~1.0 으로 x, y 화면대비 비율 구하기
-        let x = coordinates.location(in: previewView).y / previewView.bounds.height
-        let y = 1.0 - coordinates.location(in: previewView).x / previewView.bounds.width
-        let ratioOfPoint = CGPoint(x: x, y: y)
-        
-        return ratioOfPoint
-    }
-    
-    func makeRectangle(at coordinates : UITouch) {
-        
-        // 화면 사이즈 구하기
-        let screenBounds = previewView.bounds
-        
-        // 화면 비율에 맞게 정사각형의 focus box 그리기
-        var rectangleBounds = screenBounds
-        rectangleBounds.size.width = screenBounds.size.width / 6
-        rectangleBounds.size.height = screenBounds.size.width / 6
-        
-        // 터치된 좌표에 focusBox의 높이, 너비의 절반 값을 빼주어서 터치한 좌표를 중심으로 그려지게 설정
-        rectangleBounds.origin.x = coordinates.location(in: previewView).x - (rectangleBounds.size.width / 2)
-        rectangleBounds.origin.y = coordinates.location(in: previewView).y - (rectangleBounds.size.height / 2)
-        
-        self.focusBox = UIView(frame: rectangleBounds)
-        self.focusBox.layer.borderColor = UIColor.init(red: 1.0, green: 1.0, blue: 0, alpha: 1).cgColor
-        self.focusBox.layer.borderWidth = 1
-        self.focusBox.alpha = 0.25
-
-    }
-    
-    // MARK: - Animation Focus Rect
-    func zoomFocusOutIn(view: UIView, delay: TimeInterval) {
-        let animationDuration = 0.25
-        
-        let viewFrame = view.frame
-        
-        view.frame.centerX = viewFrame.centerX - viewFrame.width / 4
-        view.frame.centerY = viewFrame.centerY - viewFrame.height / 4
-        
-        // Fade in the view
-        UIView.animate(withDuration: animationDuration, animations: { () -> Void in
-            view.frame.centerX = viewFrame.centerX + 0
-            view.frame.centerY = viewFrame.centerY + 0
-            view.frame.size = CGSize(width: view.frame.width / 2, height: view.frame.width / 2)
-            view.alpha = 1
-        }) { (Bool) -> Void in
-            // After the animation completes, fade out the view after a delay
-            UIView.animate(withDuration: animationDuration, delay: delay, options: .curveEaseInOut, animations: { () -> Void in
-                view.alpha = 0.25
-                },
-            completion: nil
-            )
-        }
-
-        view.frame.size =  CGSize(width: view.frame.width * 2, height: view.frame.width * 2)
-    }
-    
-    func fadeViewInThenOut(view : UIView, delay: TimeInterval) {
-        
-        let animationDuration = 0.1
-        
-        // Fade in the view
-        UIView.animate(withDuration: animationDuration, animations: { () -> Void in
-            view.alpha = 1
-        }) { (Bool) -> Void in
-            
-            // After the animation completes, fade out the view after a delay
-            
-            UIView.animate(withDuration: animationDuration, delay: delay, options: .curveEaseInOut, animations: { () -> Void in
-                view.alpha = 0.25
-                },
-            completion: nil
-            )
-        }
-    }
 }

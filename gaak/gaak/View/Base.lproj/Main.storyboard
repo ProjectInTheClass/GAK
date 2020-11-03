@@ -140,12 +140,12 @@
                                                     <action selector="gridButton:" destination="Su1-Ld-wf4" eventType="touchUpInside" id="hCE-RR-OBq"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3LG-g3-BhH" userLabel="CaptureFiveTimes">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3LG-g3-BhH" userLabel="continuousCaptureButton">
                                                 <rect key="frame" x="290" y="34.5" width="64" height="31"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" image="live_off"/>
                                                 <connections>
-                                                    <action selector="fiveTimesCapturPhoto:" destination="Su1-Ld-wf4" eventType="touchUpInside" id="ANI-Dj-KUa"/>
+                                                    <action selector="continuousCaptureButton:" destination="Su1-Ld-wf4" eventType="touchUpInside" id="CW7-Zx-Ruw"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -368,7 +368,7 @@
                         <outlet property="cameraToolsView" destination="lNm-wV-Pti" id="Xra-Q5-yWo"/>
                         <outlet property="captureButtonInner" destination="79T-DZ-xn8" id="Ec3-vm-MYd"/>
                         <outlet property="captureButtonOuter" destination="ifb-KP-SHf" id="41m-As-efF"/>
-                        <outlet property="fiveTiemsCapturButton" destination="3LG-g3-BhH" id="9qT-bI-wuZ"/>
+                        <outlet property="continuousCaptureButton" destination="3LG-g3-BhH" id="fKt-V6-9t4"/>
                         <outlet property="flashButton" destination="EaD-eS-n5W" id="Zib-NZ-Y5K"/>
                         <outlet property="gridButton" destination="Jc0-Mv-gLN" id="DYz-Of-3MP"/>
                         <outlet property="gridH1" destination="jkn-Oa-x58" id="6P2-4u-ghV"/>

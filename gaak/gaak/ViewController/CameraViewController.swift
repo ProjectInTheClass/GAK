@@ -52,7 +52,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     var isOn_flash: Bool = false // 플래시 상태 프로퍼티
     var isOn_Grid = true //그리드 뷰 && 버튼 활성화 비활성화 flow controll value
     var isOn_touchCapture: Bool = false // 터치촬영모드 상태 프로퍼티
-    var isOn_fiveTimesCapture: Bool = false // 5장 연속촬영이 동작중인지 확인하는 프로퍼티
+    var isOn_continuousCapture: Bool = false // 연속촬영모드 상태 프로퍼티
 
 
     // 상단 툴 바
@@ -65,9 +65,9 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     @IBOutlet weak var timeLeft: UILabel! // 타이머, 동작할 때 화면중앙에 남은 시간 안내
     @IBOutlet weak var flashButton: UIButton! // 플래시 on/off 버튼
     @IBOutlet weak var touchCaptureButton: UIButton! // 터치촬영 on/off 버튼
-    @IBOutlet weak var fiveTiemsCapturButton: UIButton!// 5장 연속촬영 버튼
+    @IBOutlet weak var continuousCaptureButton: UIButton!// 연속촬영 버튼
     
-
+    
     // 화면 중앙에 위치한 기능들
     @IBOutlet weak var previewView: PreviewView!
     @IBOutlet weak var previewViewHeight: NSLayoutConstraint!
