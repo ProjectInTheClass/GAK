@@ -20,7 +20,11 @@ extension CameraViewController {
     
     // 촬영 버튼 Tap !
     @IBAction func tapCaptureButton(_ sender: Any) {
-        capturePhotoWithOptions()
+        if isOn_fiveTimesCapture == true {
+            capturePhotoWithOptionsAndFiveTimes()
+        } else if isOn_fiveTimesCapture == false {
+            capturePhotoWithOptions()
+        }
     }
     
     func capturePhotoWithOptions(){
@@ -74,6 +78,58 @@ extension CameraViewController {
         }
     }
     
+    func capturePhotoWithOptionsAndFiveTimes(){
+        //off(default) == 0 || 3초 == 1 || 5초 == 2 || 10초 == 3
+        //var timerID: Timer
+        if (timerStatus != 0) {
+            
+            var countDown = setTime
+            
+            if(isCounting == true) { // 타이머 동작 중간에 취소하고싶다면,
+                self.timeLeft.text = String(self.setTime) // * reset
+                self.timeLeft.isHidden = false // * reSet 하고 다시 보여줌
+                self.countTimer.invalidate()
+                
+                self.isCounting = false
+                self.captureButtonInner.image = UIImage(systemName: "circle.fill", withConfiguration: .none)
+                self.captureButtonInner.tintColor = .systemRed
+                // !!!주의!!! 이 곳의 x_o_temp 이미지를 원래대로 돌려야 함.
+                return
+            }
+
+            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+                self.countTimer = timer
+                
+                self.isCounting = true
+                // 실행중에는 캡쳐버튼의 UI가 x로 변함.
+                self.captureButtonInner.image = UIImage(named: "x_temp")
+                
+                self.timeLeft.text = String(countDown - 1)
+                
+                UIView.transition(with: self.timeLeft, duration: 0.3, options: .transitionCrossDissolve, animations: .none, completion: nil)
+                
+                if(countDown == 1){
+                    self.capturerPhotoFiveTimes()
+                    self.timeLeft.isHidden = true // * 0일때는 사라짐
+                }
+                else if (countDown == 0) {
+                    self.timeLeft.text = String(self.setTime) // * reset
+                    self.timeLeft.isHidden = false // * reSet 하고 다시 보여줌
+                    self.countTimer.invalidate()
+                    self.isCounting = false
+                    // !!!주의!!! 이 곳의 x_o_temp 이미지를 원래대로 돌려야 함.
+                    self.captureButtonInner.image = UIImage()
+                    self.captureButtonInner.backgroundColor = .systemRed
+                    // !!!주의!!!
+                }
+                countDown -= 1
+            }
+        } else {
+            capturerPhotoFiveTimes()
+        }
+    }
+    
+    
     func capturePhoto() {
         let videoPreviewLayerOrientation = self.previewView.videoPreviewLayer.connection?.videoOrientation
         self.sessionQueue.async {
@@ -85,6 +141,15 @@ extension CameraViewController {
             setting.flashMode = self.getCurrentFlashMode(self.isOn_flash)
             self.photoOutput.capturePhoto(with: setting, delegate: self)
         }
+    }
+    
+    //사진 연속 5장 촬영
+    func capturerPhotoFiveTimes() {
+        capturePhoto()
+        capturePhoto()
+        capturePhoto()
+        capturePhoto()
+        capturePhoto()
     }
 
 //  [old] func capturePhoto() 으로 변경되었음.
@@ -474,6 +539,18 @@ extension CameraViewController {
         }
     }
     
+    // MARK: 5장 연속 촬영 상태 + UI 컨트롤
+    @IBAction func fiveTimesCapturPhoto(_ sender: Any) {
+        if(isOn_fiveTimesCapture == false){
+            isOn_fiveTimesCapture = true
+            fiveTiemsCapturButton.setImage(UIImage(named: "live" ), for: .normal)
+        }
+        else if (isOn_fiveTimesCapture == true){
+            isOn_fiveTimesCapture = false
+            fiveTiemsCapturButton.setImage(UIImage(named: "live_off" ), for: .normal)
+        }
+    }
+    
     // MARK: 앨범버튼 썸네일 설정
     func setLatestPhoto(){
         PHPhotoLibrary.authorizationStatus()
@@ -747,6 +824,4 @@ extension CameraViewController {
             )
         }
     }
-    
-    
 }
