@@ -25,6 +25,8 @@
 		4C5D67AB2554269600245E67 /* SF-Pro-Text-Heavy.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4C5D67992554269500245E67 /* SF-Pro-Text-Heavy.otf */; };
 		4C5D67AC2554269600245E67 /* SF-Pro-Text-Ultralight.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4C5D679A2554269600245E67 /* SF-Pro-Text-Ultralight.otf */; };
 		4C5D67AD2554269600245E67 /* SF-Pro-Text-ThinItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4C5D679B2554269600245E67 /* SF-Pro-Text-ThinItalic.otf */; };
+		4C5D67B3255430C100245E67 /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5D67B2255430C100245E67 /* Setting.swift */; };
+		4C5D67B62554341D00245E67 /* SettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5D67B52554341D00245E67 /* SettingTableViewController.swift */; };
 		4C9EEAB72540437600E31C12 /* GridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9EEAB62540437600E31C12 /* GridView.swift */; };
 		9F0DABD1254ED15A007F00B5 /* CGREctExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0DABD0254ED15A007F00B5 /* CGREctExtension.swift */; };
 		9F22AD9E2544114E006EE203 /* CoreMotionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F22AD9D2544114E006EE203 /* CoreMotionExtension.swift */; };
@@ -64,6 +66,8 @@
 		4C5D67992554269500245E67 /* SF-Pro-Text-Heavy.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Heavy.otf"; sourceTree = "<group>"; };
 		4C5D679A2554269600245E67 /* SF-Pro-Text-Ultralight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Ultralight.otf"; sourceTree = "<group>"; };
 		4C5D679B2554269600245E67 /* SF-Pro-Text-ThinItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-ThinItalic.otf"; sourceTree = "<group>"; };
+		4C5D67B2255430C100245E67 /* Setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
+		4C5D67B52554341D00245E67 /* SettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewController.swift; sourceTree = "<group>"; };
 		4C9EEAB62540437600E31C12 /* GridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridView.swift; sourceTree = "<group>"; };
 		83DA72BD64D8699618841424 /* Pods-gaak.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gaak.debug.xcconfig"; path = "Target Support Files/Pods-gaak/Pods-gaak.debug.xcconfig"; sourceTree = "<group>"; };
 		9F0DABD0254ED15A007F00B5 /* CGREctExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGREctExtension.swift; sourceTree = "<group>"; };
@@ -159,6 +163,8 @@
 				9FD87EC425273C62001FF3F9 /* CameraViewControllerExtension.swift */,
 				9FD322C3252C94CE000B611D /* PhotoAlbumViewController.swift */,
 				9FE00E52252CA5FD000E6F9A /* ImageZoomViewController.swift */,
+				4C5D67B52554341D00245E67 /* SettingTableViewController.swift */,
+				4C5D67B2255430C100245E67 /* Setting.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -358,10 +364,12 @@
 				9FE00E50252C95F5000E6F9A /* PhotoAlbumItemCollectionViewCell.swift in Sources */,
 				9F5ACF8A250F4AA000516A9B /* AppDelegate.swift in Sources */,
 				4C9EEAB72540437600E31C12 /* GridView.swift in Sources */,
+				4C5D67B3255430C100245E67 /* Setting.swift in Sources */,
 				9F22AD9E2544114E006EE203 /* CoreMotionExtension.swift in Sources */,
 				9F5ACFA1250F518600516A9B /* PreviewView.swift in Sources */,
 				9FD322C4252C94CE000B611D /* PhotoAlbumViewController.swift in Sources */,
 				9FD87EC925273ED6001FF3F9 /* ImageExtension.swift in Sources */,
+				4C5D67B62554341D00245E67 /* SettingTableViewController.swift in Sources */,
 				9FD87EC525273C62001FF3F9 /* CameraViewControllerExtension.swift in Sources */,
 				9FE00E53252CA5FD000E6F9A /* ImageZoomViewController.swift in Sources */,
 				9F5ACF8C250F4AA000516A9B /* SceneDelegate.swift in Sources */,
