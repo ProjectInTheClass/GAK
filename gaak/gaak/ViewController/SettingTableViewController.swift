@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import Foundation
+
 
 class SettingTableViewController: UITableViewController {
 
-    
     var settings: [Setting] = [
         Setting(content: "개인정보처리방침"),
         Setting(content: "오픈소스 라이선스"),
@@ -18,14 +19,25 @@ class SettingTableViewController: UITableViewController {
         Setting(content: "GAK 홈페이지")
     ]
     
+    // 내일은 세팅 선언한거 없애고 걍 위에 선언으로 처리해버리자.
+    // 왜 여기선 컬러 리터럴을 못사용하는거지??
+    // 세팅 화면내에 글씨체 적용도 해야함. sfpro로
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        let header = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 30))
+        
+        header.backgroundColor = UIColor.lightGray
+        //header.backgroundColor = UIColor(displayP3Red: 빨강값, green:초록값, blue:파랑값,alpha: 투명도)
+        
+        
+        let headerLabel = UILabel(frame: header.bounds)
+        headerLabel.text = "GAK 옵션"
+        headerLabel.textAlignment = .center
+        header.addSubview(headerLabel)
+        
+        tableView.tableHeaderView = header
     }
 
     // MARK: - Table view data source
@@ -46,7 +58,7 @@ class SettingTableViewController: UITableViewController {
 
         let setting = settings[indexPath.row]
         cell.textLabel?.text = "\(setting.content)"
-
+        
         return cell
     }
 
