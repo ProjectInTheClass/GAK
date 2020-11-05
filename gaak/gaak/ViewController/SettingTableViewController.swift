@@ -14,7 +14,8 @@ class SettingTableViewController: UITableViewController {
     var settings: [Setting] = [
         Setting(content: "개인정보처리방침"),
         Setting(content: "오픈소스 라이선스"),
-        Setting(content: "버전")
+        Setting(content: "버전   1.0"),
+        Setting(content: "GAK 홈페이지")
     ]
     
     override func viewDidLoad() {
