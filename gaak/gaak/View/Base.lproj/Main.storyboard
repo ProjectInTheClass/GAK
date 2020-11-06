@@ -157,7 +157,7 @@
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" image="live_off"/>
                                                 <connections>
-                                                    <segue destination="6m6-KY-eE8" kind="show" id="wEm-Wh-HMx"/>
+                                                    <segue destination="6m6-KY-eE8" kind="showDetail" id="mDu-vZ-LwZ"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -450,7 +450,7 @@
             <objects>
                 <tableViewController id="6m6-KY-eE8" customClass="SettingTableViewController" customModule="gaak" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="2XT-FQ-oIm">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

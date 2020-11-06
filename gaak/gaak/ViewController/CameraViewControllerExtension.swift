@@ -771,6 +771,4 @@ extension CameraViewController {
             self.captureButtonInner.transform3D = transform
         }
     }
-    
-
 }
