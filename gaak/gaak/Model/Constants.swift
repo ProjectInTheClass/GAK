@@ -106,3 +106,10 @@ struct ScreenType {
         }
     }
 }
+
+struct Setting {
+    var content: String
+    init(content: String) {
+        self.content = content
+    }
+}
