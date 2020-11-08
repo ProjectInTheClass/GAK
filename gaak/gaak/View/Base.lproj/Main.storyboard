@@ -8,6 +8,14 @@
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="SF-Pro-Text-Regular.otf">
+            <string>SFProText-Regular</string>
+        </array>
+        <array key="SF-Pro-Text-Semibold.otf">
+            <string>SFProText-Semibold</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Camera View Controller-->
         <scene sceneID="jwK-fS-jfO">
@@ -28,11 +36,15 @@
                             <view tag="1" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="QNI-Ja-PV0" customClass="PreviewView" customModule="gaak">
                                 <rect key="frame" x="0.0" y="44" width="414" height="566"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nvU-pP-YOt">
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nvU-pP-YOt">
                                         <rect key="frame" x="207" y="283" width="0.0" height="0.0"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" name="SFProText-Semibold" family="SF Pro Text" pointSize="64"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
+                                        <color key="highlightedColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="shadowColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <size key="shadowOffset" width="0.0" height="0.0"/>
                                     </label>
                                 </subviews>
                                 <gestureRecognizers/>
@@ -117,7 +129,7 @@
                                                     <outletCollection property="gestureRecognizers" destination="B55-So-L22" appends="YES" id="Dxw-Mc-E1T"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="he2-W9-8XC" userLabel="timerButton">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="he2-W9-8XC" userLabel="Timer Button">
                                                 <rect key="frame" x="64" y="24.5" width="66.5" height="51"/>
                                                 <gestureRecognizers/>
                                                 <state key="normal" image="timer0"/>
@@ -133,19 +145,19 @@
                                                     <outletCollection property="gestureRecognizers" destination="u9K-qK-IFF" appends="YES" id="Weh-ku-81W"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jc0-Mv-gLN" userLabel="gridbtn">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jc0-Mv-gLN" userLabel="Grid Button">
                                                 <rect key="frame" x="223.5" y="24" width="66.5" height="52"/>
                                                 <state key="normal" image="onGrid"/>
                                                 <connections>
                                                     <action selector="gridButton:" destination="Su1-Ld-wf4" eventType="touchUpInside" id="hCE-RR-OBq"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3LG-g3-BhH" userLabel="continuousCaptureButton">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3LG-g3-BhH" userLabel="Setting Button">
                                                 <rect key="frame" x="290" y="34.5" width="64" height="31"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" image="live_off"/>
                                                 <connections>
-                                                    <action selector="continuousCaptureButton:" destination="Su1-Ld-wf4" eventType="touchUpInside" id="CW7-Zx-Ruw"/>
+                                                    <segue destination="6m6-KY-eE8" kind="showDetail" id="mDu-vZ-LwZ"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -221,7 +233,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lNm-wV-Pti" userLabel="BottomToolbarView">
-                                <rect key="frame" x="0.0" y="612" width="414" height="250"/>
+                                <rect key="frame" x="0.0" y="563" width="414" height="250"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleAspectFill" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0sc-c5-LIf" userLabel="Photos">
                                         <rect key="frame" x="45" y="135" width="50" height="50"/>
@@ -363,12 +375,13 @@
                             <outletCollection property="gestureRecognizers" destination="x2O-Pt-Jkb" appends="YES" id="C1Q-M7-LRC"/>
                         </connections>
                     </view>
+                    <toolbarItems/>
                     <navigationItem key="navigationItem" id="9bd-wl-my3"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="cameraToolsView" destination="lNm-wV-Pti" id="Xra-Q5-yWo"/>
                         <outlet property="captureButtonInner" destination="79T-DZ-xn8" id="Ec3-vm-MYd"/>
                         <outlet property="captureButtonOuter" destination="ifb-KP-SHf" id="41m-As-efF"/>
-                        <outlet property="continuousCaptureButton" destination="3LG-g3-BhH" id="fKt-V6-9t4"/>
                         <outlet property="flashButton" destination="EaD-eS-n5W" id="Zib-NZ-Y5K"/>
                         <outlet property="gridButton" destination="Jc0-Mv-gLN" id="DYz-Of-3MP"/>
                         <outlet property="gridH1" destination="jkn-Oa-x58" id="6P2-4u-ghV"/>
@@ -432,6 +445,50 @@
             </objects>
             <point key="canvasLocation" x="1952.1739130434785" y="103.125"/>
         </scene>
+        <!--Setting Table View Controller-->
+        <scene sceneID="im4-ni-hWt">
+            <objects>
+                <tableViewController id="6m6-KY-eE8" customClass="SettingTableViewController" customModule="gaak" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="2XT-FQ-oIm">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="separatorColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="sectionIndexColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="sectionIndexBackgroundColor" systemColor="linkColor"/>
+                        <color key="sectionIndexTrackingBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SettingCell" textLabel="lL1-sb-OAj" style="IBUITableViewCellStyleDefault" id="2Ti-tC-ARZ">
+                                <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2Ti-tC-ARZ" id="sSQ-OA-gZ6">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lL1-sb-OAj">
+                                            <rect key="frame" x="20" y="0.0" width="374" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="17"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="6m6-KY-eE8" id="Jmf-NE-YjN"/>
+                            <outlet property="delegate" destination="6m6-KY-eE8" id="NIt-HO-QSb"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="vn2-NU-3oD"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sSf-gY-kEw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2719" y="-318"/>
+        </scene>
         <!--Photo Album-->
         <scene sceneID="o9t-e9-lpB">
             <objects>
@@ -441,7 +498,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="nEj-4n-Woz">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="769"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="bWx-iB-2w4">
                                     <size key="itemSize" width="128" height="128"/>
@@ -500,7 +557,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xPH-t1-NCR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2809" y="104"/>
+            <point key="canvasLocation" x="2719" y="345"/>
         </scene>
         <!--Image Zoom View Controller-->
         <scene sceneID="gaV-v0-dUN">
@@ -556,7 +613,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gju-rH-Eqe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3533.3333333333335" y="103.53260869565219"/>
+            <point key="canvasLocation" x="3690" y="345"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="bkp-5t-En3">
@@ -604,6 +661,9 @@
         <image name="whileObject" width="86" height="77"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="linkColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
