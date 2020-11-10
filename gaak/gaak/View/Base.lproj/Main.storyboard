@@ -278,25 +278,25 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="90" height="90"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="eT7-TK-W6Z" userLabel="indicator point">
-                                                        <rect key="frame" x="37.5" y="-17" width="15" height="14"/>
+                                                        <rect key="frame" x="38" y="-11.5" width="14" height="13"/>
                                                         <color key="tintColor" systemColor="systemRedColor"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="15" id="6fR-BC-J5C"/>
-                                                            <constraint firstAttribute="width" constant="15" id="LNJ-zI-Q6P"/>
+                                                            <constraint firstAttribute="height" constant="14" id="6fR-BC-J5C"/>
+                                                            <constraint firstAttribute="width" constant="14" id="LNJ-zI-Q6P"/>
                                                         </constraints>
                                                     </imageView>
                                                 </subviews>
                                                 <constraints>
-                                                    <constraint firstItem="eT7-TK-W6Z" firstAttribute="centerY" secondItem="vqg-WU-Tuj" secondAttribute="top" constant="-10" id="0YJ-OB-8R6"/>
+                                                    <constraint firstItem="eT7-TK-W6Z" firstAttribute="centerY" secondItem="vqg-WU-Tuj" secondAttribute="top" constant="-5" id="0YJ-OB-8R6"/>
                                                     <constraint firstItem="eT7-TK-W6Z" firstAttribute="centerX" secondItem="vqg-WU-Tuj" secondAttribute="centerX" id="n1g-eg-DsJ"/>
                                                 </constraints>
                                             </view>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="dvG-QN-c3H" userLabel="Horizontal Zero">
-                                                <rect key="frame" x="37" y="-17.5" width="16" height="15"/>
+                                                <rect key="frame" x="37.5" y="-12" width="15" height="14"/>
                                                 <color key="tintColor" systemColor="systemRedColor"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="16" id="ZZ9-cf-J1d"/>
-                                                    <constraint firstAttribute="width" constant="16" id="m98-Ke-ivJ"/>
+                                                    <constraint firstAttribute="height" constant="15" id="ZZ9-cf-J1d"/>
+                                                    <constraint firstAttribute="width" constant="15" id="m98-Ke-ivJ"/>
                                                 </constraints>
                                             </imageView>
                                         </subviews>
@@ -311,7 +311,7 @@
                                             <constraint firstItem="vqg-WU-Tuj" firstAttribute="width" secondItem="okt-lg-eTM" secondAttribute="width" id="agd-Sx-73D"/>
                                             <constraint firstAttribute="height" constant="90" id="mNy-kA-4o0"/>
                                             <constraint firstItem="UZg-4M-Cjb" firstAttribute="centerX" secondItem="okt-lg-eTM" secondAttribute="centerX" id="pd5-kw-IKX"/>
-                                            <constraint firstItem="dvG-QN-c3H" firstAttribute="centerY" secondItem="okt-lg-eTM" secondAttribute="top" constant="-10" id="pg6-pL-ng7"/>
+                                            <constraint firstItem="dvG-QN-c3H" firstAttribute="centerY" secondItem="okt-lg-eTM" secondAttribute="top" constant="-5" id="pg6-pL-ng7"/>
                                             <constraint firstItem="UZg-4M-Cjb" firstAttribute="width" secondItem="okt-lg-eTM" secondAttribute="width" multiplier="0.85" id="spc-HQ-xZE"/>
                                             <constraint firstItem="vqg-WU-Tuj" firstAttribute="centerX" secondItem="okt-lg-eTM" secondAttribute="centerX" id="uCt-GZ-j6q"/>
                                             <constraint firstItem="UZg-4M-Cjb" firstAttribute="centerY" secondItem="okt-lg-eTM" secondAttribute="centerY" id="yZ4-3U-mrh"/>
