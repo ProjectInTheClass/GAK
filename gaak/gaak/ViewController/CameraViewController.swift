@@ -120,7 +120,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
             }
         }
         
-        // pageControl.transform = CGAffineTransform(translationX: -50.0, y: 0)
+        pageControl.transform = CGAffineTransform(translationX: -50.0, y: 0)
 
         return pageControl
     }()

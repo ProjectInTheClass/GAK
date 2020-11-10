@@ -407,7 +407,8 @@ extension CameraViewController {
             }
             
             layoutView.snp.updateConstraints {
-                $0.top.equalTo(0)
+                //$0.top.equalTo(0)
+                $0.top.equalToSuperview()
             }
             
             // draw grid (simple.ver)
