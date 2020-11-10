@@ -253,14 +253,14 @@
                                         <rect key="frame" x="162" y="115" width="90" height="90"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UZg-4M-Cjb" userLabel="CenterCircle">
-                                                <rect key="frame" x="0.0" y="0.0" width="90" height="90"/>
+                                                <rect key="frame" x="7" y="7" width="76.5" height="76.5"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="ifb-KP-SHf" userLabel="outerCircle">
-                                                        <rect key="frame" x="0.0" y="0.5" width="90" height="89"/>
+                                                        <rect key="frame" x="0.0" y="0.5" width="76.5" height="75.5"/>
                                                         <color key="tintColor" systemColor="systemRedColor"/>
                                                     </imageView>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="shutter_inner_true" translatesAutoresizingMaskIntoConstraints="NO" id="79T-DZ-xn8" userLabel="innerCircle">
-                                                        <rect key="frame" x="9" y="9" width="72" height="72"/>
+                                                        <rect key="frame" x="7.5" y="7.5" width="61" height="61"/>
                                                     </imageView>
                                                 </subviews>
                                                 <constraints>
@@ -304,7 +304,7 @@
                                         <gestureRecognizers/>
                                         <constraints>
                                             <constraint firstItem="vqg-WU-Tuj" firstAttribute="height" secondItem="okt-lg-eTM" secondAttribute="height" id="5bD-A0-MDQ"/>
-                                            <constraint firstItem="UZg-4M-Cjb" firstAttribute="height" secondItem="okt-lg-eTM" secondAttribute="height" id="AYG-bl-F2W"/>
+                                            <constraint firstItem="UZg-4M-Cjb" firstAttribute="height" secondItem="okt-lg-eTM" secondAttribute="height" multiplier="0.85" id="AYG-bl-F2W"/>
                                             <constraint firstItem="vqg-WU-Tuj" firstAttribute="centerY" secondItem="okt-lg-eTM" secondAttribute="centerY" id="EoG-P0-PO5"/>
                                             <constraint firstItem="dvG-QN-c3H" firstAttribute="centerX" secondItem="okt-lg-eTM" secondAttribute="centerX" id="TcK-JF-vlD"/>
                                             <constraint firstAttribute="width" constant="90" id="WXe-IS-CVx"/>
@@ -312,7 +312,7 @@
                                             <constraint firstAttribute="height" constant="90" id="mNy-kA-4o0"/>
                                             <constraint firstItem="UZg-4M-Cjb" firstAttribute="centerX" secondItem="okt-lg-eTM" secondAttribute="centerX" id="pd5-kw-IKX"/>
                                             <constraint firstItem="dvG-QN-c3H" firstAttribute="centerY" secondItem="okt-lg-eTM" secondAttribute="top" constant="-10" id="pg6-pL-ng7"/>
-                                            <constraint firstItem="UZg-4M-Cjb" firstAttribute="width" secondItem="okt-lg-eTM" secondAttribute="width" id="spc-HQ-xZE"/>
+                                            <constraint firstItem="UZg-4M-Cjb" firstAttribute="width" secondItem="okt-lg-eTM" secondAttribute="width" multiplier="0.85" id="spc-HQ-xZE"/>
                                             <constraint firstItem="vqg-WU-Tuj" firstAttribute="centerX" secondItem="okt-lg-eTM" secondAttribute="centerX" id="uCt-GZ-j6q"/>
                                             <constraint firstItem="UZg-4M-Cjb" firstAttribute="centerY" secondItem="okt-lg-eTM" secondAttribute="centerY" id="yZ4-3U-mrh"/>
                                         </constraints>
