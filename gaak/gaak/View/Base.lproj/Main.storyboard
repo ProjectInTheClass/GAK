@@ -55,6 +55,8 @@
                                 </constraints>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="pav-3T-4Lw" appends="YES" id="bP9-N6-Mej"/>
+                                    <outletCollection property="gestureRecognizers" destination="2Xb-yn-ncd" appends="YES" id="ujY-Sf-gAg"/>
+                                    <outletCollection property="gestureRecognizers" destination="fTn-xn-DVg" appends="YES" id="mIv-Tx-4xD"/>
                                 </connections>
                             </view>
                             <toolbar clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SBv-cb-p7s" userLabel="Setting Toolbar">
@@ -257,9 +259,8 @@
                                                         <rect key="frame" x="0.0" y="0.5" width="90" height="89"/>
                                                         <color key="tintColor" systemColor="systemRedColor"/>
                                                     </imageView>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="79T-DZ-xn8" userLabel="innerCircle">
-                                                        <rect key="frame" x="9" y="9.5" width="72" height="71"/>
-                                                        <color key="tintColor" systemColor="systemRedColor"/>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="shutter_inner_true" translatesAutoresizingMaskIntoConstraints="NO" id="79T-DZ-xn8" userLabel="innerCircle">
+                                                        <rect key="frame" x="9" y="9" width="72" height="72"/>
                                                     </imageView>
                                                 </subviews>
                                                 <constraints>
@@ -341,6 +342,15 @@
                                     <constraint firstItem="0sc-c5-LIf" firstAttribute="centerX" secondItem="lNm-wV-Pti" secondAttribute="leading" constant="70" id="usH-wl-saZ"/>
                                 </constraints>
                             </view>
+                            <view userInteractionEnabled="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="6pY-1n-8qt">
+                                <rect key="frame" x="0.0" y="44" width="414" height="414"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <accessibilityTraits key="traits" notEnabled="YES"/>
+                                </accessibility>
+                                <constraints>
+                                    <constraint firstAttribute="height" priority="750" constant="414" id="r9c-gf-van"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="gyi-7X-ag4"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -349,10 +359,13 @@
                             <constraint firstItem="fK5-NN-5vM" firstAttribute="bottom" secondItem="gyi-7X-ag4" secondAttribute="top" id="8b4-8m-ezG"/>
                             <constraint firstItem="gyi-7X-ag4" firstAttribute="bottom" secondItem="lNm-wV-Pti" secondAttribute="bottom" id="CYq-GS-h4K"/>
                             <constraint firstItem="QNI-Ja-PV0" firstAttribute="top" secondItem="gyi-7X-ag4" secondAttribute="top" id="EHp-wC-veV"/>
+                            <constraint firstItem="6pY-1n-8qt" firstAttribute="top" secondItem="SBv-cb-p7s" secondAttribute="top" priority="250" id="H76-pP-XAL"/>
+                            <constraint firstItem="gyi-7X-ag4" firstAttribute="trailing" secondItem="6pY-1n-8qt" secondAttribute="trailing" id="JGW-VK-Hig"/>
                             <constraint firstItem="k6E-EN-JnI" firstAttribute="top" secondItem="QNI-Ja-PV0" secondAttribute="bottom" id="MM2-2B-n6z"/>
                             <constraint firstItem="kmT-IZ-8ZC" firstAttribute="trailing" secondItem="gyi-7X-ag4" secondAttribute="trailing" constant="-10" id="Muc-BL-h6m"/>
                             <constraint firstItem="fK5-NN-5vM" firstAttribute="leading" secondItem="gyi-7X-ag4" secondAttribute="leading" id="NG7-j7-Zq2"/>
                             <constraint firstItem="k6E-EN-JnI" firstAttribute="trailing" secondItem="gyi-7X-ag4" secondAttribute="trailing" id="cCF-aE-JL4"/>
+                            <constraint firstItem="6pY-1n-8qt" firstAttribute="leading" secondItem="gyi-7X-ag4" secondAttribute="leading" id="cVg-eh-XEZ"/>
                             <constraint firstItem="dNm-nt-TDF" firstAttribute="width" secondItem="QNI-Ja-PV0" secondAttribute="width" id="cdD-dL-vVC"/>
                             <constraint firstItem="fK5-NN-5vM" firstAttribute="trailing" secondItem="gyi-7X-ag4" secondAttribute="trailing" id="eaC-0T-nxb"/>
                             <constraint firstItem="dNm-nt-TDF" firstAttribute="centerX" secondItem="QNI-Ja-PV0" secondAttribute="centerX" id="gcD-xs-y6P"/>
@@ -393,6 +406,7 @@
                         <outlet property="horizonIndicator" destination="vqg-WU-Tuj" id="exZ-av-3TX"/>
                         <outlet property="horizonIndicatorInner" destination="eT7-TK-W6Z" id="ySw-CO-dKj"/>
                         <outlet property="horizonIndicatorOuter" destination="dvG-QN-c3H" id="PXf-vY-7J3"/>
+                        <outlet property="layoutView" destination="6pY-1n-8qt" id="k8J-Nk-BTq"/>
                         <outlet property="moreView" destination="kmT-IZ-8ZC" id="zWE-mg-YTK"/>
                         <outlet property="photosButton" destination="0sc-c5-LIf" id="2Fe-UF-33J"/>
                         <outlet property="previewView" destination="QNI-Ja-PV0" id="g9S-oC-KBU"/>
@@ -442,6 +456,16 @@
                         <action selector="returnToMain:" destination="Su1-Ld-wf4" id="wUC-Ml-MgI"/>
                     </connections>
                 </tapGestureRecognizer>
+                <swipeGestureRecognizer direction="left" id="2Xb-yn-ncd" userLabel="SwipeLeft Gesture Recognizer">
+                    <connections>
+                        <action selector="swipeLeft:" destination="Su1-Ld-wf4" id="rl0-0i-c0s"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="right" id="fTn-xn-DVg" userLabel="SwipeRight Gesture Recognizer">
+                    <connections>
+                        <action selector="swipeRight:" destination="Su1-Ld-wf4" id="kwZ-bq-QAi"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1952.1739130434785" y="103.125"/>
         </scene>
@@ -655,6 +679,7 @@
         <image name="pin" width="44" height="45"/>
         <image name="rectangle.fill" catalog="system" width="128" height="93"/>
         <image name="screen_ratio_1_1" width="28" height="28"/>
+        <image name="shutter_inner_true" width="62" height="62"/>
         <image name="timer0" width="32" height="51"/>
         <image name="touchCaptureOff" width="45" height="52"/>
         <image name="triangle.fill" catalog="system" width="128" height="112"/>

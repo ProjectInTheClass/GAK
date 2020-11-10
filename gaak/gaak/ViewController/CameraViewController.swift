@@ -54,7 +54,108 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     var isOn_touchCapture: Bool = false // 터치촬영모드 상태 프로퍼티
     var isOn_continuousCapture: Bool = false // 연속촬영모드 상태 프로퍼티
 
+    let pageSize = 3 // 레이아웃 모드
+    
+    
+    //UI 스크롤뷰를 생성
+    lazy var scrollView: UIScrollView = {
+        // Create a UIScrollView.
+        let scrollView = UIScrollView(frame: self.view.frame)
+        
+        // Hide the vertical and horizontal indicators.
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.showsVerticalScrollIndicator = false
+        
+        // Allow paging.
+        scrollView.isPagingEnabled = true
+        
+        // Set delegate of ScrollView.
+        scrollView.delegate = self
+        
+        // Specify the screen size of the scroll.
+        scrollView.contentSize = CGSize(width: CGFloat(pageSize) * self.layoutView.frame.maxX, height: 0)
+        
+        return scrollView
+    }()
+    
+    // 페이지 컨트롤
+    lazy var pageControl: UIPageControl = {
+        // Create a UIPageControl.
+        let pageControl = UIPageControl(frame: CGRect(x: 0, y: self.view.frame.size.width*(4.0/3.0)-50 , width: self.view.frame.width, height:0))
+        
+        //pageControl.backgroundColor = UIColor.white
+        pageControl.pageIndicatorTintColor = .white
+        pageControl.currentPageIndicatorTintColor = #colorLiteral(red: 1.0, green: 0.847, blue: 0.0, alpha: 1.0)
+        
+        // Set the number of pages to page control.
+        pageControl.numberOfPages = pageSize
+        
+        // Set the current page.
+        pageControl.currentPage = 0
+        pageControl.isUserInteractionEnabled = false
+        
+        
+        var indicators: [UIView] = []
+        
+        if #available(iOS 14.0, *) {
+            indicators = pageControl.subviews.first?.subviews.first?.subviews ?? []
+        } else {
+            indicators = pageControl.subviews
+        }
+        
+        
+        for (index, indicator) in indicators.enumerated() {
+            
+            var image: UIImage
+            image = UIImage()
+            //하단 페이지 컨트롤 이곳에 기본사진, 전신사진, 반신사진 안내를 이미지 형태로 넣어준다
+            image = UIImage.init(named: "GuideLineText\(index)")!
+            
+            if let dot = indicator as? UIImageView {
+                dot.image = image
+                
+            } else {
+                let imageView = UIImageView.init(image: image)
+                indicator.addSubview(imageView)
+                // here you can add some constraints to fix the imageview to his superview
+            }
+        }
+        
+        pageControl.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        pageControl.transform = CGAffineTransform(translationX: -50.0, y: 0)
 
+        return pageControl
+    }()
+    
+    @IBAction func swipeLeft(_ sender: Any) {
+        
+        // Switch the location of the page.
+        if pageControl.currentPage == 0 || pageControl.currentPage == 1 {
+            pageControl.currentPage += 1
+            scrollView.setContentOffset(CGPoint(x: pageControl.currentPage * Int(scrollView.frame.maxX), y: 0), animated: true)
+            
+            // control indicator tint color
+            pageControl.currentPageIndicatorTintColor = #colorLiteral(red: 1.0, green: 0.847, blue: 0.0, alpha: 1.0)
+            pageControl.pageIndicatorTintColor = .white
+        }
+    }
+    
+    @IBAction func swipeRight(_ sender: Any) {
+        
+        // Switch the location of the page.
+        
+        if pageControl.currentPage == 2 || pageControl.currentPage == 1 {
+            pageControl.currentPage -= 1
+            scrollView.setContentOffset(CGPoint(x: pageControl.currentPage * Int(scrollView.frame.maxX), y: 0), animated: true)
+            
+            // control indicator tint color
+            pageControl.currentPageIndicatorTintColor = #colorLiteral(red: 1.0, green: 0.847, blue: 0.0, alpha: 1.0)
+            
+            pageControl.pageIndicatorTintColor = .white
+        }
+    }
+    
+    
     // 상단 툴 바
     @IBOutlet weak var settingToolbar: UIToolbar! // 화면 비율 버튼이 있는 툴바
     @IBOutlet weak var settingToolbarHeight: NSLayoutConstraint! // 셋업 툴바 height 셋업
@@ -78,6 +179,8 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     @IBOutlet weak var gridH2: NSLayoutConstraint!
     @IBOutlet weak var gridV1: NSLayoutConstraint!
     @IBOutlet weak var gridV2: NSLayoutConstraint!
+    @IBOutlet weak var layoutView: UIView! // 레이아웃 뷰
+
 
     // 하단 툴 바
     @IBOutlet weak var cameraToolsView: UIView! // 화면 하단의 툴 바
@@ -87,6 +190,8 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     @IBOutlet weak var captureButtonOuter: UIImageView! // 캡쳐버튼 테두리
     @IBOutlet weak var horizonIndicatorInner: UIImageView! // 회전하는 객체
     @IBOutlet weak var horizonIndicatorOuter: UIImageView! // 수평 100%
+    
+    
     
     override var prefersStatusBarHidden: Bool {
         return true // 아이폰 상단 정보 (시간, 배터리 등)을 숨겨줌
@@ -102,7 +207,9 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
             self.setupSession()
             self.startSession()
         }
-        setupUI() // <- 여기에 로딩될 때 화면을 넣어야 함! 어차피 setupUI()는 viewDidAppear에서 호출됨!
+        //setupUI() // <- 여기에 로딩될 때 화면을 넣어야 함! 어차피 setupUI()는 viewDidAppear에서 호출됨!
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -135,6 +242,9 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         setLatestPhoto() // 앨범버튼 썸네일 설정
 
         setToolbarsUI() // 상, 하단 툴 바 설정
+        
+        setLayoutMode()
+        
     }
     
 
@@ -252,8 +362,71 @@ extension CameraViewController {
     }
 }
 
-/* MARK: 인재님이 구현한 함수 넣는 곳 */
-extension CameraViewController {
+/* MARK: 레이아웃 모드 */
+// ScrollView, PageControll
+extension CameraViewController: UIScrollViewDelegate {
+    
+    
+    
+    func setLayoutMode() {
+        // 전체 뷰의 백그라운드 컬러 변경
+        //self.view.backgroundColor = .white //clear로하면 스와이핑이 안됨. 실제 구현시에는 뷰자체를 클리어로 바꿀것, 코드로하지말고.
+        let ratio = screenRatioSwitchedStatus
 
+        
+        // 기존 subviews를 삭제함. 화면비 변환 등 UI를 update할 때마다 그에 맞는 비율로 생성해야 하기 때문
+        for layoutSubview in scrollView.subviews {
+            layoutSubview.removeFromSuperview()
+        }
+        
+        // Get the vertical and horizontal sizes of the view.
+        var width: CGFloat = 0, height: CGFloat = 0
+        switch screenRatioSwitchedStatus {
+        case 0:
+            width = self.gridviewView.frame.width
+            height = self.gridviewView.frame.width
+        case 1:
+            width = self.gridviewView.frame.width
+            height = self.gridviewView.frame.height * (4.0/3.0)
+        case 2:
+            width = self.gridviewView.frame.width
+            height = self.gridviewView.frame.height * (16.0/9.0)
+        default:
+            print("default error")
+        }
+        
+        for i in 0 ..< pageSize {
+            let layoutImage: UIImageView = UIImageView(frame: CGRect(x: CGFloat(i) * width, y: 0, width: width, height: height))
+            layoutImage.image = UIImage(named: "GuideLine\(ratio)-\(i)")
+            
+            scrollView.addSubview(layoutImage)
+            
+            // subview 추가
+            //scrollView.addSubview(...)
+            
+        }
+        
+        // Add UIScrollView, UIPageControl on view
+        self.layoutView.addSubview(self.scrollView)
+        
+        self.view.addSubview(self.pageControl)
+        //self.previewView.addSubview(self.pageControl)
+    }
+    
+    //페이지 넘길때 절반이상 넘어가야 다음 페이지로 넘김
+//    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+//        // When the number of scrolls is one page worth.
+//        if fmod(scrollView.contentOffset.x, scrollView.frame.maxX) == 0 {
+//            // Switch the location of the page.
+//            pageControl.currentPage = Int(scrollView.contentOffset.x / scrollView.frame.maxX)
+//            
+//            // control indicator tint color
+//            pageControl.currentPageIndicatorTintColor = #colorLiteral(red: 1.0, green: 0.847, blue: 0.0, alpha: 1.0)
+//            
+//            pageControl.pageIndicatorTintColor = .white
+//        }
+//    }
+    
+    
 
 }

@@ -348,6 +348,10 @@ extension CameraViewController {
             
             setToolbarsUI()
             
+            /// 레이아웃 모드 테스트 시작
+            setLayoutMode()
+            /// 레이아웃 모드 테스트 종료
+            
             // getSizeBy... // 전후면 카메라 스위칭 될 때, 화면 비율을 넘기기 위한 함수임.
             // 이거 필요없으면 나중에 삭제하는게 좋음 // extension으로 빼놨음.
             getSizeByScreenRatio(with: currentPosition, at: screenRatioSwitchedStatus)
@@ -355,7 +359,6 @@ extension CameraViewController {
     }
     
     //MARK: 상하단 툴바 설정 + Draw Grid
-    // + Draw Grid Simple.ver
     func setToolbarsUI(){
         
         // get safeAreaHeight !!!
@@ -382,6 +385,10 @@ extension CameraViewController {
                 $0.height.equalTo(safeAreaHeight - (view.frame.width + settingToolbar.frame.size.height))
             }
             
+            layoutView.snp.updateConstraints {
+                $0.top.equalTo(settingToolbar.frame.height)
+            }
+            
             // draw grid (simple.ver)
             gridH1.constant = gridviewView.frame.width / 3
             gridH2.constant = -(gridviewView.frame.width / 3)
@@ -392,11 +399,15 @@ extension CameraViewController {
             // 3:4
             settingToolbar.isTranslucent = true
             cameraToolsView.backgroundColor = CustomColor.uiColor("clear")
-            
+            cameraToolsView.tintColor = .white
             gridViewHeight.constant = previewViewHeight.constant
 
             cameraToolsView.snp.updateConstraints {
                 $0.height.equalTo(safeAreaHeight - ((view.frame.size.width)*(4.0/3.0)))
+            }
+            
+            layoutView.snp.updateConstraints {
+                $0.top.equalTo(0)
             }
             
             // draw grid (simple.ver)
@@ -404,7 +415,7 @@ extension CameraViewController {
             gridH2.constant = -(previewView.frame.width * (4.0/3.0)) / 3
             gridV1.constant = previewView.frame.width / 3
             gridV2.constant = -(previewView.frame.width / 3)
-
+            
         case ScreenType.Ratio.full.rawValue :
             // 9:16
             settingToolbar.isTranslucent = true
@@ -421,10 +432,12 @@ extension CameraViewController {
             gridH2.constant = -(previewView.frame.width * (16.0/9.0)) / 3
             gridV1.constant = previewView.frame.width / 3
             gridV2.constant = -(previewView.frame.width / 3)
-
+            
         default:
             print("--> screenRatioSwitchedStatus: default")
         }
+        
+        
     }
     
     
@@ -501,7 +514,6 @@ extension CameraViewController {
     // MARK:- FocusMode, draw and move focus Box.
     // 초점맞추는 기능
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-
         
         // 또는 터치촬영모드일 경우 초점을 재조정할 수 없습니다.
         if isOn_touchCapture {
@@ -515,6 +527,7 @@ extension CameraViewController {
             return
         }
         
+        
         if let coordinates = touches.first, let device = captureDevice {
             
             // 터치 가능 영역을 벗어났을 경우입니다.
@@ -525,7 +538,7 @@ extension CameraViewController {
             // 전면 카메라는 FocusPointOfInterest를 지원하지 않습니다.
             if device.isFocusPointOfInterestSupported, device.isFocusModeSupported(AVCaptureDevice.FocusMode.autoFocus) {
                 let focusPoint = touchPercent(touch : coordinates)
-                dump(focusPoint)
+                // dump(focusPoint)
 
                 do {
                     try device.lockForConfiguration()
@@ -715,18 +728,18 @@ extension CameraViewController {
             current = roundedX * 90
             
             if (current < 2 && current > -2) { // 임계값 도달
-                self.horizonIndicatorInner.tintColor = .systemGreen
-                self.horizonIndicatorOuter.tintColor = .systemGreen
+                self.horizonIndicatorInner.tintColor = #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
+                self.horizonIndicatorOuter.tintColor = #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
                 current = 0
                 
                 if isImpactH {
-                    Haptic.play("ooo--OOOOO-", delay: 0.1)
+                    Haptic.play("oo--OOOO-", delay: 0.1)
                     isImpactH = false
                 }
             }
             else { // 임계값 이탈
-                self.horizonIndicatorInner.tintColor = .systemRed
-                self.horizonIndicatorOuter.tintColor = .systemRed
+                self.horizonIndicatorInner.tintColor = #colorLiteral(red: 0.9568, green: 0.305, blue: 0.305, alpha: 1)
+                self.horizonIndicatorOuter.tintColor = #colorLiteral(red: 0.9568, green: 0.305, blue: 0.305, alpha: 1)
                 if (!isImpactH) {
                     Haptic.play("-", delay: 0.1)
                     isImpactH = true
@@ -744,8 +757,9 @@ extension CameraViewController {
             current = roundedZ * 90
             if (current < 3 && current > -3) { // 임계값 도달
                 self.captureButtonInner.alpha = 1.0
-                self.captureButtonInner.tintColor = .systemGreen
-                self.captureButtonOuter.tintColor = .systemGreen
+                self.captureButtonInner.image = #imageLiteral(resourceName: "shutter_inner_true")
+                //self.captureButtonOuter.tintColor = #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
+                self.captureButtonOuter.image = #imageLiteral(resourceName: "shutter_right_out circle")
                 
                 if isImpactV {
                     Haptic.play("o-Oo", delay: 0.1)
@@ -754,8 +768,9 @@ extension CameraViewController {
             }
             else { // 임계값 이탈
                 self.captureButtonInner.alpha = CGFloat(-abs(current/100))+1.0
-                self.captureButtonInner.tintColor = .systemRed
-                self.captureButtonOuter.tintColor = .systemRed
+                self.captureButtonInner.image = #imageLiteral(resourceName: "shutter_inner_false")
+                //self.captureButtonOuter.tintColor = #colorLiteral(red: 0.9568, green: 0.305, blue: 0.305, alpha: 1)
+                self.captureButtonOuter.image = #imageLiteral(resourceName: "Shutter_out circle")
                 
                 if !isImpactV {
                     Haptic.play("-", delay: 0.1)

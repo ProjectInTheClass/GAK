@@ -57,9 +57,9 @@ class ViewController: UIViewController, UIScrollViewDelegate {
                 break
             }
             
-            
             if let dot = indicator as? UIImageView {
                 dot.image = image
+
             } else {
                 let imageView = UIImageView.init(image: image)
                 indicator.addSubview(imageView)
@@ -94,12 +94,9 @@ class ViewController: UIViewController, UIScrollViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Do any additional setup after loading the view.
-        
-        // Set the background color to Cyan.
+
         // 전체 뷰의 백그라운드 컬러 변경
-        //        self.view.backgroundColor = .clear
+        // self.view.backgroundColor = .clear
         self.view.backgroundColor = .gray //clear로하면 스와이핑이 안됨. 실제 구현시에는 뷰자체를 클리어로 바꿀것, 코드로하지말고.
         
         // Get the vertical and horizontal sizes of the view.
@@ -122,6 +119,7 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         
         // Add UIScrollView, UIPageControl on view
         self.view.addSubview(self.scrollView)
+        
         self.view.addSubview(self.pageControl)
     }
     
