@@ -278,11 +278,11 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="90" height="90"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="eT7-TK-W6Z" userLabel="indicator point">
-                                                        <rect key="frame" x="38" y="-11.5" width="14" height="13"/>
+                                                        <rect key="frame" x="38.5" y="-11" width="13" height="12"/>
                                                         <color key="tintColor" systemColor="systemRedColor"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="14" id="6fR-BC-J5C"/>
-                                                            <constraint firstAttribute="width" constant="14" id="LNJ-zI-Q6P"/>
+                                                            <constraint firstAttribute="height" constant="13" id="6fR-BC-J5C"/>
+                                                            <constraint firstAttribute="width" constant="13" id="LNJ-zI-Q6P"/>
                                                         </constraints>
                                                     </imageView>
                                                 </subviews>

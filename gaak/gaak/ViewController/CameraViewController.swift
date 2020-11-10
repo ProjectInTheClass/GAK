@@ -103,7 +103,6 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
             indicators = pageControl.subviews
         }
         
-        
         for (index, indicator) in indicators.enumerated() {
             
             var image: UIImage
@@ -121,8 +120,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
             }
         }
         
-        pageControl.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-        pageControl.transform = CGAffineTransform(translationX: -50.0, y: 0)
+        // pageControl.transform = CGAffineTransform(translationX: -50.0, y: 0)
 
         return pageControl
     }()
