@@ -53,9 +53,14 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     var isOn_Grid = true //그리드 뷰 && 버튼 활성화 비활성화 flow controll value
     var isOn_touchCapture: Bool = false // 터치촬영모드 상태 프로퍼티
     var isOn_continuousCapture: Bool = false // 연속촬영모드 상태 프로퍼티
+    var currentAngleH: Float = 0.0 // 현재 "수평H" 각도를 저장하는 프로퍼티
+    var currentAngleV: Float = 0.0 // 현재 "수직V" 각도를 저장하는 프로퍼티
+    var tempAngleH: Float = 0.0 // "수평H" 각도핀 고정 -> 임시 기준각도를 저장하는 프로퍼티
+    var tempAngleV: Float = 0.0 // "수평V" 각도핀 고정 -> 임시 기준각도를 저장하는 프로퍼티
+    var isOn_AnglePin = false
 
-    let pageSize = 3 // 레이아웃 모드
     
+    let pageSize = 3 // 레이아웃 모드
     
     //UI 스크롤뷰를 생성
     lazy var scrollView: UIScrollView = {
@@ -188,9 +193,11 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     @IBOutlet weak var captureButtonOuter: UIImageView! // 캡쳐버튼 테두리
     @IBOutlet weak var horizonIndicatorInner: UIImageView! // 회전하는 객체
     @IBOutlet weak var horizonIndicatorOuter: UIImageView! // 수평 100%
+    @IBOutlet weak var anglePinStatus: UIImageView! // 각도고정핀 활성화 상태표시
+    @IBOutlet weak var anglePin: UIView! // 각도 고정핀 회전을 위한 프로퍼티
     
     
-    
+
     override var prefersStatusBarHidden: Bool {
         return true // 아이폰 상단 정보 (시간, 배터리 등)을 숨겨줌
     }
@@ -205,13 +212,16 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
             self.setupSession()
             self.startSession()
         }
-        //setupUI() // <- 여기에 로딩될 때 화면을 넣어야 함! 어차피 setupUI()는 viewDidAppear에서 호출됨!
+        //setupUI() // <- 여기에 스플래시 스크린을 넣어야 함! 어차피 setupUI()는 viewDidAppear에서 호출됨!
         
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        navigationController?.isNavigationBarHidden = true // 네비게이션 바 비활성화를 미리 해줘야 함
+        startSession() // 카메라 기능 다시 활성화
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -227,6 +237,9 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        
+        stopSession() // 카메라 기능 멈춤
+        motionKit.stopDeviceMotionUpdates() // 각도기능 멈춤
     }
     
     //MARK: setupUI()
@@ -361,10 +374,9 @@ extension CameraViewController {
 }
 
 /* MARK: 레이아웃 모드 */
+// 아직 기능이 완성되지 않아 여기에 배치되어있음.
 // ScrollView, PageControll
 extension CameraViewController: UIScrollViewDelegate {
-    
-    
     
     func setLayoutMode() {
         // 전체 뷰의 백그라운드 컬러 변경
@@ -424,7 +436,4 @@ extension CameraViewController: UIScrollViewDelegate {
 //            pageControl.pageIndicatorTintColor = .white
 //        }
 //    }
-    
-    
-
 }
