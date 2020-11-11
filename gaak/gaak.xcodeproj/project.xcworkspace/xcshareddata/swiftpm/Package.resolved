@@ -11,6 +11,15 @@
         }
       },
       {
+        "package": "Loaf",
+        "repositoryURL": "https://github.com/schmidyy/Loaf.git",
+        "state": {
+          "branch": null,
+          "revision": "5f78a659666fd1025579ded60960452a4c60eda6",
+          "version": "0.7.0"
+        }
+      },
+      {
         "package": "SnapKit",
         "repositoryURL": "https://github.com/SnapKit/SnapKit.git",
         "state": {

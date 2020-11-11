@@ -12,6 +12,7 @@ import Photos
 import Haptica
 import SnapKit
 import Foundation
+import Loaf
 
 extension CameraViewController {
     
@@ -804,6 +805,7 @@ extension CameraViewController {
     // MARK: 각도 고정 상태 + 버튼 UI
     // gesture recognizer
     @IBAction func touchedAnglePin(_ sender: Any) {
+        
         // status point + 버튼 UI 회전
         if isOn_AnglePin == true {
             anglePinStatus.tintColor = .clear
@@ -811,6 +813,21 @@ extension CameraViewController {
             UIView.animate(withDuration: 0.25) {
                 self.anglePin.transform = CGAffineTransform(rotationAngle: .pi/4)
             }
+            
+            
+            
+            // 상단 알림
+            DispatchQueue.main.async {
+                Loaf.dismiss(sender: self)
+                Loaf(TopAlert.no_Pin.rawValue,
+                     state: .custom(.init(backgroundColor: .black, textColor: .white,
+                                          tintColor: .green,
+                                          font: UIFont(name: "SFProText-Medium", size: 13)!,
+                                          icon: #imageLiteral(resourceName: "pin"), textAlignment: .natural,
+                                          width: .screenPercentage(0.6))),
+                     location: .top, sender: self).show(.short)
+            }
+            
         }
         else if isOn_AnglePin == false {
             anglePinStatus.tintColor = .white
@@ -822,6 +839,19 @@ extension CameraViewController {
             // 현재 각도를 임시 기준각도로 저장
             tempAngleH = currentAngleH
             tempAngleV = currentAngleV
+            
+            // 상단 알림
+            DispatchQueue.main.async {
+                Loaf.dismiss(sender: self)
+                Loaf(TopAlert.On_Pin.rawValue,
+                     state: .custom(.init(backgroundColor: .black, textColor: .white,
+                                          tintColor: .green,
+                                          font: UIFont(name: "SFProText-Medium", size: 13)!,
+                                          icon: #imageLiteral(resourceName: "pin"), textAlignment: .natural,
+                                          width: .screenPercentage(0.6))),
+                     location: .top, sender: self).show(.short)
+            }
+            
         }
         isOn_AnglePin = !isOn_AnglePin
     }

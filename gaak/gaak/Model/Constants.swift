@@ -113,3 +113,8 @@ struct Setting {
         self.content = content
     }
 }
+
+enum TopAlert: String {
+    case On_Pin = "현재 각도로 고정되었습니다."
+    case no_Pin = "각도 고정이 해제되었습니다."
+}
