@@ -56,7 +56,6 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
 
     let pageSize = 3 // 레이아웃 모드
     
-    
     //UI 스크롤뷰를 생성
     lazy var scrollView: UIScrollView = {
         // Create a UIScrollView.
@@ -188,7 +187,42 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     @IBOutlet weak var captureButtonOuter: UIImageView! // 캡쳐버튼 테두리
     @IBOutlet weak var horizonIndicatorInner: UIImageView! // 회전하는 객체
     @IBOutlet weak var horizonIndicatorOuter: UIImageView! // 수평 100%
+    ///
+    var currentAngle: Float = 0.0 // 현재 각도를 저장하는 프로퍼티
+    var tempAngle: Float = 0.0 // 각도핀 고정 -> 임시 기준각도를 저장하는 프로퍼티
+    var isOn_AnglePin = false
+    @IBOutlet weak var anglePinStatus: UIImageView!
+    @IBOutlet weak var anglePin: UIView!
+    @IBAction func touchedAnglePin(_ sender: Any) {
+        // status point + 버튼 UI 회전
+        if isOn_AnglePin == true {
+            anglePinStatus.tintColor = .clear
+            
+            UIView.animate(withDuration: 0.25) {
+                self.anglePin.transform = CGAffineTransform(rotationAngle: .pi/4)
+            }
+            
+            
+        }
+        else if isOn_AnglePin == false {
+            anglePinStatus.tintColor = .white
+            
+            UIView.animate(withDuration: 0.25) {
+                self.anglePin.transform = CGAffineTransform(rotationAngle: 0)
+            }
+            
+            // 현재 각도를 임시 기준각도로 저장
+            tempAngle = currentAngle
+        }
+        isOn_AnglePin = !isOn_AnglePin
+    }
     
+    // 현재 고정된 각도로 영점 조절하기
+    func zeroAdjustment() {
+        
+    }
+    
+    ///
     
     
     override var prefersStatusBarHidden: Bool {
@@ -361,10 +395,9 @@ extension CameraViewController {
 }
 
 /* MARK: 레이아웃 모드 */
+// 아직 기능이 완성되지 않아 여기에 배치되어있음.
 // ScrollView, PageControll
 extension CameraViewController: UIScrollViewDelegate {
-    
-    
     
     func setLayoutMode() {
         // 전체 뷰의 백그라운드 컬러 변경
@@ -424,7 +457,4 @@ extension CameraViewController: UIScrollViewDelegate {
 //            pageControl.pageIndicatorTintColor = .white
 //        }
 //    }
-    
-    
-
 }

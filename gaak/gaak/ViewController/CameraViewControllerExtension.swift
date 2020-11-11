@@ -709,7 +709,7 @@ extension CameraViewController {
         }
     }
     
-    
+
     // MARK: 수평, 수직계 Indicator
     func setGravityAccelerator() {
         var isImpactH: Bool = true
@@ -718,20 +718,31 @@ extension CameraViewController {
         /// 조금 더 찰지게 해보려고 삼각함수 적용해보았으나 실효성을 느끼지 못했음.
         /// 팀원들에게 테스트해보고 결정할 것. ex) let sin_x = sin( x * (.pi/2) )
 
-        motionKit.getGravityAccelerationFromDeviceMotion(interval: 0.02) { (x, y, z) in
+        motionKit.getGravityAccelerationFromDeviceMotion(interval: 0.02) { [self] (x, y, z) in
             // x(H)가 좌-1 우+1, z(V)가 앞-1 뒤+1
             let roundedX = Float(round(x * 100)) / 100.0
             let roundedZ = Float(round(z * 100)) / 100.0
             
-            var current: Float
             var transform: CATransform3D
             
-            current = roundedX * 90
+            ///
+            // 1. 각도 고정할 때, tempAngle에 현재 각도값 저장
+            // 2. current - tempAngle을 해줌
             
-            if (current < 2 && current > -2) { // 임계값 도달
+            self.currentAngle = roundedX * 90
+            
+            if self.isOn_AnglePin == true {
+                self.currentAngle -= self.tempAngle
+            }
+            
+            print("\(self.currentAngle)   \(self.tempAngle)")
+            
+            ///
+            
+            if (self.currentAngle < 2 && self.currentAngle > -2) { // 임계값 도달
                 self.horizonIndicatorInner.tintColor = #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
                 self.horizonIndicatorOuter.tintColor = #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
-                current = 0
+                self.currentAngle = 0
                 
                 if isImpactH {
                     Haptic.play("oo--OOOO-", delay: 0.1)
@@ -751,12 +762,12 @@ extension CameraViewController {
             transform.m34 = 1.0/500
             transform = CATransform3DRotate(
                 transform,
-                CGFloat(current * Float.pi / 180), 0, 0, 1
+                CGFloat(self.currentAngle * Float.pi / 180), 0, 0, 1
             )
             self.horizonIndicator.transform3D = transform
             
-            current = roundedZ * 90
-            if (current < 3 && current > -3) { // 임계값 도달
+            self.currentAngle = roundedZ * 90
+            if (self.currentAngle < 3 && self.currentAngle > -3) { // 임계값 도달
                 self.captureButtonInner.alpha = 1.0
                 self.captureButtonInner.image = #imageLiteral(resourceName: "shutter_inner_true")
                 //self.captureButtonOuter.tintColor = #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
@@ -768,7 +779,7 @@ extension CameraViewController {
                 }
             }
             else { // 임계값 이탈
-                self.captureButtonInner.alpha = CGFloat(-abs(current/100))+1.0
+                self.captureButtonInner.alpha = CGFloat(-abs(self.currentAngle/100))+1.0
                 self.captureButtonInner.image = #imageLiteral(resourceName: "shutter_inner_false")
                 //self.captureButtonOuter.tintColor = #colorLiteral(red: 0.9568, green: 0.305, blue: 0.305, alpha: 1)
                 self.captureButtonOuter.image = #imageLiteral(resourceName: "Shutter_out circle")
@@ -782,7 +793,7 @@ extension CameraViewController {
             transform.m34 = 1.0/500
             transform = CATransform3DRotate(
                 transform,
-                CGFloat(current * Float.pi / 180), 1, 0, 0
+                CGFloat(self.currentAngle * Float.pi / 180), 1, 0, 0
             )
             self.captureButtonInner.transform3D = transform
         }
