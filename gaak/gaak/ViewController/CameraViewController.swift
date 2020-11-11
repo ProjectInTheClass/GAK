@@ -7,11 +7,14 @@
 //
 
 import UIKit
+import Foundation
 import AVFoundation
 import Photos
+import Loaf
 import SnapKit
 import Haptica
-import Foundation
+
+
 
 class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
 

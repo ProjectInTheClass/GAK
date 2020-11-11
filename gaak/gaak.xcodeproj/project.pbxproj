@@ -38,6 +38,7 @@
 		9F5ACF9E250F508A00516A9B /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F5ACF9D250F508A00516A9B /* CameraViewController.swift */; };
 		9F5ACFA1250F518600516A9B /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F5ACFA0250F518600516A9B /* PreviewView.swift */; };
 		9F930E532542A2370058CC83 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 9F930E522542A2370058CC83 /* SnapKit */; };
+		9FC63134255BF06A00AC3BA8 /* Loaf in Frameworks */ = {isa = PBXBuildFile; productRef = 9FC63133255BF06A00AC3BA8 /* Loaf */; };
 		9FD322C4252C94CE000B611D /* PhotoAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD322C3252C94CE000B611D /* PhotoAlbumViewController.swift */; };
 		9FD87EC525273C62001FF3F9 /* CameraViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD87EC425273C62001FF3F9 /* CameraViewControllerExtension.swift */; };
 		9FD87EC925273ED6001FF3F9 /* ImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD87EC825273ED6001FF3F9 /* ImageExtension.swift */; };
@@ -95,6 +96,7 @@
 			files = (
 				9F930E532542A2370058CC83 /* SnapKit in Frameworks */,
 				9FE288FC254421FF009583B3 /* Haptica in Frameworks */,
+				9FC63134255BF06A00AC3BA8 /* Loaf in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -254,6 +256,7 @@
 			packageProductDependencies = (
 				9F930E522542A2370058CC83 /* SnapKit */,
 				9FE288FB254421FF009583B3 /* Haptica */,
+				9FC63133255BF06A00AC3BA8 /* Loaf */,
 			);
 			productName = gaak;
 			productReference = 9F5ACF86250F4AA000516A9B /* gaak.app */;
@@ -286,6 +289,7 @@
 			packageReferences = (
 				9F930E512542A2370058CC83 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				9FE288FA254421FF009583B3 /* XCRemoteSwiftPackageReference "Haptica" */,
+				9FC63132255BF06A00AC3BA8 /* XCRemoteSwiftPackageReference "Loaf" */,
 			);
 			productRefGroup = 9F5ACF87250F4AA000516A9B /* Products */;
 			projectDirPath = "";
@@ -582,6 +586,14 @@
 				minimumVersion = 5.0.1;
 			};
 		};
+		9FC63132255BF06A00AC3BA8 /* XCRemoteSwiftPackageReference "Loaf" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/schmidyy/Loaf.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.7.0;
+			};
+		};
 		9FE288FA254421FF009583B3 /* XCRemoteSwiftPackageReference "Haptica" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/efremidze/Haptica.git";
@@ -597,6 +609,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9F930E512542A2370058CC83 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		9FC63133255BF06A00AC3BA8 /* Loaf */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9FC63132255BF06A00AC3BA8 /* XCRemoteSwiftPackageReference "Loaf" */;
+			productName = Loaf;
 		};
 		9FE288FB254421FF009583B3 /* Haptica */ = {
 			isa = XCSwiftPackageProductDependency;
