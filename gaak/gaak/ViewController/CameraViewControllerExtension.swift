@@ -720,29 +720,22 @@ extension CameraViewController {
 
         motionKit.getGravityAccelerationFromDeviceMotion(interval: 0.02) { [self] (x, y, z) in
             // x(H)가 좌-1 우+1, z(V)가 앞-1 뒤+1
-            let roundedX = Float(round(x * 100)) / 100.0
-            let roundedZ = Float(round(z * 100)) / 100.0
-            
             var transform: CATransform3D
             
-            ///
-            // 1. 각도 고정할 때, tempAngle에 현재 각도값 저장
-            // 2. current - tempAngle을 해줌
+            /* Horizontal part */
             
-            self.currentAngle = roundedX * 90
+            let roundedX = Float(round(x * 100)) / 100.0
+            self.currentAngleH = roundedX * 90
             
+            // if 임시각도on -> 영점 조절
             if self.isOn_AnglePin == true {
-                self.currentAngle -= self.tempAngle
+                self.currentAngleH -= self.tempAngleH
             }
             
-            print("\(self.currentAngle)   \(self.tempAngle)")
-            
-            ///
-            
-            if (self.currentAngle < 2 && self.currentAngle > -2) { // 임계값 도달
+            if (self.currentAngleH < 2 && self.currentAngleH > -2) { // 임계값 도달
                 self.horizonIndicatorInner.tintColor = #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
                 self.horizonIndicatorOuter.tintColor = #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
-                self.currentAngle = 0
+                self.currentAngleH = 0
                 
                 if isImpactH {
                     Haptic.play("oo--OOOO-", delay: 0.1)
@@ -762,12 +755,21 @@ extension CameraViewController {
             transform.m34 = 1.0/500
             transform = CATransform3DRotate(
                 transform,
-                CGFloat(self.currentAngle * Float.pi / 180), 0, 0, 1
+                CGFloat(self.currentAngleH * Float.pi / 180), 0, 0, 1
             )
             self.horizonIndicator.transform3D = transform
+
             
-            self.currentAngle = roundedZ * 90
-            if (self.currentAngle < 3 && self.currentAngle > -3) { // 임계값 도달
+            /* Vertical part */
+            let roundedZ = Float(round(z * 100)) / 100.0
+            self.currentAngleV = roundedZ * 90
+            
+            // if 임시각도on -> 영점 조절
+            if self.isOn_AnglePin == true {
+                self.currentAngleV -= self.tempAngleV
+            }
+            
+            if (self.currentAngleV < 3 && self.currentAngleV > -3) { // 임계값 도달
                 self.captureButtonInner.alpha = 1.0
                 self.captureButtonInner.image = #imageLiteral(resourceName: "shutter_inner_true")
                 //self.captureButtonOuter.tintColor = #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
@@ -779,7 +781,7 @@ extension CameraViewController {
                 }
             }
             else { // 임계값 이탈
-                self.captureButtonInner.alpha = CGFloat(-abs(self.currentAngle/100))+1.0
+                self.captureButtonInner.alpha = CGFloat(-abs(self.currentAngleV/100))+1.0
                 self.captureButtonInner.image = #imageLiteral(resourceName: "shutter_inner_false")
                 //self.captureButtonOuter.tintColor = #colorLiteral(red: 0.9568, green: 0.305, blue: 0.305, alpha: 1)
                 self.captureButtonOuter.image = #imageLiteral(resourceName: "Shutter_out circle")
@@ -793,9 +795,35 @@ extension CameraViewController {
             transform.m34 = 1.0/500
             transform = CATransform3DRotate(
                 transform,
-                CGFloat(self.currentAngle * Float.pi / 180), 1, 0, 0
+                CGFloat(self.currentAngleV * Float.pi / 180), 1, 0, 0
             )
             self.captureButtonInner.transform3D = transform
         }
     }
+    
+    // MARK: 각도 고정 상태 + 버튼 UI
+    // gesture recognizer
+    @IBAction func touchedAnglePin(_ sender: Any) {
+        // status point + 버튼 UI 회전
+        if isOn_AnglePin == true {
+            anglePinStatus.tintColor = .clear
+            
+            UIView.animate(withDuration: 0.25) {
+                self.anglePin.transform = CGAffineTransform(rotationAngle: .pi/4)
+            }
+        }
+        else if isOn_AnglePin == false {
+            anglePinStatus.tintColor = .white
+            
+            UIView.animate(withDuration: 0.25) {
+                self.anglePin.transform = CGAffineTransform(rotationAngle: 0)
+            }
+            
+            // 현재 각도를 임시 기준각도로 저장
+            tempAngleH = currentAngleH
+            tempAngleV = currentAngleV
+        }
+        isOn_AnglePin = !isOn_AnglePin
+    }
+    
 }
