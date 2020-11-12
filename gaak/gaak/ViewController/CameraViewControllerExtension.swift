@@ -314,13 +314,15 @@ extension CameraViewController {
     // MARK: 연속촬영 상태 + 버튼 UI 컨트롤
     // gesture recognizer // To do: 이미지 변경 필요
     @IBAction func continuousCaptureButton(_ sender: Any) {
+        print("asdfasdfasdfasdf")
+        
         if(isOn_continuousCapture == false){
             isOn_continuousCapture = true
-            continuousCaptureButton.setImage(UIImage(named: "live" ), for: .normal)
+            continuousCaptureButton.setImage(#imageLiteral(resourceName: "continuous shooting_on"), for: .normal)
         }
         else if (isOn_continuousCapture == true){
             isOn_continuousCapture = false
-            continuousCaptureButton.setImage(UIImage(named: "live_off" ), for: .normal)
+            continuousCaptureButton.setImage(#imageLiteral(resourceName: "continuous shooting_off"), for: .normal)
         }
     }
     
@@ -569,7 +571,6 @@ extension CameraViewController {
                     fatalError()
                 }
             }
-            // 전면 카메라에서는 FocusPointOfInterest 를 지원하지 않는다.
 
         }
     }
@@ -610,6 +611,64 @@ extension CameraViewController {
         self.focusBox.alpha = 0.25
 
     }
+    
+    // MARK: 항공샷 전용 Focus
+    // 아직 완성되지 않았음.
+    // Problem : focusPoint를 previewView의 중앙으로 설정해야하는데, device로 상대값이 아닌 절대값을 넘겨야하기 때문에, 상대값을 절대값으로 변경하는 함수가 필요함!
+    /*func skyShotFocus() {
+        
+        if let device = captureDevice {
+            
+            // 전면 카메라는 FocusPointOfInterest를 지원하지 않습니다.
+            if device.isFocusPointOfInterestSupported, device.isFocusModeSupported(AVCaptureDevice.FocusMode.autoFocus) {
+                
+                // !! 여기 focusPoint의 위치를 잘 설정해줘야 함
+                let focusPoint = self.previewView.center
+
+                do {
+                    try device.lockForConfiguration()
+
+                    // FocusPointOfInterest 를 통해 초점을 잡아줌.
+                    device.focusPointOfInterest = focusPoint
+                    device.focusMode = .autoFocus
+                    device.exposurePointOfInterest = focusPoint
+                    device.exposureMode = AVCaptureDevice.ExposureMode.continuousAutoExposure
+                    device.unlockForConfiguration()
+
+                    if focusBox != nil {
+                        // 초점 박스가 있으면 위치를 바꿔줌
+                        changeFocusBoxCenter(for: focusPoint)
+                    } else {
+                        // 초점 박스가 없으면 그려줌
+                        // 화면 사이즈 구하기
+                        let screenBounds = self.previewView.bounds
+                        
+                        // 화면 비율에 맞게 정사각형의 focus box 그리기
+                        var rectangleBounds = screenBounds
+                        rectangleBounds.size.width = screenBounds.size.width / 6
+                        rectangleBounds.size.height = screenBounds.size.width / 6
+                        
+                        // 터치된 좌표에 focusBox의 높이, 너비의 절반 값을 빼주어서 터치한 좌표를 중심으로 그려지게 설정
+                        rectangleBounds.origin.x = self.previewView.center.x - (rectangleBounds.size.width / 2)
+                        rectangleBounds.origin.y = self.previewView.center.y - (rectangleBounds.size.height / 2)
+                        
+                        self.focusBox = UIView(frame: rectangleBounds)
+                        self.focusBox.layer.borderColor = UIColor.init(red: 1.0, green: 1.0, blue: 0, alpha: 1).cgColor
+                        self.focusBox.layer.borderWidth = 1
+                        self.focusBox.alpha = 0.25
+                    }
+
+                    previewView.addSubview(self.focusBox)
+                    
+                    zoomFocusOutIn(view: self.focusBox, delay: 1)
+                    // fadeViewInThenOut(view: self.focusBox, delay: 1)
+                    
+                } catch{
+                    fatalError()
+                }
+            }
+        }
+    }*/
     
     // MARK: - Animation Focus Rect
     func zoomFocusOutIn(view: UIView, delay: TimeInterval) {
@@ -715,13 +774,13 @@ extension CameraViewController {
     func setGravityAccelerator() {
         var isImpactH: Bool = true
         var isImpactV: Bool = true
-        
-        /// 조금 더 찰지게 해보려고 삼각함수 적용해보았으나 실효성을 느끼지 못했음.
-        /// 팀원들에게 테스트해보고 결정할 것. ex) let sin_x = sin( x * (.pi/2) )
+        var isImpactY: Bool = true
+        var isSkyShot: Bool = false
 
         motionKit.getGravityAccelerationFromDeviceMotion(interval: 0.02) { [self] (x, y, z) in
             // x(H)가 좌-1 우+1, z(V)가 앞-1 뒤+1
             var transform: CATransform3D
+
             
             /* Horizontal part */
             
@@ -738,7 +797,7 @@ extension CameraViewController {
                 self.horizonIndicatorOuter.tintColor = #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
                 self.currentAngleH = 0
                 
-                if isImpactH {
+                if (isImpactH && !isSkyShot){
                     Haptic.play("oo--OOOO-", delay: 0.1)
                     isImpactH = false
                 }
@@ -773,7 +832,7 @@ extension CameraViewController {
             if (self.currentAngleV < 3 && self.currentAngleV > -3) { // 임계값 도달
                 self.captureButtonInner.alpha = 1.0
                 self.captureButtonInner.image = #imageLiteral(resourceName: "shutter_inner_true")
-                //self.captureButtonOuter.tintColor = #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
+                self.captureButtonOuter.alpha = 1
                 self.captureButtonOuter.image = #imageLiteral(resourceName: "shutter_right_out circle")
                 
                 if isImpactV {
@@ -784,7 +843,7 @@ extension CameraViewController {
             else { // 임계값 이탈
                 self.captureButtonInner.alpha = CGFloat(-abs(self.currentAngleV/100))+1.0
                 self.captureButtonInner.image = #imageLiteral(resourceName: "shutter_inner_false")
-                //self.captureButtonOuter.tintColor = #colorLiteral(red: 0.9568, green: 0.305, blue: 0.305, alpha: 1)
+                self.captureButtonOuter.alpha = 1
                 self.captureButtonOuter.image = #imageLiteral(resourceName: "Shutter_out circle")
                 
                 if !isImpactV {
@@ -798,11 +857,87 @@ extension CameraViewController {
                 transform,
                 CGFloat(self.currentAngleV * Float.pi / 180), 1, 0, 0
             )
+            
             self.captureButtonInner.transform3D = transform
-        }
-    }
+            
+            //MARK: 항공샷
+            
+            // 항공샷은 고정핀 해제상태에서만 가능합니다.
+            if self.isOn_AnglePin == false {
+                // self.currentAngleH -= self.tempAngleH
+                
+                let roundedY = Float(round(y * 100)) / 100.0
+                let currentAngleY = roundedY * 90
+                
+
+                // 1. 항공샷 모드 임계각도에 진입 // 하면 중앙UI 표시
+                if (-20 < self.currentAngleH && self.currentAngleH < 20
+                        && -15 < currentAngleY && currentAngleY < 15) {
+                    
+                    isSkyShot = true
+                    
+                    // 1.1. 기존 셔터 기능+UI 비활성화
+                    // 1.1.1. H indicator(inner, outer) 비활성화 -> .clear
+                    self.horizonIndicatorInner.tintColor = .clear
+                    self.horizonIndicatorOuter.tintColor = .clear
+                    
+                    // 1.1.2. V indicator(inner) 비활성화 -> Identity
+                    self.captureButtonInner.transform3D = CATransform3DIdentity
+                    
+                    //  1.2. 항공샷 기능+UI 활성화
+                    self.skyShotInner.snp.updateConstraints {
+                        $0.centerX.equalToSuperview().offset(self.currentAngleH * 2)
+                        $0.centerY.equalToSuperview().offset((-currentAngleY) * 2)
+                    }
+                    
+                    if (-3 < self.currentAngleH && self.currentAngleH < 3 && -2 < currentAngleY && currentAngleY < 2) { // 임계값 도달
+                        
+                        self.captureButtonInner.alpha = 1
+                        self.captureButtonInner.image = #imageLiteral(resourceName: "shutter_inner_true")
+                        self.captureButtonOuter.alpha = 1
+                        self.captureButtonOuter.image = #imageLiteral(resourceName: "shutter_right_out circle")
+                        
+                        if isImpactY {
+                            Haptic.play("OO-Oo", delay: 0.1)
+                            isImpactY = false
+                            
+                            // sktShotFocus()
+                        }
+                        
+                        self.skyShotInner.snp.updateConstraints {
+                            $0.center.equalToSuperview()
+                        }
+                        self.skyShotOuter.tintColor = #colorLiteral(red: 1.0, green: 0.725, blue: 0.16, alpha: 1.0)
+                        self.skyShotInner.tintColor = #colorLiteral(red: 1.0, green: 0.725, blue: 0.16, alpha: 1.0)
+                        
+                    }
+                    else { // 항공샷 임계각도 이탈
+                        self.captureButtonInner.alpha = 0.5
+                        self.captureButtonInner.image = #imageLiteral(resourceName: "shutter_inner_true")
+                        self.captureButtonOuter.alpha = 0.5
+                        self.captureButtonOuter.image = #imageLiteral(resourceName: "shutter_right_out circle")
+                        
+                        if !isImpactY {
+                            isImpactY = true
+                        }
+                        self.skyShotOuter.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.75)
+                        self.skyShotInner.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.75)
+                    }
+                    
+                    
+                    
+                }
+                else { // 항공샷 임계 각도 이탈
+                    isSkyShot = false
+                    self.skyShotOuter.tintColor = .clear
+                    self.skyShotInner.tintColor = .clear
+                }
+            } // </skyshot>
+            
+        } // </motionkit>
+    } // </setGravityAccelerator()>
     
-    // MARK: 각도 고정 상태 + 버튼 UI
+    // MARK: 각도 고정핀 상태 + UI
     // gesture recognizer
     @IBAction func touchedAnglePin(_ sender: Any) {
         

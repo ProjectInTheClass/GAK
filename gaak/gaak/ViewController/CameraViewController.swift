@@ -186,6 +186,8 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     @IBOutlet weak var gridV1: NSLayoutConstraint!
     @IBOutlet weak var gridV2: NSLayoutConstraint!
     @IBOutlet weak var layoutView: UIView! // 레이아웃 뷰
+    @IBOutlet weak var skyShotOuter: UIImageView! // 항공샷 기준점 (기준각도)
+    @IBOutlet weak var skyShotInner: UIImageView! // 항공샷 인디케이터(각도 표시기)
 
 
     // 하단 툴 바
@@ -198,7 +200,6 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     @IBOutlet weak var horizonIndicatorOuter: UIImageView! // 수평 100%
     @IBOutlet weak var anglePinStatus: UIImageView! // 각도고정핀 활성화 상태표시
     @IBOutlet weak var anglePin: UIView! // 각도 고정핀 회전을 위한 프로퍼티
-    
     
 
     override var prefersStatusBarHidden: Bool {
