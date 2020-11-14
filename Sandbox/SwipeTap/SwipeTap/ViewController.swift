@@ -16,7 +16,7 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         // Create a UIPageControl.
         let pageControl = UIPageControl(frame: CGRect(x: 0, y: self.view.frame.maxY - 100, width: self.view.frame.maxX, height:50))
         // pageControl.backgroundColor = UIColor.clear  -> 실제 구현할때는 클리어컬러로 해야한다.
-        pageControl.backgroundColor = UIColor.black
+        //pageControl.backgroundColor = UIColor.black
         pageControl.pageIndicatorTintColor = .white
         pageControl.currentPageIndicatorTintColor = .orange
         
@@ -26,6 +26,17 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         // Set the current page.
         pageControl.currentPage = 0
         pageControl.isUserInteractionEnabled = false
+        
+        // Test Phase
+        
+        pageControl.allowsContinuousInteraction = false
+        pageControl.backgroundStyle = .minimal
+        
+        //pageControl = UIPageControl.appearance()
+        pageControl.pageIndicatorTintColor = .lightGray
+        pageControl.currentPageIndicatorTintColor = .blue
+        //pageControl.backgroundColor = .darkGray
+        
         
         
         var indicators: [UIView] = []
@@ -98,7 +109,8 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         // 전체 뷰의 백그라운드 컬러 변경
         // self.view.backgroundColor = .clear
         self.view.backgroundColor = .gray //clear로하면 스와이핑이 안됨. 실제 구현시에는 뷰자체를 클리어로 바꿀것, 코드로하지말고.
-        
+       
+
         // Get the vertical and horizontal sizes of the view.
         let width = self.view.frame.maxX, height = self.view.frame.maxY
         
@@ -120,6 +132,7 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         // Add UIScrollView, UIPageControl on view
         self.view.addSubview(self.scrollView)
         
+        //self.pageControl.
         self.view.addSubview(self.pageControl)
     }
     
@@ -139,6 +152,7 @@ class ViewController: UIViewController, UIScrollViewDelegate {
             pageControl.currentPageIndicatorTintColor = .yellow
             pageControl.currentPageIndicatorTintColor = .orange
             pageControl.pageIndicatorTintColor = .white
+            
         }
     }
 }

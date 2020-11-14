@@ -142,6 +142,16 @@
                                     <constraint firstItem="aXt-hI-LwU" firstAttribute="bottom" secondItem="dNm-nt-TDF" secondAttribute="bottom" constant="-182" id="yNl-XS-vsJ"/>
                                 </constraints>
                             </view>
+                            <view userInteractionEnabled="NO" alpha="0.5" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="6pY-1n-8qt">
+                                <rect key="frame" x="0.0" y="44" width="414" height="414"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <accessibilityTraits key="traits" notEnabled="YES"/>
+                                </accessibility>
+                                <constraints>
+                                    <constraint firstAttribute="height" priority="250" constant="414" id="r9c-gf-van"/>
+                                </constraints>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wU7-ze-wQN">
                                 <rect key="frame" x="0.0" y="44" width="414" height="50"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -415,15 +425,6 @@
                                     <constraint firstAttribute="bottom" secondItem="okt-lg-eTM" secondAttribute="centerY" constant="90" id="ah0-sP-BgB"/>
                                     <constraint firstItem="0sc-c5-LIf" firstAttribute="centerX" secondItem="lNm-wV-Pti" secondAttribute="leading" constant="70" id="usH-wl-saZ"/>
                                     <constraint firstAttribute="trailing" secondItem="iDl-JN-5t8" secondAttribute="centerX" constant="70" id="vGp-BV-Ja1"/>
-                                </constraints>
-                            </view>
-                            <view userInteractionEnabled="NO" alpha="0.5" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="6pY-1n-8qt">
-                                <rect key="frame" x="0.0" y="44" width="414" height="414"/>
-                                <accessibility key="accessibilityConfiguration">
-                                    <accessibilityTraits key="traits" notEnabled="YES"/>
-                                </accessibility>
-                                <constraints>
-                                    <constraint firstAttribute="height" priority="250" constant="414" id="r9c-gf-van"/>
                                 </constraints>
                             </view>
                         </subviews>

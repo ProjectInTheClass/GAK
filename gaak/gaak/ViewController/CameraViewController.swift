@@ -60,8 +60,8 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     var currentAngleV: Float = 0.0 // 현재 "수직V" 각도를 저장하는 프로퍼티
     var tempAngleH: Float = 0.0 // "수평H" 각도핀 고정 -> 임시 기준각도를 저장하는 프로퍼티
     var tempAngleV: Float = 0.0 // "수평V" 각도핀 고정 -> 임시 기준각도를 저장하는 프로퍼티
-    var isOn_AnglePin = false
-
+    var isOn_AnglePin = false // 각도 고정핀 상태
+    var pageStatus = 0
     
     let pageSize = 3 // 레이아웃 모드
     
@@ -89,20 +89,25 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     // 페이지 컨트롤
     lazy var pageControl: UIPageControl = {
         // Create a UIPageControl.
-        let pageControl = UIPageControl(frame: CGRect(x: 0, y: self.view.frame.size.width*(4.0/3.0)-50 , width: self.view.frame.width, height:0))
         
-        pageControl.backgroundColor = UIColor.purple
-        pageControl.pageIndicatorTintColor = .white
-        pageControl.currentPageIndicatorTintColor = #colorLiteral(red: 1.0, green: 0.847, blue: 0.0, alpha: 1.0)
+        let pageControl = UIPageControl(frame: CGRect(x: 0, y: 0 , width: self.view.frame.width, height:20))
+        
+        // Set pageControl Properties
+        pageControl.isUserInteractionEnabled = true
+        pageControl.backgroundColor = UIColor.clear
+        pageControl.allowsContinuousInteraction = false
         
         // Set the number of pages to page control.
         pageControl.numberOfPages = pageSize
         
-        // Set the current page.
+        // Set the each pages.
         pageControl.currentPage = 0
-        pageControl.isUserInteractionEnabled = false
         
+        // Set the indicators
+        pageControl.pageIndicatorTintColor = .white
+        pageControl.currentPageIndicatorTintColor = #colorLiteral(red: 1.0, green: 0.847, blue: 0.0, alpha: 1.0)
         
+
         var indicators: [UIView] = []
         
         if #available(iOS 14.0, *) {
@@ -128,11 +133,12 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
             }
         }
         
-        pageControl.transform = CGAffineTransform(translationX: -50.0, y: 0)
-
+        
+        
         return pageControl
     }()
     
+    // change Layouts with pageControl
     @IBAction func swipeLeft(_ sender: Any) {
         
         // Switch the location of the page.
@@ -146,6 +152,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         }
     }
     
+    // change Layouts with pageControl
     @IBAction func swipeRight(_ sender: Any) {
         
         // Switch the location of the page.
@@ -429,7 +436,6 @@ extension CameraViewController: UIScrollViewDelegate {
             //let layoutImage: UIImageView = UIImageView(frame: self.layoutView.bounds)
             
             layoutImage.image = UIImage(named: "GuideLine\(ratio)-\(i)")
-            dump(layoutImage.image)
             
             scrollView.addSubview(layoutImage)
             
@@ -441,12 +447,45 @@ extension CameraViewController: UIScrollViewDelegate {
         self.layoutView.addSubview(self.scrollView)
         
         
-        self.view.addSubview(self.pageControl)
-        //self.previewView.addSubview(self.pageControl)
+        self.view.addSubview(pageControl)
         
+        pageControl.snp.makeConstraints { (make) in
+            make.leading.trailing.equalTo(self.view)
+            make.bottom.equalTo(self.cameraToolsView).inset(155)
+            make.height.equalTo(20)
+        }
+        pageControl.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
         
-        
+        pageControl.addTarget(self, action: #selector(pageControlSelectionAction(_:)), for: .touchDown)
     }
+    
+    
+    @objc @IBAction func pageControlSelectionAction(_ sender: UIPageControl) {
+        
+        let seconds = 0.1
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+            self.scrollView.setContentOffset(CGPoint(x: (sender.currentPage) * Int(self.scrollView.frame.maxX), y: 0), animated: true)
+            
+//            self.pageControl.transform = CGAffineTransform(translationX: -50, y: 0)
+//            self.pageControl.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+//
+//            let transform: CGAffineTransform
+//
+            self.pageControl.snp.remakeConstraints { (make) in
+                make.leading.trailing.equalTo(self.view).offset(-60 * sender.currentPage)
+                make.bottom.equalTo(self.cameraToolsView).inset(155)
+                make.height.equalTo(20)
+            }
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
+                
+            
+            print("IBAction \(self.pageControl.currentPage)  \(sender.currentPage)")
+        }
+    }
+
+    
     
     //페이지 넘길때 절반이상 넘어가야 다음 페이지로 넘김
 //    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
