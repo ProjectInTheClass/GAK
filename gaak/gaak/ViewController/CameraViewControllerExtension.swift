@@ -385,7 +385,8 @@ extension CameraViewController {
             case ScreenType.Ratio.square.rawValue :
                 // 1:1 // tool bar UI 설정하는 부분
                 
-                settingToolbar.isTranslucent = false
+                settingToolbar.isTranslucent = true
+                settingToolbar.backgroundColor = .black
                 
                 cameraToolsView.backgroundColor = CustomColor.uiColor("black")
                 
@@ -407,6 +408,7 @@ extension CameraViewController {
             case ScreenType.Ratio.retangle.rawValue :
                 // 3:4
                 settingToolbar.isTranslucent = true
+                settingToolbar.backgroundColor = .clear
                 cameraToolsView.backgroundColor = CustomColor.uiColor("clear")
                 cameraToolsView.tintColor = .white
                 gridViewHeight.constant = previewViewHeight.constant
@@ -424,6 +426,7 @@ extension CameraViewController {
             case ScreenType.Ratio.full.rawValue :
                 // 9:16
                 settingToolbar.isTranslucent = true
+                settingToolbar.backgroundColor = .clear
                 cameraToolsView.backgroundColor = CustomColor.uiColor("clear")
                 
                 previewViewHeight.constant = view.frame.size.width * (16.0/9.0)
@@ -532,6 +535,128 @@ extension CameraViewController {
             
         } // </ iPhone X ~>
     }
+    
+    
+    // MARK: 레이아웃 모드 세팅
+    func setLayoutMode() {
+        // 전체 뷰의 백그라운드 컬러 변경
+        //self.view.backgroundColor = .white //clear로하면 스와이핑이 안됨. 실제 구현시에는 뷰자체를 클리어로 바꿀것, 코드로하지말고.
+        let ratio = screenRatioSwitchedStatus
+
+        
+        // 기존 subviews를 삭제하는곳. 화면비 변환 등 UI를 update할 때마다 그에 맞는 비율로 생성해야 하기 때문
+        for layoutSubview in scrollView.subviews {
+            layoutSubview.removeFromSuperview()
+        }
+        
+        // Get the vertical and horizontal sizes of the view.
+        var width: CGFloat = 0, height: CGFloat = 0
+        switch screenRatioSwitchedStatus {
+        case 0:
+            width = self.gridviewView.frame.width
+            height = self.gridviewView.frame.width
+
+            
+            
+            if oldPhone {
+                layoutView.snp.remakeConstraints { (make) in
+                    make.top.equalTo(settingToolbarHeight.constant)
+                    make.height.equalTo(height)
+                }
+            }
+            else {
+                layoutView.snp.remakeConstraints { (make) in
+                    make.top.equalTo(self.view.safeAreaInsets.top + settingToolbarHeight.constant + self.view.frame.width/6)
+                    make.height.equalTo(height)
+                }
+            }
+            
+        case 1:
+            width = self.gridviewView.frame.width
+            height = self.gridviewView.frame.width * (4.0/3.0)
+            layoutView.snp.remakeConstraints { (make) in
+                make.top.equalTo(blindView.snp.bottom)
+                make.height.equalTo(height)
+            }
+        case 2:
+            width = self.gridviewView.frame.width
+            height = self.gridviewView.frame.width * (16.0/9.0)
+            layoutView.snp.remakeConstraints { (make) in
+                make.top.equalTo(blindView.snp.bottom)
+                make.height.equalTo(height)
+            }
+        default:
+            print("default error")
+        }
+        
+        for i in 0 ..< pageSize {
+            let layoutImage: UIImageView = UIImageView(frame: CGRect(x: CGFloat(i) * width, y: 0, width: width, height: height))
+            //let layoutImage: UIImageView = UIImageView(frame: self.layoutView.bounds)
+            
+            layoutImage.image = UIImage(named: "GuideLine\(ratio)-\(i)")
+            
+            scrollView.addSubview(layoutImage)
+            
+            // subview 추가
+            //scrollView.addSubview(...)
+            
+        }
+        // Add UIScrollView, UIPageControl on view
+        self.layoutView.addSubview(self.scrollView)
+        
+        
+        self.view.addSubview(pageControl)
+        
+        pageControl.snp.makeConstraints { (make) in
+            make.leading.trailing.equalTo(self.view)
+            make.bottom.equalTo(self.cameraToolsView).inset(155)
+            make.height.equalTo(20)
+        }
+        pageControl.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        
+        pageControl.addTarget(self, action: #selector(pageControlSelectionAction(_:)), for: .touchDown)
+    }
+    
+    // MARK: PageControl
+    // 페이지 컨트롤 인터랙션 with 레이아웃뷰
+    @objc @IBAction func pageControlSelectionAction(_ sender: UIPageControl) {
+        
+        let seconds = 0.1
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+            self.scrollView.setContentOffset(CGPoint(x: (sender.currentPage) * Int(self.scrollView.frame.maxX), y: 0), animated: true)
+            
+//            self.pageControl.transform = CGAffineTransform(translationX: -50, y: 0)
+//            self.pageControl.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+//
+//            let transform: CGAffineTransform
+//
+            self.pageControl.snp.remakeConstraints { (make) in
+                make.leading.trailing.equalTo(self.view).offset(-60 * sender.currentPage)
+                make.bottom.equalTo(self.cameraToolsView).inset(155)
+                make.height.equalTo(20)
+            }
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
+                
+            
+            print("IBAction \(self.pageControl.currentPage)  \(sender.currentPage)")
+        }
+    }
+
+    /* 페이지 넘길때 절반이상 넘어가야 다음 페이지로 넘김
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        // When the number of scrolls is one page worth.
+        if fmod(scrollView.contentOffset.x, scrollView.frame.maxX) == 0 {
+            // Switch the location of the page.
+            pageControl.currentPage = Int(scrollView.contentOffset.x / scrollView.frame.maxX)
+            
+            // control indicator tint color
+            pageControl.currentPageIndicatorTintColor = #colorLiteral(red: 1.0, green: 0.847, blue: 0.0, alpha: 1.0)
+            
+            pageControl.pageIndicatorTintColor = .white
+        }
+    } */
     
     //MARK: 카메라 전후 전환 icon
     func updateSwitchCameraIcon(position: AVCaptureDevice.Position) {
@@ -804,6 +929,7 @@ extension CameraViewController {
             )
         }
     }
+    
     
     // MARK: 앨범버튼 썸네일 설정
     func setLatestPhoto(){
