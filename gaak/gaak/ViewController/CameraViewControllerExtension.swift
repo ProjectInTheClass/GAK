@@ -327,6 +327,7 @@ extension CameraViewController {
     }
     
     //MARK: 화면비 상태 + 변경 UI 컨트롤
+    
     // gesture recognizer
     /*     이 함수에서 화면비 아이콘도 변경하고 previewView의 사이즈도 변경함. */
     @IBAction func switchScreenRatio(_ sender: Any) {
@@ -351,9 +352,8 @@ extension CameraViewController {
             
             setToolbarsUI()
             
-            /// 레이아웃 모드 테스트 시작
             setLayoutMode()
-            /// 레이아웃 모드 테스트 종료
+
             
             // getSizeBy... // 전후면 카메라 스위칭 될 때, 화면 비율을 넘기기 위한 함수임.
             // 이거 필요없으면 나중에 삭제하는게 좋음 // extension으로 빼놨음.
@@ -364,86 +364,175 @@ extension CameraViewController {
     //MARK: 상하단 툴바 설정 + Draw Grid
     func setToolbarsUI(){
         
-        // get safeAreaHeight !!!
-        let verticalSafeAreaInset = self.view.safeAreaInsets.bottom + self.view.safeAreaInsets.top
-        let safeAreaHeight = self.view.frame.height - verticalSafeAreaInset
+        // 화면비 기준 측정 -> 기준은 0.5으로 하자.
+        // ~iPhone 8+ = 0.5625 // 9:16 -> oldPhone
+        // iPhons X ~ < 0.462
         
-        settingToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
-        //cameraToolsView.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
-        settingToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
-        
-        
-        // 화면비에 따른 상, 하단 툴바 상태 조절
-        switch screenRatioSwitchedStatus {
-        case ScreenType.Ratio.square.rawValue :
-            // 1:1 // tool bar UI 설정하는 부분
+        // 1:1 화면비를 위해 previewView상단을 가려야 함.
+                
+        if oldPhone { //MARK: oldPhone
             
-            settingToolbar.isTranslucent = false
-            cameraToolsView.backgroundColor = CustomColor.uiColor("black")
+            // get safeAreaHeight !!!
+            let verticalSafeAreaInset = self.view.safeAreaInsets.bottom + self.view.safeAreaInsets.top
+            let safeAreaHeight = self.view.frame.height - verticalSafeAreaInset
             
-            previewViewHeight.constant = view.frame.width * (4.0/3.0)
-            gridViewHeight.constant = view.frame.width
-            settingToolbarHeight.constant = (previewViewHeight.constant - view.frame.width)/2.0
-            cameraToolsView.snp.updateConstraints {
-                $0.height.equalTo(safeAreaHeight - (view.frame.width + settingToolbar.frame.size.height))
-            }
+            settingToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
+            //cameraToolsView.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
+            settingToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
             
-            layoutView.snp.updateConstraints {
-                $0.top.equalTo(settingToolbar.frame.height)
-            }
             
-            // draw grid (simple.ver)
-            gridH1.constant = gridviewView.frame.width / 3
-            gridH2.constant = -(gridviewView.frame.width / 3)
-            gridV1.constant = gridviewView.frame.width / 3
-            gridV2.constant = -(gridviewView.frame.width / 3)
-        
-        case ScreenType.Ratio.retangle.rawValue :
-            // 3:4
-            settingToolbar.isTranslucent = true
-            cameraToolsView.backgroundColor = CustomColor.uiColor("clear")
-            cameraToolsView.tintColor = .white
-            gridViewHeight.constant = previewViewHeight.constant
+            // 화면비에 따른 상, 하단 툴바 상태 조절
+            switch screenRatioSwitchedStatus {
+            case ScreenType.Ratio.square.rawValue :
+                // 1:1 // tool bar UI 설정하는 부분
+                
+                settingToolbar.isTranslucent = false
+                
+                cameraToolsView.backgroundColor = CustomColor.uiColor("black")
+                
+                previewViewHeight.constant = view.frame.width * (4.0/3.0)
+                gridViewHeight.constant = view.frame.width
+                settingToolbarHeight.constant = (previewViewHeight.constant - view.frame.width)/2.0
+                
+                cameraToolsView.snp.updateConstraints {
+                    $0.height.equalTo(safeAreaHeight - (view.frame.width + settingToolbarHeight.constant))
+                }
+                
+                
+                // draw grid (simple.ver)
+                gridH1.constant = gridviewView.frame.width / 3
+                gridH2.constant = -(gridviewView.frame.width / 3)
+                gridV1.constant = gridviewView.frame.width / 3
+                gridV2.constant = -(gridviewView.frame.width / 3)
+            
+            case ScreenType.Ratio.retangle.rawValue :
+                // 3:4
+                settingToolbar.isTranslucent = true
+                cameraToolsView.backgroundColor = CustomColor.uiColor("clear")
+                cameraToolsView.tintColor = .white
+                gridViewHeight.constant = previewViewHeight.constant
 
-            cameraToolsView.snp.updateConstraints {
-                $0.height.equalTo(safeAreaHeight - ((view.frame.size.width)*(4.0/3.0)))
+                cameraToolsView.snp.updateConstraints {
+                    $0.height.equalTo(safeAreaHeight - ((view.frame.size.width)*(4.0/3.0)))
+                }
+                
+                // draw grid (simple.ver)
+                gridH1.constant = (previewView.frame.width * (4.0/3.0)) / 3
+                gridH2.constant = -(previewView.frame.width * (4.0/3.0)) / 3
+                gridV1.constant = previewView.frame.width / 3
+                gridV2.constant = -(previewView.frame.width / 3)
+                
+            case ScreenType.Ratio.full.rawValue :
+                // 9:16
+                settingToolbar.isTranslucent = true
+                cameraToolsView.backgroundColor = CustomColor.uiColor("clear")
+                
+                previewViewHeight.constant = view.frame.size.width * (16.0/9.0)
+                gridViewHeight.constant = previewViewHeight.constant
+                cameraToolsView.snp.updateConstraints {
+                    $0.height.equalTo(safeAreaHeight - ((view.frame.size.width)*(4.0/3.0)))
+                }
+                
+                // draw grid (simple.ver)
+                gridH1.constant = (previewView.frame.width * (16.0/9.0)) / 3
+                gridH2.constant = -(previewView.frame.width * (16.0/9.0)) / 3
+                gridV1.constant = previewView.frame.width / 3
+                gridV2.constant = -(previewView.frame.width / 3)
+                
+            default:
+                print("--> screenRatioSwitchedStatus: default")
             }
             
-            layoutView.snp.updateConstraints {
-                //$0.top.equalTo(0)
-                $0.top.equalToSuperview()
-            }
+        } // </oldPhone>
+        
+        else {
+            // MARK: iPhone X ~
+            // get safeAreaHeight !!!
+            let verticalSafeAreaInset = self.view.safeAreaInsets.bottom + self.view.safeAreaInsets.top
+            let safeAreaHeight = self.view.frame.height - verticalSafeAreaInset
             
-            // draw grid (simple.ver)
-            gridH1.constant = (previewView.frame.width * (4.0/3.0)) / 3
-            gridH2.constant = -(previewView.frame.width * (4.0/3.0)) / 3
-            gridV1.constant = previewView.frame.width / 3
-            gridV2.constant = -(previewView.frame.width / 3)
+            settingToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
             
-        case ScreenType.Ratio.full.rawValue :
-            // 9:16
+            settingToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
             settingToolbar.isTranslucent = true
-            cameraToolsView.backgroundColor = CustomColor.uiColor("clear")
+            settingToolbarHeight.constant = 50
+
+            cameraToolsView.backgroundColor = .clear
             
-            previewViewHeight.constant = view.frame.size.width * (16.0/9.0)
-            gridViewHeight.constant = previewViewHeight.constant
-            cameraToolsView.snp.updateConstraints {
-                $0.height.equalTo(safeAreaHeight - ((view.frame.size.width)*(4.0/3.0)))
+            previewView.snp.updateConstraints { make in
+                make.top.equalToSuperview().offset(self.view.safeAreaInsets.top + settingToolbarHeight.constant)
             }
             
-            // draw grid (simple.ver)
-            gridH1.constant = (previewView.frame.width * (16.0/9.0)) / 3
-            gridH2.constant = -(previewView.frame.width * (16.0/9.0)) / 3
-            gridV1.constant = previewView.frame.width / 3
-            gridV2.constant = -(previewView.frame.width / 3)
+            blindView.snp.updateConstraints {
+                $0.height.equalTo(50)
+            }
+
             
-        default:
-            print("--> screenRatioSwitchedStatus: default")
-        }
-        
-        
+            // 화면비에 따른 상, 하단 툴바 상태 조절
+            switch screenRatioSwitchedStatus {
+            case ScreenType.Ratio.square.rawValue :
+                // 1:1 // tool bar UI 설정하는 부분
+                
+                blindView.snp.updateConstraints {
+                    $0.height.equalTo(self.view.frame.width/6)
+                }
+                UIView.animate(withDuration: 0.05) {
+                    self.blindView.transform = CGAffineTransform(translationX: 0, y: self.settingToolbarHeight.constant)
+                }
+                
+                previewViewHeight.constant = view.frame.width * (4.0/3.0)
+                gridViewHeight.constant = previewView.frame.width
+
+                cameraToolsView.backgroundColor = .black
+                cameraToolsView.snp.updateConstraints {
+                    $0.height.equalTo(safeAreaHeight - (settingToolbarHeight.constant + 7*view.frame.size.width/6) )
+                }
+                
+                // draw grid (simple.ver)
+                gridH1.constant = gridviewView.frame.width / 3
+                gridH2.constant = -(gridviewView.frame.width / 3)
+                gridV1.constant = gridviewView.frame.width / 3
+                gridV2.constant = -(gridviewView.frame.width / 3)
+            
+            case ScreenType.Ratio.retangle.rawValue :
+                // 3:4
+                
+                UIView.animate(withDuration: 0.05) {
+                    self.blindView.transform = CGAffineTransform.identity
+                }
+                
+                previewViewHeight.constant = view.frame.width * (4.0/3.0)
+                gridViewHeight.constant = previewViewHeight.constant
+                
+                cameraToolsView.snp.updateConstraints {
+                    $0.height.equalTo(safeAreaHeight - ((view.frame.size.width)*(4.0/3.0)))
+                }
+                
+                // draw grid (simple.ver)
+                gridH1.constant = (previewView.frame.width * (4.0/3.0)) / 3
+                gridH2.constant = -(previewView.frame.width * (4.0/3.0)) / 3
+                gridV1.constant = previewView.frame.width / 3
+                gridV2.constant = -(previewView.frame.width / 3)
+                
+            case ScreenType.Ratio.full.rawValue :
+                // 9:16
+                
+                previewViewHeight.constant = view.frame.size.width * (16.0/9.0)
+                gridViewHeight.constant = previewViewHeight.constant
+                
+                // draw grid (simple.ver)
+                gridH1.constant = (previewView.frame.width * (16.0/9.0)) / 3
+                gridH2.constant = -(previewView.frame.width * (16.0/9.0)) / 3
+                gridV1.constant = previewView.frame.width / 3
+                gridV2.constant = -(previewView.frame.width / 3)
+                
+            default:
+                print("--> screenRatioSwitchedStatus: default")
+            }
+            
+            
+        } // </ iPhone X ~>
     }
-    
     
     //MARK: 카메라 전후 전환 icon
     func updateSwitchCameraIcon(position: AVCaptureDevice.Position) {

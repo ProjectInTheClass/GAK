@@ -25,7 +25,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     // - AVCapturePhotoOutput // Video도 따로 할 수 있음
     // - Queue // 디스패치 큐, 각 기능들이 수행될 때 다른 기능의 수행동작을 막지 않기 위해 사용
     // - AVCaptureDevice DiscoverySession // 폰에서 카메라를 가져올때 도와주는 요소
-    
+    var oldPhone: Bool = false
     let captureSession = AVCaptureSession() // 캡쳐세션을 만들었고
     var captureDevice: AVCaptureDevice? // AVCaptureDevice 객체는 물리적 캡처 장치와 해당 장치와 관련된 속성을 나타냅니다. 캡처 장치를 사용하여 기본 하드웨어의 속성을 구성합니다. 캡처 장치는 또한 AVCaptureSession 객체에 입력 데이터 (예 : 오디오 또는 비디오)를 제공합니다.
 
@@ -173,7 +173,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     @IBOutlet weak var flashButton: UIButton! // 플래시 on/off 버튼
     @IBOutlet weak var touchCaptureButton: UIButton! // 터치촬영 on/off 버튼
     @IBOutlet weak var continuousCaptureButton: UIButton!// 연속촬영 버튼
-    
+    @IBOutlet weak var blindView: UIView!
     
     // 화면 중앙에 위치한 기능들
     @IBOutlet weak var previewView: PreviewView!
@@ -189,7 +189,8 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     @IBOutlet weak var skyShotOuter: UIImageView! // 항공샷 기준점 (기준각도)
     @IBOutlet weak var skyShotInner: UIImageView! // 항공샷 인디케이터(각도 표시기)
 
-
+    @IBOutlet weak var layoutViewHeight: NSLayoutConstraint!
+    
     // 하단 툴 바
     @IBOutlet weak var cameraToolsView: UIView! // 화면 하단의 툴 바
     @IBOutlet weak var photosButton: UIButton! // 사진촬영 버튼
@@ -255,6 +256,8 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         moreView.isHidden = true // 안 보이게 해놓고
         
         setLatestPhoto() // 앨범버튼 썸네일 설정
+        
+        oldPhone = self.view.frame.width/self.view.frame.height > 0.5 ? true : false
 
         setToolbarsUI() // 상, 하단 툴 바 설정
         
@@ -262,7 +265,6 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         
     }
     
-
     
     // MARK:- Get Screen Ratio
     // AVCaptureDevice 종류와 선택한 스크린 사이즈 비율에 맞게 PreviewImageView Frame 변경
@@ -388,7 +390,7 @@ extension CameraViewController: UIScrollViewDelegate {
         let ratio = screenRatioSwitchedStatus
 
         
-        // 기존 subviews를 삭제함. 화면비 변환 등 UI를 update할 때마다 그에 맞는 비율로 생성해야 하기 때문
+        // 기존 subviews를 삭제하는곳. 화면비 변환 등 UI를 update할 때마다 그에 맞는 비율로 생성해야 하기 때문
         for layoutSubview in scrollView.subviews {
             layoutSubview.removeFromSuperview()
         }
@@ -399,18 +401,32 @@ extension CameraViewController: UIScrollViewDelegate {
         case 0:
             width = self.gridviewView.frame.width
             height = self.gridviewView.frame.width
+
+            layoutView.snp.remakeConstraints { (make) in
+                make.top.equalTo(self.view.safeAreaInsets.top + settingToolbarHeight.constant + self.view.frame.width/6)
+                make.height.equalTo(height)
+            }
         case 1:
             width = self.gridviewView.frame.width
-            height = self.gridviewView.frame.height * (4.0/3.0)
+            height = self.gridviewView.frame.width * (4.0/3.0)
+            layoutView.snp.remakeConstraints { (make) in
+                make.top.equalTo(blindView.snp.bottom)
+                make.height.equalTo(height)
+            }
         case 2:
             width = self.gridviewView.frame.width
-            height = self.gridviewView.frame.height * (16.0/9.0)
+            height = self.gridviewView.frame.width * (16.0/9.0)
+            layoutView.snp.remakeConstraints { (make) in
+                make.top.equalTo(blindView.snp.bottom)
+                make.height.equalTo(height)
+            }
         default:
             print("default error")
         }
         
         for i in 0 ..< pageSize {
             let layoutImage: UIImageView = UIImageView(frame: CGRect(x: CGFloat(i) * width, y: 0, width: width, height: height))
+            //let layoutImage: UIImageView = UIImageView(frame: self.layoutView.bounds)
             layoutImage.image = UIImage(named: "GuideLine\(ratio)-\(i)")
             
             scrollView.addSubview(layoutImage)
@@ -423,8 +439,11 @@ extension CameraViewController: UIScrollViewDelegate {
         // Add UIScrollView, UIPageControl on view
         self.layoutView.addSubview(self.scrollView)
         
+        
         self.view.addSubview(self.pageControl)
         //self.previewView.addSubview(self.pageControl)
+        
+        
     }
     
     //페이지 넘길때 절반이상 넘어가야 다음 페이지로 넘김
