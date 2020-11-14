@@ -429,18 +429,21 @@ extension CameraViewController: UIScrollViewDelegate {
             //let layoutImage: UIImageView = UIImageView(frame: self.layoutView.bounds)
             
             layoutImage.image = UIImage(named: "GuideLine\(ratio)-\(i)")
+            dump(layoutImage.image)
+            
+            scrollView.addSubview(layoutImage)
             
             // subview 추가
             //scrollView.addSubview(...)
             
         }
-        
         // Add UIScrollView, UIPageControl on view
         self.layoutView.addSubview(self.scrollView)
         
         
-        //self.view.addSubview(self.pageControl)
-        self.previewView.addSubview(self.pageControl)
+        self.view.addSubview(self.pageControl)
+        //self.previewView.addSubview(self.pageControl)
+        
         
         
     }

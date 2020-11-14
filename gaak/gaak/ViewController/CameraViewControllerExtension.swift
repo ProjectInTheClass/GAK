@@ -314,7 +314,6 @@ extension CameraViewController {
     // MARK: 연속촬영 상태 + 버튼 UI 컨트롤
     // gesture recognizer // To do: 이미지 변경 필요
     @IBAction func continuousCaptureButton(_ sender: Any) {
-        print("asdfasdfasdfasdf")
         
         if(isOn_continuousCapture == false){
             isOn_continuousCapture = true
