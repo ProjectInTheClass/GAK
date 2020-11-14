@@ -252,6 +252,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         
         stopSession() // 카메라 기능 멈춤
         motionKit.stopDeviceMotionUpdates() // 각도기능 멈춤
+
     }
     
     //MARK: setupUI()

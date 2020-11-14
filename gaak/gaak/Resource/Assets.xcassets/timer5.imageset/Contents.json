@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Timer_05.png",
+      "filename" : "timer_05.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Timer_05@2x.png",
+      "filename" : "timer_05@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Timer_05@3x.png",
+      "filename" : "timer_05@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

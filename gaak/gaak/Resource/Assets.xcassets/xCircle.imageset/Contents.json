@@ -1,17 +1,16 @@
 {
   "images" : [
     {
-      "filename" : "timer_03.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "timer_03@2x.png",
+      "filename" : "xCircle@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "timer_03@3x.png",
+      "filename" : "xCircle@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

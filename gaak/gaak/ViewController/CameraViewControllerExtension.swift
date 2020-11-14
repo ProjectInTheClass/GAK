@@ -31,15 +31,19 @@ extension CameraViewController {
             
             var countDown = setTime
             
-            if(isCounting == true) { // 타이머 동작 중간에 취소하고싶다면,
+            if(isCounting == true) { // 타이머 동작 중간에 취소할때 동작함.
                 self.timeLeft.text = String(self.setTime) // * reset
                 self.timeLeft.isHidden = false // * reSet 하고 다시 보여줌
                 self.countTimer.invalidate()
                 
                 self.isCounting = false
-                self.captureButtonInner.image = UIImage(systemName: "circle.fill", withConfiguration: .none)
-                self.captureButtonInner.tintColor = .systemRed
+                self.captureButtonInner.image = #imageLiteral(resourceName: "shutter_inner_true")
+                // self.captureButtonInner.tintColor = .systemRed
                 // !!!주의!!! 이 곳의 x_o_temp 이미지를 원래대로 돌려야 함.
+                    
+                // 각도기능 재개
+                setGravityAccelerator()
+                
                 return
             }
 
@@ -48,7 +52,11 @@ extension CameraViewController {
                 
                 self.isCounting = true
                 // 실행중에는 캡쳐버튼의 UI가 x로 변함.
-                self.captureButtonInner.image = UIImage(named: "x_temp")
+                self.captureButtonInner.image = #imageLiteral(resourceName: "xCircle")
+                
+                // 각도기능 멈춤
+                motionKit.stopDeviceMotionUpdates()
+                self.captureButtonInner.transform = CGAffineTransform.identity
                 
                 self.timeLeft.text = String(countDown - 1)
                 
@@ -68,10 +76,13 @@ extension CameraViewController {
                     self.timeLeft.isHidden = false // * reSet 하고 다시 보여줌
                     self.countTimer.invalidate()
                     self.isCounting = false
-                    // !!!주의!!! 이 곳의 x_o_temp 이미지를 원래대로 돌려야 함.
-                    self.captureButtonInner.image = UIImage()
-                    self.captureButtonInner.backgroundColor = .systemRed
-                    // !!!주의!!!
+
+                    self.captureButtonInner.image = #imageLiteral(resourceName: "shutter_inner_true")
+                    
+                    // 각도 기능 재개
+                    setGravityAccelerator()
+
+
                 }
                 countDown -= 1
             }

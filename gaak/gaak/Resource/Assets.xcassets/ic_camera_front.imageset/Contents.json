@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Camera Transfer.png",
+      "filename" : "camera transfer.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Camera Transfer@2x.png",
+      "filename" : "camera transfer@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Camera Transfer@3x.png",
+      "filename" : "camera transfer@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
