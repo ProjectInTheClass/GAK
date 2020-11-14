@@ -91,7 +91,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         // Create a UIPageControl.
         let pageControl = UIPageControl(frame: CGRect(x: 0, y: self.view.frame.size.width*(4.0/3.0)-50 , width: self.view.frame.width, height:0))
         
-        //pageControl.backgroundColor = UIColor.white
+        pageControl.backgroundColor = UIColor.purple
         pageControl.pageIndicatorTintColor = .white
         pageControl.currentPageIndicatorTintColor = #colorLiteral(red: 1.0, green: 0.847, blue: 0.0, alpha: 1.0)
         
@@ -427,9 +427,8 @@ extension CameraViewController: UIScrollViewDelegate {
         for i in 0 ..< pageSize {
             let layoutImage: UIImageView = UIImageView(frame: CGRect(x: CGFloat(i) * width, y: 0, width: width, height: height))
             //let layoutImage: UIImageView = UIImageView(frame: self.layoutView.bounds)
-            layoutImage.image = UIImage(named: "GuideLine\(ratio)-\(i)")
             
-            scrollView.addSubview(layoutImage)
+            layoutImage.image = UIImage(named: "GuideLine\(ratio)-\(i)")
             
             // subview 추가
             //scrollView.addSubview(...)
@@ -440,8 +439,8 @@ extension CameraViewController: UIScrollViewDelegate {
         self.layoutView.addSubview(self.scrollView)
         
         
-        self.view.addSubview(self.pageControl)
-        //self.previewView.addSubview(self.pageControl)
+        //self.view.addSubview(self.pageControl)
+        self.previewView.addSubview(self.pageControl)
         
         
     }

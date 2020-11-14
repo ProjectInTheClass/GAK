@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "continuous shooting_off.png",
+      "filename" : "More shooting_off.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "continuous shooting_off@2x.png",
+      "filename" : "More shooting_off@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "continuous shooting_off@3x.png",
+      "filename" : "More shooting_off@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

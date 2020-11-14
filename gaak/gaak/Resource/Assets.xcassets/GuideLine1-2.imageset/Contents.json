@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Ver2.png",
+      "filename" : "half_34.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Ver2@2x.png",
+      "filename" : "half_34@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Ver2@3x.png",
+      "filename" : "half_34@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

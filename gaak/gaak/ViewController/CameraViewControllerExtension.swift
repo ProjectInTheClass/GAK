@@ -304,10 +304,10 @@ extension CameraViewController {
         isOn_Grid = !isOn_Grid
         if isOn_Grid {
             gridviewView.isHidden = false
-            gridButton.setImage(#imageLiteral(resourceName: "onGrid"), for: .normal)
+            gridButton.setImage(#imageLiteral(resourceName: "Grid_off"), for: .normal)
         } else {
             gridviewView.isHidden = true
-            gridButton.setImage(#imageLiteral(resourceName: "offGrid"), for: .normal)
+            gridButton.setImage(#imageLiteral(resourceName: "Grid_on"), for: .normal)
         }
     }
     
@@ -338,13 +338,13 @@ extension CameraViewController {
         if let currentPosition = self.currentPosition {
             switch screenRatioSwitchedStatus {
             case ScreenType.Ratio.square.rawValue :
-                screenRatioBarButtonItem.image = UIImage(named: "screen_ratio_1_1")
+                screenRatioBarButtonItem.image = UIImage(named: "Ratio_11")
 
             case ScreenType.Ratio.retangle.rawValue :
-                screenRatioBarButtonItem.image = UIImage(named: "screen_ratio_3_4")
+                screenRatioBarButtonItem.image = UIImage(named: "Ratio_34")
             
             case ScreenType.Ratio.full.rawValue :
-                screenRatioBarButtonItem.image = UIImage(named: "screen_ratio_9_16")
+                screenRatioBarButtonItem.image = UIImage(named: "Ratio_916")
 
             default:
                 break;
@@ -1010,7 +1010,7 @@ extension CameraViewController {
                             isImpactY = true
                         }
                         self.skyShotOuter.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.75)
-                        self.skyShotInner.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.75)
+                        self.skyShotInner.tintColor = #colorLiteral(red: 1.0, green: 0.725, blue: 0.16, alpha: 1.0)
                     }
                     
                     
@@ -1035,7 +1035,7 @@ extension CameraViewController {
             anglePinStatus.tintColor = .clear
             
             UIView.animate(withDuration: 0.25) {
-                self.anglePin.transform = CGAffineTransform(rotationAngle: .pi/4)
+                self.anglePin.transform = CGAffineTransform(rotationAngle: 0)
             }
             
             
@@ -1057,7 +1057,7 @@ extension CameraViewController {
             anglePinStatus.tintColor = .white
             
             UIView.animate(withDuration: 0.25) {
-                self.anglePin.transform = CGAffineTransform(rotationAngle: 0)
+                self.anglePin.transform = CGAffineTransform(rotationAngle: -.pi/4)
             }
             
             // 현재 각도를 임시 기준각도로 저장
