@@ -61,9 +61,9 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     var tempAngleH: Float = 0.0 // "수평H" 각도핀 고정 -> 임시 기준각도를 저장하는 프로퍼티
     var tempAngleV: Float = 0.0 // "수평V" 각도핀 고정 -> 임시 기준각도를 저장하는 프로퍼티
     var isOn_AnglePin = false // 각도 고정핀 상태
-    var pageStatus = 0
-    
+    var pageStatus = 0 // 페이지 컨트롤 인터랙션을 위한 프로퍼티
     let pageSize = 3 // 레이아웃 모드
+    var cameraOrientation: AVCaptureVideoOrientation?
     
     //OnBording Screen을 위한 프로퍼티
     var tvc: TutorialMasterVC! // 온보드(튜토리얼)뷰 마스터 컨트롤러

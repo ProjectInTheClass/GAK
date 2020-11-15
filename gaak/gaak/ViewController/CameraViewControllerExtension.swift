@@ -1057,11 +1057,16 @@ extension CameraViewController {
                 self.currentAngleV -= self.tempAngleV
             }
             
+            var tempAdjustAngleV = self.currentAngleV
+
+            
             if (self.currentAngleV < 3 && self.currentAngleV > -3) { // 임계값 도달
                 self.captureButtonInner.alpha = 1.0
                 self.captureButtonInner.image = #imageLiteral(resourceName: "shutter_inner_true")
                 self.captureButtonOuter.alpha = 1
                 self.captureButtonOuter.image = #imageLiteral(resourceName: "shutter_right_out circle")
+                
+                self.currentAngleV = 0
                 
                 if isImpactV {
                     Haptic.play("o-Oo", delay: 0.1)
@@ -1069,6 +1074,8 @@ extension CameraViewController {
                 }
             }
             else { // 임계값 이탈
+                tempAdjustAngleV = self.currentAngleV > 0 ? self.currentAngleV+20 : self.currentAngleV-20
+                
                 self.captureButtonInner.alpha = CGFloat(-abs(self.currentAngleV/100))+1.0
                 self.captureButtonInner.image = #imageLiteral(resourceName: "shutter_inner_false")
                 self.captureButtonOuter.alpha = 1
@@ -1083,10 +1090,17 @@ extension CameraViewController {
             transform.m34 = 1.0/500
             transform = CATransform3DRotate(
                 transform,
-                CGFloat(self.currentAngleV * Float.pi / 180), 1, 0, 0
+                CGFloat(tempAdjustAngleV * Float.pi / 180), 1, 0, 0
             )
             
             self.captureButtonInner.transform3D = transform
+            
+            
+            // MARK: 가로모드
+            // cameraOrientation = .portrait || .landscapeLeft || .landscapeRight
+            
+            print("\(self.currentAngleH)   \(self.currentAngleV)"   )
+
             
             //MARK: 항공샷
             // 항공샷은 고정핀 해제상태에서만 가능합니다.
