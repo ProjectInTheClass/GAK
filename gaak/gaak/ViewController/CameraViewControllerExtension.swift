@@ -1185,8 +1185,8 @@ extension CameraViewController {
                      state: .custom(.init(backgroundColor: .black, textColor: .white,
                                           tintColor: .green,
                                           font: UIFont(name: "SFProText-Medium", size: 13)!,
-                                          icon: #imageLiteral(resourceName: "pin"), textAlignment: .natural,
-                                          width: .screenPercentage(0.6))),
+                                          icon: #imageLiteral(resourceName: "Notice_pin_off"), textAlignment: .natural,
+                                          width: .screenPercentage(0.51))),
                      location: .top, sender: self).show(.short)
             }
             
@@ -1209,8 +1209,8 @@ extension CameraViewController {
                      state: .custom(.init(backgroundColor: .black, textColor: .white,
                                           tintColor: .green,
                                           font: UIFont(name: "SFProText-Medium", size: 13)!,
-                                          icon: #imageLiteral(resourceName: "pin"), textAlignment: .natural,
-                                          width: .screenPercentage(0.6))),
+                                          icon: #imageLiteral(resourceName: "Notice_pin_on"), textAlignment: .natural,
+                                          width: .screenPercentage(0.51))),
                      location: .top, sender: self).show(.short)
             }
             
