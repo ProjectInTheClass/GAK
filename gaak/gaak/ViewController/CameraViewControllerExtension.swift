@@ -103,7 +103,7 @@ extension CameraViewController {
         self.sessionQueue.async {
             let connection = self.photoOutput.connection(with: .video)
             connection?.videoOrientation = videoPreviewLayerOrientation!
-            connection?.videoOrientation = .portrait
+            //connection?.videoOrientation = .portrait
             
             // 캡쳐 세션에 요청하는것
             let setting = AVCapturePhotoSettings()
@@ -996,7 +996,6 @@ extension CameraViewController {
             }
         }
     }
-    
 
     // MARK: 수평, 수직계 Indicator
     func setGravityAccelerator() {
@@ -1004,6 +1003,35 @@ extension CameraViewController {
         var isImpactV: Bool = true
         var isImpactY: Bool = true
         var isSkyShot: Bool = false
+        
+        // Device Orientation Notifier
+        motionKit.startDeviceOrientationNotifier { (deviceOrientation) in
+            self.deviceOrientation = deviceOrientation.rawValue
+            let duration = 0.3
+            
+            if self.deviceOrientation == 1 {
+                // portrait
+                UIView.animate(withDuration: duration) {
+                    self.captureButtonView.transform = CGAffineTransform.identity
+                }
+            }
+            else if (self.deviceOrientation == 3){
+                // landscapeRight
+                UIView.animate(withDuration: duration) {
+                    self.captureButtonView.transform = CGAffineTransform(rotationAngle: -.pi/2)
+                }
+            }
+            else if self.deviceOrientation == 4 {
+                // landscapeLeft
+                UIView.animate(withDuration: duration) {
+                    self.captureButtonView.transform = CGAffineTransform(rotationAngle: +.pi/2)
+                }
+            }
+            
+            UIView.animate(withDuration: 1) {
+                self.view.layoutIfNeeded()
+            }
+        }
 
         motionKit.getGravityAccelerationFromDeviceMotion(interval: 0.02) { [self] (x, y, z) in
             // x(H)가 좌-1 우+1, z(V)가 앞-1 뒤+1
@@ -1015,18 +1043,47 @@ extension CameraViewController {
             let roundedX = Float(round(x * 100)) / 100.0
             self.currentAngleH = roundedX * 90
             
+            let roundedZ = Float(round(z * 100)) / 100.0
+            self.currentAngleV = roundedZ * 90
+            
+            let roundedY = Float(round(y * 100)) / 100.0
+            self.currentAngleY = roundedY * 90
+            
+            
+            
+            // 가로모드인지 아닌지 분류 -> 적용까지
+            if deviceOrientation == 3 {
+                currentAngleH = +currentAngleY
+            }
+            else if deviceOrientation == 4 {
+                currentAngleH = -currentAngleY
+            }
+            
             // if 임시각도on -> 영점 조절
             if self.isOn_AnglePin == true {
                 self.currentAngleH -= self.tempAngleH
             }
             
+            // 그럼 고정했을땐 어떻게하지?
+//            if (self.deviceOrientation == 3){
+//                // landscape Right
+//                self.horizonIndicator.transform = CGAffineTransform(rotationAngle: -.pi/2)
+//            }
+//            else if (self.deviceOrientation == 4){
+//                // landscape Left
+//                self.horizonIndicator.transform = CGAffineTransform(rotationAngle: +.pi/2)
+//            }
+            
+            
+            // 색상 결정
             if (self.currentAngleH < 2 && self.currentAngleH > -2) { // 임계값 도달
                 self.horizonIndicatorInner.tintColor = #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
                 self.horizonIndicatorOuter.tintColor = #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
                 self.currentAngleH = 0
                 
                 if (isImpactH && !isSkyShot){
-                    Haptic.play("oo--OOOO-", delay: 0.1)
+                    Haptic.play("oo--OOOO-", delay: 0.1) // made by 인재
+                    // Haptic.play("OO--Oo", delay: 0.1) // made by 동현
                     isImpactH = false
                 }
             }
@@ -1046,16 +1103,19 @@ extension CameraViewController {
                 CGFloat(self.currentAngleH * Float.pi / 180), 0, 0, 1
             )
             self.horizonIndicator.transform3D = transform
-
+            
+            
+            
             
             /* Vertical part */
-            let roundedZ = Float(round(z * 100)) / 100.0
-            self.currentAngleV = roundedZ * 90
             
             // if 임시각도on -> 영점 조절
             if self.isOn_AnglePin == true {
                 self.currentAngleV -= self.tempAngleV
             }
+            
+            var tempAdjustAngleV = self.currentAngleV
+
             
             if (self.currentAngleV < 3 && self.currentAngleV > -3) { // 임계값 도달
                 self.captureButtonInner.alpha = 1.0
@@ -1063,12 +1123,18 @@ extension CameraViewController {
                 self.captureButtonOuter.alpha = 1
                 self.captureButtonOuter.image = #imageLiteral(resourceName: "shutter_right_out circle")
                 
+                self.currentAngleV = 0
+                
                 if isImpactV {
-                    Haptic.play("o-Oo", delay: 0.1)
+                    //Haptic.play("o-Oo", delay: 0.1) // made by 인재
+                    Haptic.play("OO-Oo", delay: 0.1)  // made by 동현
+                    
                     isImpactV = false
                 }
             }
             else { // 임계값 이탈
+                tempAdjustAngleV = self.currentAngleV > 0 ? self.currentAngleV+20 : self.currentAngleV-20
+                
                 self.captureButtonInner.alpha = CGFloat(-abs(self.currentAngleV/100))+1.0
                 self.captureButtonInner.image = #imageLiteral(resourceName: "shutter_inner_false")
                 self.captureButtonOuter.alpha = 1
@@ -1083,19 +1149,16 @@ extension CameraViewController {
             transform.m34 = 1.0/500
             transform = CATransform3DRotate(
                 transform,
-                CGFloat(self.currentAngleV * Float.pi / 180), 1, 0, 0
+                CGFloat(tempAdjustAngleV * Float.pi / 180), 1, 0, 0
             )
             
             self.captureButtonInner.transform3D = transform
             
+        
             //MARK: 항공샷
             // 항공샷은 고정핀 해제상태에서만 가능합니다.
             if self.isOn_AnglePin == false {
-                // self.currentAngleH -= self.tempAngleH
-                
-                let roundedY = Float(round(y * 100)) / 100.0
-                let currentAngleY = roundedY * 90
-                
+                self.currentAngleH = roundedX * 90
 
                 // 1. 항공샷 모드 임계각도에 진입 // 하면 중앙UI 표시
                 if (-20 < self.currentAngleH && self.currentAngleH < 20
@@ -1230,7 +1293,13 @@ extension CameraViewController {
             }
             
             // 현재 각도를 임시 기준각도로 저장
-            tempAngleH = currentAngleH
+            if (deviceOrientation == 3) {
+                tempAngleH = currentAngleY
+            }
+            else if (deviceOrientation == 4){
+                tempAngleH = -currentAngleY
+            }
+            else { tempAngleH = currentAngleH }
             tempAngleV = currentAngleV
             
             // 상단 알림
