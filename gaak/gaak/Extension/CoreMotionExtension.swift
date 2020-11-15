@@ -10,6 +10,7 @@
 
 import Foundation
 import CoreMotion
+import UIKit
 
 //_______________________________________________________________________________________________________________
 // this helps retrieve values from the sensors.
@@ -32,6 +33,9 @@ import CoreMotion
     let manager = CMMotionManager()
     var delegate: MotionKitDelegate?
     
+    
+
+    
     /*
     *  init:void:
     *
@@ -41,6 +45,64 @@ import CoreMotion
     public override init(){
         NSLog("MotionKit has been initialised successfully")
     }
+    
+    
+
+    
+    /*
+    *  startDeviceOrientationNotifier
+    *
+    *  from: https://medium.com/@PabloDomine/developing-camille-how-to-determine-device-orientation-in-a-camera-app-4c622d251993
+    */
+
+    public typealias DeviceOrientationHandler = ((_ deviceOrientation: UIDeviceOrientation) -> Void)?
+    private var deviceOrientationAction: DeviceOrientationHandler?
+    private var currentDeviceOrientation: UIDeviceOrientation = .portrait
+    private let motionLimit: Double = 1 // Smallers values makes it much sensitive to detect an orientation change. [0 to 1]
+
+    public func startDeviceOrientationNotifier(with handler: DeviceOrientationHandler) {
+        self.deviceOrientationAction = handler
+        
+        manager.startAccelerometerUpdates(to: OperationQueue.main) { (data, error) in
+            if let accelerometerData = data {
+                
+                var newDeviceOrientation: UIDeviceOrientation?
+                
+                if (accelerometerData.acceleration.x >= self.motionLimit) {
+                    newDeviceOrientation = .landscapeLeft
+                }
+                else if (accelerometerData.acceleration.x <= -self.motionLimit) {
+                    newDeviceOrientation = .landscapeRight
+                }
+                else if (accelerometerData.acceleration.y <= -self.motionLimit) {
+                    newDeviceOrientation = .portrait
+                }
+                else if (accelerometerData.acceleration.y >= self.motionLimit) {
+                    //newDeviceOrientation = .portraitUpsideDown
+                }
+//                else if (accelerometerData.acceleration.z <= self.motionLimit) {
+//                    newDeviceOrientation = .faceUp
+//                }
+                else {
+                    return
+                }
+                
+                // Only if a different orientation is detect, execute handler
+                if newDeviceOrientation != self.currentDeviceOrientation {
+                    self.currentDeviceOrientation = newDeviceOrientation ?? .portrait
+                    if let deviceOrientationHandler = self.deviceOrientationAction {
+                        DispatchQueue.main.async {
+                            print("current device orientation: \(String(describing: newDeviceOrientation?.rawValue))")
+                            deviceOrientationHandler!(self.currentDeviceOrientation)
+                        }
+                    }
+                }
+            }
+        }// </manager.>
+    }
+    
+    
+    
     
     /*
     *  getAccelerometerValues:interval:values:
