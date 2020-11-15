@@ -104,10 +104,12 @@ extension CameraViewController {
             let connection = self.photoOutput.connection(with: .video)
             connection?.videoOrientation = videoPreviewLayerOrientation!
             connection?.videoOrientation = .portrait
+            
             // 캡쳐 세션에 요청하는것
             let setting = AVCapturePhotoSettings()
             setting.flashMode = self.getCurrentFlashMode(self.isOn_flash)
             self.photoOutput.capturePhoto(with: setting, delegate: self)
+
         }
     }
 
@@ -1088,7 +1090,6 @@ extension CameraViewController {
             self.captureButtonInner.transform3D = transform
             
             //MARK: 항공샷
-            
             // 항공샷은 고정핀 해제상태에서만 가능합니다.
             if self.isOn_AnglePin == false {
                 // self.currentAngleH -= self.tempAngleH
@@ -1103,6 +1104,20 @@ extension CameraViewController {
                     
                     isSkyShot = true
                     
+                    // 배경화면 색 변경
+                    self.view.backgroundColor = #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
+                    settingToolbar.barTintColor = #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
+                    blindView.backgroundColor = #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
+                    cameraToolsView.backgroundColor = #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
+                    /// 혜정님이 보내주시는 흰색 원을 넣어야 함
+                    self.photosButton.isHidden = true
+                    self.captureButtonInner.image = #imageLiteral(resourceName: "pin")
+                    self.captureButtonOuter.image = #imageLiteral(resourceName: "ic_camera_rear")
+                    self.anglePin.isHidden = true
+                    self.anglePinStatus.isHidden = true
+                    
+                    
+                    
                     // 1.1. 기존 셔터 기능+UI 비활성화
                     // 1.1.1. H indicator(inner, outer) 비활성화 -> .clear
                     self.horizonIndicatorInner.tintColor = .clear
@@ -1110,6 +1125,8 @@ extension CameraViewController {
                     
                     // 1.1.2. V indicator(inner) 비활성화 -> Identity
                     self.captureButtonInner.transform3D = CATransform3DIdentity
+                    
+                    
                     
                     //  1.2. 항공샷 기능+UI 활성화
                     self.skyShotInner.snp.updateConstraints {
@@ -1119,10 +1136,10 @@ extension CameraViewController {
                     
                     if (-3 < self.currentAngleH && self.currentAngleH < 3 && -2 < currentAngleY && currentAngleY < 2) { // 임계값 도달
                         
-                        self.captureButtonInner.alpha = 1
-                        self.captureButtonInner.image = #imageLiteral(resourceName: "shutter_inner_true")
-                        self.captureButtonOuter.alpha = 1
-                        self.captureButtonOuter.image = #imageLiteral(resourceName: "shutter_right_out circle")
+//                        self.captureButtonInner.alpha = 1
+//                        self.captureButtonInner.image = #imageLiteral(resourceName: "shutter_inner_true")
+//                        self.captureButtonOuter.alpha = 1
+//                        self.captureButtonOuter.image = #imageLiteral(resourceName: "shutter_right_out circle")
                         
                         if isImpactY {
                             Haptic.play("OO-Oo", delay: 0.1)
@@ -1139,10 +1156,6 @@ extension CameraViewController {
                         
                     }
                     else { // 항공샷 임계각도 이탈
-                        self.captureButtonInner.alpha = 0.5
-                        self.captureButtonInner.image = #imageLiteral(resourceName: "shutter_inner_true")
-                        self.captureButtonOuter.alpha = 0.5
-                        self.captureButtonOuter.image = #imageLiteral(resourceName: "shutter_right_out circle")
                         
                         if !isImpactY {
                             isImpactY = true
@@ -1156,6 +1169,20 @@ extension CameraViewController {
                 }
                 else { // 항공샷 임계 각도 이탈
                     isSkyShot = false
+                    
+                    // 배경화면 색 변경
+                    self.view.backgroundColor = .black
+                    settingToolbar.barTintColor = .black
+                    blindView.backgroundColor = .black
+                    cameraToolsView.backgroundColor = .black
+                    /// 혜정님이 보내주시는 흰색 원을 넣어야 함
+                    self.photosButton.isHidden = false
+                    //self.captureButtonInner.image = #imageLiteral(resourceName: "pin")
+                    //self.captureButtonOuter.image = #imageLiteral(resourceName: "ic_camera_rear")
+                    self.anglePin.isHidden = false
+                    self.anglePinStatus.isHidden = false
+                    
+                    
                     self.skyShotOuter.tintColor = .clear
                     self.skyShotInner.tintColor = .clear
                 }
