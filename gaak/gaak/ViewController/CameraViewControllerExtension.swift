@@ -651,7 +651,7 @@ extension CameraViewController {
             }
                 
             
-            print("IBAction \(self.pageControl.currentPage)  \(sender.currentPage)")
+            //print("IBAction \(self.pageControl.currentPage)  \(sender.currentPage)")
         }
     }
 

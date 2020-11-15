@@ -141,7 +141,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     // change Layouts with pageControl
     @IBAction func swipeLeft(_ sender: Any) {
         
-        // Switch the location of the page.
+        // Switch the location of the page. <<<---
         if pageControl.currentPage == 0 || pageControl.currentPage == 1 {
             pageControl.currentPage += 1
             scrollView.setContentOffset(CGPoint(x: pageControl.currentPage * Int(scrollView.frame.maxX), y: 0), animated: true)
@@ -149,13 +149,23 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
             // control indicator tint color
             pageControl.currentPageIndicatorTintColor = #colorLiteral(red: 1.0, green: 0.847, blue: 0.0, alpha: 1.0)
             pageControl.pageIndicatorTintColor = .white
+            
+            // Set pageControl's location
+            self.pageControl.snp.remakeConstraints { (make) in
+                make.leading.trailing.equalTo(self.view).offset(-60 * pageControl.currentPage)
+                make.bottom.equalTo(self.cameraToolsView).inset(155)
+                make.height.equalTo(20)
+            }
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
         }
     }
     
     // change Layouts with pageControl
     @IBAction func swipeRight(_ sender: Any) {
         
-        // Switch the location of the page.
+        // Switch the location of the page. --->>>
         
         if pageControl.currentPage == 2 || pageControl.currentPage == 1 {
             pageControl.currentPage -= 1
@@ -165,6 +175,16 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
             pageControl.currentPageIndicatorTintColor = #colorLiteral(red: 1.0, green: 0.847, blue: 0.0, alpha: 1.0)
             
             pageControl.pageIndicatorTintColor = .white
+            
+            // Set pageControl's location
+            self.pageControl.snp.remakeConstraints { (make) in
+                make.leading.trailing.equalTo(self.view).offset(-60 * pageControl.currentPage)
+                make.bottom.equalTo(self.cameraToolsView).inset(155)
+                make.height.equalTo(20)
+            }
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
         }
     }
     
