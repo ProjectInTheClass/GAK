@@ -63,7 +63,7 @@ class TutorialMasterVC: UIViewController {
         exitBtn.setTitleColor(.lightGray, for: .selected)
         exitBtn.titleLabel?.font = UIFont(name: "SFProText-Medium", size: 15)
         exitBtn.addTarget(self, action: #selector(close(_:)), for: .touchUpInside)
-        exitBtn.frame = CGRect(x: 40, y: view.frame.height - self.view.safeAreaInsets.bottom - 22, width: 40, height: 20)
+        exitBtn.frame = CGRect(x: 40, y: view.frame.height - self.view.safeAreaInsets.bottom - 24, width: 40, height: 20)
         view.addSubview(exitBtn)
         
         exitEverBtn = UIButton()
@@ -72,7 +72,7 @@ class TutorialMasterVC: UIViewController {
         exitEverBtn.setTitleColor(.lightGray, for: .selected)
         exitEverBtn.titleLabel?.font = UIFont(name: "SFProText-Medium", size: 15)
         exitEverBtn.addTarget(self, action: #selector(closeEver(_:)), for: .touchUpInside)
-        exitEverBtn.frame = CGRect(x: view.frame.width - 120, y: view.frame.height - self.view.safeAreaInsets.bottom - 22, width: 120, height: 20)
+        exitEverBtn.frame = CGRect(x: view.frame.width - 120, y: view.frame.height - self.view.safeAreaInsets.bottom - 24, width: 120, height: 20)
         view.addSubview(exitEverBtn)
         
         /// page indicator
