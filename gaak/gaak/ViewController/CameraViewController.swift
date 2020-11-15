@@ -65,6 +65,12 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     
     let pageSize = 3 // 레이아웃 모드
     
+    //OnBording Screen을 위한 프로퍼티
+    var first: UITextView!
+    
+    var tvc: TutorialMasterVC! // 온보드(튜토리얼)뷰 마스터 컨트롤러
+    var needTutorial = true // 그냥 닫기버튼을 눌렀을 때 필요한 프로퍼티
+    
     //UI 스크롤뷰를 생성
     lazy var scrollView: UIScrollView = {
         // Create a UIScrollView.
@@ -252,12 +258,17 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        tvc = TutorialMasterVC() // 튜토리얼마스터VC 클래스
+        
         navigationController?.isNavigationBarHidden = true // 네비게이션 바 비활성화를 미리 해줘야 함
         startSession() // 카메라 기능 다시 활성화
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        //OnBording Screen을 실행
+        self.checkTutorial()
         
         /* 노치가 있는 폰에서는 safeArea를 고려해서 UI를 배치해야하는데
          viewDidAppear 에서부터 safeArea를 선언할 수 있음. */
@@ -403,6 +414,19 @@ extension CameraViewController {
             if self.captureSession.isRunning {
                 self.captureSession.stopRunning()
             }
+        }
+    }
+    
+    //OnBording Screen 튜토리얼 실행여부 확인
+    //코드 배치 위치가 애매해서 우선 최하단에 배치 했습니다.
+    func checkTutorial() {
+        let ud = UserDefaults.standard
+        if ud.bool(forKey: UserInfoKey.tutorial) == false && needTutorial == true {
+            print("before ud=\(ud.bool(forKey: UserInfoKey.tutorial))")
+            needTutorial = false
+            tvc.modalPresentationStyle = .fullScreen
+            
+            self.present(tvc!, animated: false)
         }
     }
 }

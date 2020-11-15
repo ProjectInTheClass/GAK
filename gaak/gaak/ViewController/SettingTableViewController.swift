@@ -27,7 +27,7 @@ class SettingTableViewController: UITableViewController {
 
         let header = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 35))
         
-        header.backgroundColor = UIColor(displayP3Red: 0.1, green: 0.1, blue: 0.1, alpha: 0.7)
+//      header.backgroundColor = UIColor(displayP3Red: 0.1, green: 0.1, blue: 0.1, alpha: 0.7)
         header.backgroundColor = UIColor( #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1) )
         
         let headerLabel = UILabel(frame: header.bounds)
