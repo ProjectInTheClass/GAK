@@ -19,7 +19,7 @@ class CameraViewController: UIViewController {
         
         first = UITextView()
         first.text = "Here is the CameraViewController !"
-        first.textColor = .black
+        first.textColor = .red
         first.frame = CGRect(x: 0, y: self.view.frame.height/2, width: self.view.frame.width, height: 100)
         first.textAlignment = .center
         view.addSubview(first)
