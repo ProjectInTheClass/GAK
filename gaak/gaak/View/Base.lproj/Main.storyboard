@@ -469,6 +469,7 @@
                         <outlet property="cameraToolsView" destination="lNm-wV-Pti" id="Xra-Q5-yWo"/>
                         <outlet property="captureButtonInner" destination="79T-DZ-xn8" id="Ec3-vm-MYd"/>
                         <outlet property="captureButtonOuter" destination="ifb-KP-SHf" id="41m-As-efF"/>
+                        <outlet property="captureButtonView" destination="okt-lg-eTM" id="xfw-h1-j9y"/>
                         <outlet property="continuousCaptureButton" destination="skh-nh-sHd" id="wlh-oK-NNM"/>
                         <outlet property="flashButton" destination="EaD-eS-n5W" id="Zib-NZ-Y5K"/>
                         <outlet property="gridButton" destination="Jc0-Mv-gLN" id="DYz-Of-3MP"/>

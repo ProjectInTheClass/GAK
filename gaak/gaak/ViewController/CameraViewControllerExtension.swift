@@ -1026,7 +1026,8 @@ extension CameraViewController {
                 self.currentAngleH = 0
                 
                 if (isImpactH && !isSkyShot){
-                    Haptic.play("oo--OOOO-", delay: 0.1)
+                    Haptic.play("oo--OOOO-", delay: 0.1) // made by 인재
+                    // Haptic.play("OO--Oo", delay: 0.1) // made by 동현
                     isImpactH = false
                 }
             }
@@ -1069,7 +1070,9 @@ extension CameraViewController {
                 self.currentAngleV = 0
                 
                 if isImpactV {
-                    Haptic.play("o-Oo", delay: 0.1)
+                    //Haptic.play("o-Oo", delay: 0.1) // made by 인재
+                    Haptic.play("OO-Oo", delay: 0.1)  // made by 동현
+                    
                     isImpactV = false
                 }
             }
@@ -1099,8 +1102,14 @@ extension CameraViewController {
             // MARK: 가로모드
             // cameraOrientation = .portrait || .landscapeLeft || .landscapeRight
             
-            print("\(self.currentAngleH)   \(self.currentAngleV)"   )
-
+            // 넘어갈땐 -78 // 되돌아올땐 -43
+            // captureButtonView, orientationStatus
+            
+            if (self.currentAngleH < -78 && orientationStatus == 0){
+                
+            }
+            
+            
             
             //MARK: 항공샷
             // 항공샷은 고정핀 해제상태에서만 가능합니다.
@@ -1110,7 +1119,13 @@ extension CameraViewController {
                 let roundedY = Float(round(y * 100)) / 100.0
                 let currentAngleY = roundedY * 90
                 
-
+                //print("\(self.currentAngleH)   \(self.currentAngleV)     \(currentAngleY)"   )
+                print(UIDevice.current.orientation.isPortrait)
+                
+                // portrait 잠금상태에서도 기기의 orientation을 알아낼 수 있다?
+                // 그럼 V -> Y 해주면 됨
+                // 안 된다? -> ㅁㄹ
+                
                 // 1. 항공샷 모드 임계각도에 진입 // 하면 중앙UI 표시
                 if (-20 < self.currentAngleH && self.currentAngleH < 20
                         && -15 < currentAngleY && currentAngleY < 15) {

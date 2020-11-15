@@ -63,7 +63,12 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     var isOn_AnglePin = false // 각도 고정핀 상태
     var pageStatus = 0 // 페이지 컨트롤 인터랙션을 위한 프로퍼티
     let pageSize = 3 // 레이아웃 모드
+    
+    // 가로모드 컨트롤을 위한 프로퍼티
     var cameraOrientation: AVCaptureVideoOrientation?
+    var orientationStatus: Int = 0 // portrait, landscapeLeft, landscapeRight
+    var orientToggled: Bool = false
+    
     
     //OnBording Screen을 위한 프로퍼티
     var tvc: TutorialMasterVC! // 온보드(튜토리얼)뷰 마스터 컨트롤러
@@ -232,6 +237,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     @IBOutlet weak var horizonIndicatorOuter: UIImageView! // 수평 100%
     @IBOutlet weak var anglePinStatus: UIImageView! // 각도고정핀 활성화 상태표시
     @IBOutlet weak var anglePin: UIView! // 각도 고정핀 회전을 위한 프로퍼티
+    @IBOutlet weak var captureButtonView: UIView!
     
 
     override var prefersStatusBarHidden: Bool {
