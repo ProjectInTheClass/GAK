@@ -16,17 +16,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Splash screen" translatesAutoresizingMaskIntoConstraints="NO" id="AYb-u4-rnt" userLabel="SplashScreen">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Splash screen" translatesAutoresizingMaskIntoConstraints="NO" id="AYb-u4-rnt" userLabel="SplashScreen">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="AYb-u4-rnt" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="9tc-eX-k6f"/>
-                            <constraint firstItem="AYb-u4-rnt" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="SMp-Ja-VAz"/>
-                            <constraint firstItem="AYb-u4-rnt" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="U67-2R-TPL"/>
-                            <constraint firstItem="AYb-u4-rnt" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="XE5-El-z4X"/>
+                            <constraint firstItem="AYb-u4-rnt" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="XRo-KD-LeS"/>
+                            <constraint firstItem="AYb-u4-rnt" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="eKY-k4-K7J"/>
+                            <constraint firstItem="AYb-u4-rnt" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="g5y-Sd-cfm"/>
+                            <constraint firstAttribute="bottom" secondItem="AYb-u4-rnt" secondAttribute="bottom" id="gYG-p6-Tb8"/>
+                            <constraint firstAttribute="trailing" secondItem="AYb-u4-rnt" secondAttribute="trailing" id="nTz-Jw-y8U"/>
+                            <constraint firstItem="AYb-u4-rnt" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="tq1-nT-ISs"/>
                         </constraints>
                     </view>
                 </viewController>
