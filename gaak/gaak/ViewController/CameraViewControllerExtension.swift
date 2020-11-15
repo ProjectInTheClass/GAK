@@ -51,8 +51,11 @@ extension CameraViewController {
                 self.countTimer = timer
                 
                 self.isCounting = true
+                
                 // 실행중에는 캡쳐버튼의 UI가 x로 변함.
                 self.captureButtonInner.image = #imageLiteral(resourceName: "xCircle")
+                self.captureButtonInner.alpha = 1.0
+                
                 
                 // 각도기능 멈춤
                 motionKit.stopDeviceMotionUpdates()
@@ -81,7 +84,6 @@ extension CameraViewController {
                     
                     // 각도 기능 재개
                     setGravityAccelerator()
-
 
                 }
                 countDown -= 1

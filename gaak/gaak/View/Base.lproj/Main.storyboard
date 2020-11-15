@@ -372,7 +372,7 @@
                                         <rect key="frame" x="319" y="135" width="50" height="50"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="5SZ-E7-GkF">
-                                                <rect key="frame" x="22.5" y="-2" width="5" height="4"/>
+                                                <rect key="frame" x="22.5" y="-5" width="5" height="4"/>
                                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="5" id="7TC-ua-E8S"/>
@@ -407,7 +407,7 @@
                                             <constraint firstAttribute="height" constant="50" id="10e-Rw-gCR"/>
                                             <constraint firstItem="uim-lk-fXc" firstAttribute="width" secondItem="iDl-JN-5t8" secondAttribute="width" id="7Vl-dS-fQt"/>
                                             <constraint firstItem="uim-lk-fXc" firstAttribute="centerY" secondItem="iDl-JN-5t8" secondAttribute="centerY" id="J6n-on-OCM"/>
-                                            <constraint firstItem="5SZ-E7-GkF" firstAttribute="centerY" secondItem="iDl-JN-5t8" secondAttribute="centerY" constant="-25" id="Mkl-EE-53T"/>
+                                            <constraint firstItem="5SZ-E7-GkF" firstAttribute="centerY" secondItem="iDl-JN-5t8" secondAttribute="centerY" constant="-28" id="Mkl-EE-53T"/>
                                             <constraint firstAttribute="width" constant="50" id="U5P-mS-Mr3"/>
                                             <constraint firstItem="uim-lk-fXc" firstAttribute="centerX" secondItem="iDl-JN-5t8" secondAttribute="centerX" id="XSN-Sh-1LO"/>
                                             <constraint firstItem="uim-lk-fXc" firstAttribute="height" secondItem="iDl-JN-5t8" secondAttribute="height" id="fnk-6i-iXt"/>
