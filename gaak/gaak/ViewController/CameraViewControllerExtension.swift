@@ -522,7 +522,7 @@ extension CameraViewController {
                 gridViewHeight.constant = previewViewHeight.constant
                 
                 cameraToolsView.snp.updateConstraints {
-                    $0.height.equalTo(safeAreaHeight - ((view.frame.size.width)*(4.0/3.0)))
+                    $0.height.equalTo(safeAreaHeight - (settingToolbarHeight.constant + (view.frame.size.width)*(4.0/3.0)))
                 }
                 
                 // draw grid (simple.ver)
@@ -1106,13 +1106,13 @@ extension CameraViewController {
                     
                     // 배경화면 색 변경
                     self.view.backgroundColor = #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
-                    settingToolbar.barTintColor = #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
+                    settingToolbar.backgroundColor = (oldPhone == true && screenRatioSwitchedStatus == 2) ? .clear : #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
+                    settingToolbar.barTintColor = (oldPhone == true && screenRatioSwitchedStatus == 2) ? .clear : #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
                     blindView.backgroundColor = #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
-                    cameraToolsView.backgroundColor = #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
-                    /// 혜정님이 보내주시는 흰색 원을 넣어야 함
+                    cameraToolsView.backgroundColor = screenRatioSwitchedStatus == 2 ? .clear : #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
                     self.photosButton.isHidden = true
-                    self.captureButtonInner.image = #imageLiteral(resourceName: "pin")
-                    self.captureButtonOuter.image = #imageLiteral(resourceName: "ic_camera_rear")
+                    self.captureButtonInner.image = UIImage()
+                    self.captureButtonOuter.image = #imageLiteral(resourceName: "Shutter_top view")
                     self.anglePin.isHidden = true
                     self.anglePinStatus.isHidden = true
                     
@@ -1134,11 +1134,12 @@ extension CameraViewController {
                         $0.centerY.equalToSuperview().offset((-currentAngleY) * 2)
                     }
                     
-                    if (-3 < self.currentAngleH && self.currentAngleH < 3 && -2 < currentAngleY && currentAngleY < 2) { // 임계값 도달
+                    // 임계값 수직수평 도달
+                    if (-3 < self.currentAngleH && self.currentAngleH < 3 && -2 < currentAngleY && currentAngleY < 2) {
                         
 //                        self.captureButtonInner.alpha = 1
 //                        self.captureButtonInner.image = #imageLiteral(resourceName: "shutter_inner_true")
-//                        self.captureButtonOuter.alpha = 1
+                        self.captureButtonOuter.alpha = 1
 //                        self.captureButtonOuter.image = #imageLiteral(resourceName: "shutter_right_out circle")
                         
                         if isImpactY {
@@ -1155,7 +1156,11 @@ extension CameraViewController {
                         self.skyShotInner.tintColor = #colorLiteral(red: 1.0, green: 0.725, blue: 0.16, alpha: 1.0)
                         
                     }
-                    else { // 항공샷 임계각도 이탈
+                    // 항공샷 수직수평 임계각도 이탈
+                    else {
+                        
+                        self.captureButtonOuter.alpha = 0.5
+
                         
                         if !isImpactY {
                             isImpactY = true
@@ -1170,12 +1175,12 @@ extension CameraViewController {
                 else { // 항공샷 임계 각도 이탈
                     isSkyShot = false
                     
-                    // 배경화면 색 변경
+                    // 배경화면 색 원상복구
                     self.view.backgroundColor = .black
-                    settingToolbar.barTintColor = .black
+                    settingToolbar.backgroundColor = screenRatioSwitchedStatus == 2 ? .clear : .black
+                    settingToolbar.barTintColor = screenRatioSwitchedStatus == 2 ? .clear : .black
                     blindView.backgroundColor = .black
-                    cameraToolsView.backgroundColor = .black
-                    /// 혜정님이 보내주시는 흰색 원을 넣어야 함
+                    cameraToolsView.backgroundColor = screenRatioSwitchedStatus == 2 ? .clear : .black
                     self.photosButton.isHidden = false
                     //self.captureButtonInner.image = #imageLiteral(resourceName: "pin")
                     //self.captureButtonOuter.image = #imageLiteral(resourceName: "ic_camera_rear")
