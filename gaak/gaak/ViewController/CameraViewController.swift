@@ -417,8 +417,7 @@ extension CameraViewController {
         }
     }
     
-    //OnBording Screen 튜토리얼 실행여부 확인
-    //코드 배치 위치가 애매해서 우선 최하단에 배치 했습니다.
+    // MARK: OnBoarding Tutorial 실행여부 확인
     func checkTutorial() {
         let ud = UserDefaults.standard
         if ud.bool(forKey: UserInfoKey.tutorial) == false && needTutorial == true {

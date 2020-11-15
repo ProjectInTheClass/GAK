@@ -10,8 +10,11 @@ import UIKit
 import Foundation
 
 class TutorialMasterVC: UIViewController {
-    var pageVC: UIPageViewController!
     
+    var oldPhone: Bool = false
+
+
+    var pageVC: UIPageViewController!
     var pageControl: UIPageControl!
     
     var exitBtn: UIButton!
@@ -20,9 +23,23 @@ class TutorialMasterVC: UIViewController {
     // Assets
     var contentTitles = ["STEP 1", "STEP 2", "STEP 3", "STEP 4"]
     var contentImages = ["Onboarding_1 – 1", "Onboarding_1", "Onboarding_2", "Onboarding_3"]
+    var contentImages_oldPhone = ["temp_oldPhoneImage", "temp_oldPhoneImage", "temp_oldPhoneImage", "temp_oldPhoneImage"]
+    
+    override var prefersStatusBarHidden: Bool {
+        return true // 아이폰 상단 정보 (시간, 배터리 등)을 숨겨줌
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // 종횡비에 따른 기기분류
+        oldPhone = self.view.frame.width/self.view.frame.height > 0.5 ? true : false
+        
+        self.view.backgroundColor = .black
                 
         /// page view controller 속성 정의
         pageVC = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
@@ -47,7 +64,7 @@ class TutorialMasterVC: UIViewController {
         exitBtn.setTitleColor(.lightGray, for: .selected)
         exitBtn.titleLabel?.font = UIFont(name: "SFProText-Medium", size: 15)
         exitBtn.addTarget(self, action: #selector(close(_:)), for: .touchUpInside)
-        exitBtn.frame = CGRect(x: 40, y: view.frame.height - 55, width: 40, height: 20)
+        exitBtn.frame = CGRect(x: 40, y: view.frame.height - self.view.safeAreaInsets.bottom - 22, width: 40, height: 20)
         view.addSubview(exitBtn)
         
         exitEverBtn = UIButton()
@@ -56,15 +73,14 @@ class TutorialMasterVC: UIViewController {
         exitEverBtn.setTitleColor(.lightGray, for: .selected)
         exitEverBtn.titleLabel?.font = UIFont(name: "SFProText-Medium", size: 15)
         exitEverBtn.addTarget(self, action: #selector(closeEver(_:)), for: .touchUpInside)
-        exitEverBtn.frame = CGRect(x: view.frame.width - 120, y: view.frame.height - 55, width: 120, height: 20)
+        exitEverBtn.frame = CGRect(x: view.frame.width - 120, y: view.frame.height - self.view.safeAreaInsets.bottom - 22, width: 120, height: 20)
         view.addSubview(exitEverBtn)
         
         /// page indicator
         pageControl = UIPageControl.appearance()
         pageControl.pageIndicatorTintColor = .gray
         pageControl.currentPageIndicatorTintColor = .white
-        pageControl.backgroundColor = .black
-        
+        pageControl.backgroundColor = .clear
     }
 
     /// 표현하려는 컨텐츠 뷰에 내용을 세팅한 후, DataSource이벤트에서 사용될 뷰컨트롤러 반환
@@ -74,8 +90,8 @@ class TutorialMasterVC: UIViewController {
         guard self.contentTitles.count > idx && self.contentTitles.count > 0 else {return nil}
         
         let cvc = TutorialContentsVC()
-        cvc.titleText = contentTitles[idx]
-        cvc.imageFile = contentImages[idx]
+
+        cvc.imageFile = oldPhone == true ? contentImages_oldPhone[idx] : contentImages[idx]
         cvc.pageIndex = idx
         cvc.view.backgroundColor = .white
         cvc.view.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height-90)

@@ -10,26 +10,23 @@ import UIKit
 
 class TutorialContentsVC: UIViewController {
     
-    var titleText: String!
     var imageFile: String!
     var pageIndex: Int!
     
-    var titleLabel: UILabel!
     var bgImageView: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         
-        titleLabel = UILabel()
         bgImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: view.safeAreaLayoutGuide.layoutFrame.width, height: view.safeAreaLayoutGuide.layoutFrame.height))
         bgImageView.contentMode = .scaleAspectFill
     }
     
     override func viewWillAppear(_ animated: Bool) {
 
-        titleLabel.text = titleText
-        print(titleText!)
+        //titleLabel.text = titleText
+        //print(titleText!)
 
         guard let img = UIImage(named: imageFile) else {return}
 

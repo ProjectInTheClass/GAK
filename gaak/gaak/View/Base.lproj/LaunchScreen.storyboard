@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -17,18 +16,15 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Splash screen" translatesAutoresizingMaskIntoConstraints="NO" id="AYb-u4-rnt" userLabel="SplashScreen">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <rect key="frame" x="19.5" y="42" width="375" height="812"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" red="0.0" green="0.88627450980392153" blue="0.57647058823529407" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="AYb-u4-rnt" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="XRo-KD-LeS"/>
                             <constraint firstItem="AYb-u4-rnt" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="eKY-k4-K7J"/>
-                            <constraint firstItem="AYb-u4-rnt" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="g5y-Sd-cfm"/>
-                            <constraint firstAttribute="bottom" secondItem="AYb-u4-rnt" secondAttribute="bottom" id="gYG-p6-Tb8"/>
-                            <constraint firstAttribute="trailing" secondItem="AYb-u4-rnt" secondAttribute="trailing" id="nTz-Jw-y8U"/>
-                            <constraint firstItem="AYb-u4-rnt" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="tq1-nT-ISs"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -39,8 +35,5 @@
     </scenes>
     <resources>
         <image name="Splash screen" width="375" height="812"/>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>
