@@ -66,12 +66,10 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     let pageSize = 3 // 레이아웃 모드
     
     //OnBording Screen을 위한 프로퍼티
-    var first: UITextView!
-    
     var tvc: TutorialMasterVC! // 온보드(튜토리얼)뷰 마스터 컨트롤러
     var needTutorial = true // 그냥 닫기버튼을 눌렀을 때 필요한 프로퍼티
     
-    //UI 스크롤뷰를 생성
+    //UI 스크롤뷰를 생성하기 위한 프로퍼티
     lazy var scrollView: UIScrollView = {
         // Create a UIScrollView.
         let scrollView = UIScrollView(frame: self.view.frame)
@@ -301,9 +299,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         setToolbarsUI() // 상, 하단 툴 바 설정
         
         setLayoutMode()
-        
     }
-    
     
     // MARK:- Get Screen Ratio
     // AVCaptureDevice 종류와 선택한 스크린 사이즈 비율에 맞게 PreviewImageView Frame 변경

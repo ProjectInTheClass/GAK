@@ -413,7 +413,6 @@ extension CameraViewController {
                     $0.height.equalTo(safeAreaHeight - (view.frame.width + settingToolbarHeight.constant))
                 }
                 
-                
                 // draw grid (simple.ver)
                 gridH1.constant = gridviewView.frame.width / 3
                 gridH2.constant = -(gridviewView.frame.width / 3)

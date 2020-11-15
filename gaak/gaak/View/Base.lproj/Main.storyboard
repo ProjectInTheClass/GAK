@@ -189,7 +189,7 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="eoN-hT-IEf"/>
                                     <barButtonItem style="plain" id="Hdi-yv-2la">
                                         <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="skh-nh-sHd">
-                                            <rect key="frame" x="251.5" y="2" width="31" height="31"/>
+                                            <rect key="frame" x="251" y="2" width="31" height="31"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <gestureRecognizers/>
                                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

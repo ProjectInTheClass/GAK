@@ -13,7 +13,6 @@ class TutorialMasterVC: UIViewController {
     
     var oldPhone: Bool = false
 
-
     var pageVC: UIPageViewController!
     var pageControl: UIPageControl!
     
