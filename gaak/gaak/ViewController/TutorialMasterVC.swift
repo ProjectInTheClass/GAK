@@ -45,16 +45,18 @@ class TutorialMasterVC: UIViewController {
         exitBtn.setTitle("닫기", for: .normal)
         exitBtn.setTitleColor(.white, for: .normal)
         exitBtn.setTitleColor(.lightGray, for: .selected)
+        exitBtn.titleLabel?.font = UIFont(name: "SFProText-Medium", size: 15)
         exitBtn.addTarget(self, action: #selector(close(_:)), for: .touchUpInside)
-        exitBtn.frame = CGRect(x: 40, y: view.frame.height-30, width: 40, height: 30)
+        exitBtn.frame = CGRect(x: 40, y: view.frame.height - 55, width: 40, height: 20)
         view.addSubview(exitBtn)
         
         exitEverBtn = UIButton()
         exitEverBtn.setTitle("다시보지않기", for: .normal)
         exitEverBtn.setTitleColor(.white, for: .normal)
         exitEverBtn.setTitleColor(.lightGray, for: .selected)
+        exitEverBtn.titleLabel?.font = UIFont(name: "SFProText-Medium", size: 15)
         exitEverBtn.addTarget(self, action: #selector(closeEver(_:)), for: .touchUpInside)
-        exitEverBtn.frame = CGRect(x: view.frame.width - 120, y: view.frame.height-30, width: 120, height: 30)
+        exitEverBtn.frame = CGRect(x: view.frame.width - 120, y: view.frame.height - 55, width: 120, height: 20)
         view.addSubview(exitEverBtn)
         
         /// page indicator
