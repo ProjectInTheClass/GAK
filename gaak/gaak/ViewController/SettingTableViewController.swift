@@ -54,10 +54,11 @@ class SettingTableViewController: UITableViewController {
         switch section {
         case 0:
             return settings.count
+            
         case 1:
             return HapticCellIdentifier.count
         default:
-            return 0
+            return 1
         }
     }
 
