@@ -11,6 +11,7 @@ import UIKit
 class HapticCellTableViewCell: UITableViewCell {
 
     @IBOutlet var leftLabel: UILabel!
+    @IBOutlet weak var rightSwitch: UISwitch!
     
     override func awakeFromNib() {
         super.awakeFromNib()

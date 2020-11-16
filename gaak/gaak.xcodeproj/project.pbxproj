@@ -170,9 +170,9 @@
 				9FD322C3252C94CE000B611D /* PhotoAlbumViewController.swift */,
 				9FE00E52252CA5FD000E6F9A /* ImageZoomViewController.swift */,
 				4C5D67B52554341D00245E67 /* SettingTableViewController.swift */,
+				4C5CAED02562735F008130F6 /* HapticCellTableViewCell.swift */,
 				4C50866C25610E7B00DC8C86 /* TutorialMasterVC.swift */,
 				4C50866F25610EAC00DC8C86 /* TutorialContentsVC.swift */,
-				4C5CAED02562735F008130F6 /* HapticCellTableViewCell.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";

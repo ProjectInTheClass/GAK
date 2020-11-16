@@ -586,27 +586,34 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="HapticCell" id="u8k-zl-x1w" customClass="HapticCellTableViewCell" customModule="gaak" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="71.5" width="414" height="43.5"/>
+                                <rect key="frame" x="0.0" y="71.5" width="414" height="31.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="u8k-zl-x1w" id="Epn-Et-jPI">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="31.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UBu-s1-oOj">
-                                            <rect key="frame" x="20" y="11" width="42" height="21.5"/>
+                                            <rect key="frame" x="20" y="11" width="42" height="9.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZA1-WQ-QsM">
+                                            <rect key="frame" x="365" y="0.0" width="51" height="31.5"/>
+                                        </switch>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="ZA1-WQ-QsM" secondAttribute="bottom" id="Eun-7H-sZ0"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="UBu-s1-oOj" secondAttribute="bottom" id="YMk-FV-05l"/>
+                                        <constraint firstAttribute="trailing" secondItem="ZA1-WQ-QsM" secondAttribute="trailing" id="YV2-s0-2EP"/>
                                         <constraint firstItem="UBu-s1-oOj" firstAttribute="top" secondItem="Epn-Et-jPI" secondAttribute="topMargin" id="hjy-0c-2Ou"/>
                                         <constraint firstItem="UBu-s1-oOj" firstAttribute="leading" secondItem="Epn-Et-jPI" secondAttribute="leadingMargin" id="nGC-vv-hqt"/>
+                                        <constraint firstItem="ZA1-WQ-QsM" firstAttribute="top" secondItem="Epn-Et-jPI" secondAttribute="top" id="w58-Y9-5vT"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="leftLabel" destination="UBu-s1-oOj" id="ny0-j1-ss7"/>
+                                    <outlet property="rightSwitch" destination="ZA1-WQ-QsM" id="TCU-4w-wGT"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

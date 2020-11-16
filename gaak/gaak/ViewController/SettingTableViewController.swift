@@ -12,6 +12,8 @@ import Foundation
 
 class SettingTableViewController: UITableViewController {
 
+
+
     let settings: [Setting] = [
         Setting(content: "GAK 홈페이지"),
         Setting(content: "GAK 사용법"),
@@ -20,7 +22,7 @@ class SettingTableViewController: UITableViewController {
         Setting(content: "버전: 1.0")
     ]
     
-    let HapticCellIdentifier: String = "햅티기능 ON/OFF"
+    let HapticCellIdentifier = ["햅티기능 ON/OFF"]
 
     // TableViewCell의 header 이미지를 조절
     override func viewDidLoad() {
@@ -45,17 +47,24 @@ class SettingTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return settings.count
+        switch section {
+        case 0:
+            return settings.count
+        case 1:
+            return HapticCellIdentifier.count
+        default:
+            return 0
+        }
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if indexPath.section < 5 {
+        if indexPath.section < 1 {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SettingCell", for: indexPath)
 
         let setting = settings[indexPath.row]
@@ -64,9 +73,10 @@ class SettingTableViewController: UITableViewController {
         return cell
             
         } else {
-            let HapticCell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "HapticCell", for: indexPath) as! HapticCellTableViewCell
+            let HapticCell: HapticCellTableViewCell = tableView.dequeueReusableCell(withIdentifier: "HapticCell", for: indexPath) as! HapticCellTableViewCell
             
-            HapticCell.leftLavel.text = self.HapticCellIdentifier.string(from: self.HapticCellIdentifier[indexPath.row])
+            let Haptic = HapticCellIdentifier[indexPath.row]
+            HapticCell.leftLabel?.text = "\(Haptic)"
             
             return HapticCell
         }
