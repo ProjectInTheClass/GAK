@@ -22,7 +22,8 @@ class SettingTableViewController: UITableViewController {
         Setting(content: "버전: 1.0")
     ]
     
-    let HapticCellIdentifier = ["햅티기능 ON/OFF"]
+
+    let HapticCellIdentifier = ["햅틱기능 ON/OFF"]
 
     // TableViewCell의 header 이미지를 조절
     override func viewDidLoad() {
@@ -30,7 +31,6 @@ class SettingTableViewController: UITableViewController {
 
         let header = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 35))
         
-//      header.backgroundColor = UIColor(displayP3Red: 0.1, green: 0.1, blue: 0.1, alpha: 0.7)
         header.backgroundColor = UIColor( #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1) )
         
         let headerLabel = UILabel(frame: header.bounds)
@@ -54,7 +54,7 @@ class SettingTableViewController: UITableViewController {
         switch section {
         case 0:
             return settings.count
-            
+
         case 1:
             return HapticCellIdentifier.count
         default:

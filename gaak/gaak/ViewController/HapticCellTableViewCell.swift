@@ -13,6 +13,10 @@ class HapticCellTableViewCell: UITableViewCell {
     @IBOutlet var leftLabel: UILabel!
     @IBOutlet weak var rightSwitch: UISwitch!
     
+    @IBAction func rightSwitchToggle(_ sender: Any) {
+        print("Haptic On/Off")
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
