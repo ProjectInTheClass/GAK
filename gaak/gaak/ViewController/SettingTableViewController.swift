@@ -19,7 +19,7 @@ class SettingTableViewController: UITableViewController {
         Setting(content: "GAK 사용법"),
         Setting(content: "개인정보처리방침"),
         Setting(content: "오픈소스 라이선스"),
-        Setting(content: "버전: 1.0")
+        Setting(content: "버전: 1.0"),
     ]
     
 
@@ -29,7 +29,7 @@ class SettingTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let header = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 35))
+        let header = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 40))
         
         header.backgroundColor = UIColor( #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1) )
         
@@ -93,7 +93,15 @@ class SettingTableViewController: UITableViewController {
             return HapticCell
         }
     }
-    
+//    세션별 헤더는 없는게 더 괜찮은 것 같다.
+//    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        return section == 0 ? "[GAK 소개]" : "[GAK 기능설정]"
+//    }
+//
+//    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//        return 30.0
+//    }
+
     // 앱에서 각 셀을 클릭할 시, 정해진 홈페이지로 이동, 깃헙 페이지가 만들어진 후에 주소 변경예정
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
