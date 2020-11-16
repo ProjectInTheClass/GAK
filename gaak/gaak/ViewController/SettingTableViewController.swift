@@ -19,9 +19,10 @@ class SettingTableViewController: UITableViewController {
         Setting(content: "오픈소스 라이선스"),
         Setting(content: "버전: 1.0")
     ]
+    
+    let HapticCellIdentifier: String = "햅티기능 ON/OFF"
 
     // TableViewCell의 header 이미지를 조절
-    // 왜 여기선 컬러 리터럴을 못사용하는거지??
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -53,12 +54,22 @@ class SettingTableViewController: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if indexPath.section < 5 {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SettingCell", for: indexPath)
 
         let setting = settings[indexPath.row]
         cell.textLabel?.text = "\(setting.content)"
         
         return cell
+            
+        } else {
+            let HapticCell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "HapticCell", for: indexPath) as! HapticCellTableViewCell
+            
+            HapticCell.leftLavel.text = self.HapticCellIdentifier.string(from: self.HapticCellIdentifier[indexPath.row])
+            
+            return HapticCell
+        }
     }
     
     // 앱에서 각 셀을 클릭할 시, 정해진 홈페이지로 이동, 깃헙 페이지가 만들어진 후에 주소 변경예정
