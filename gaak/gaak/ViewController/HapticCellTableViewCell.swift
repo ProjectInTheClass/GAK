@@ -16,6 +16,7 @@ class HapticCellTableViewCell: UITableViewCell {
     
     @IBAction func rightSwitchToggle(_ sender: UISwitch) {
        //어떻게 햅틱 기능을 활용하는지 모르겠네요 ㅜ
+        sender.isOn = !sender.isOn
         if sender.isOn{
 //            isImpactH = true
 //            isImpactV = true
