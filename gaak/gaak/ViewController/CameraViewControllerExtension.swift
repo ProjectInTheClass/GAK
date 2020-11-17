@@ -764,9 +764,12 @@ extension CameraViewController {
         
         
         if let coordinates = touches.first, let device = captureDevice {
-            
+                        
             // 터치 가능 영역을 벗어났을 경우입니다.
             if (coordinates.location(in: self.view).y < gridviewView.frame.minY || coordinates.location(in: self.view).y > gridviewView.frame.maxY){
+                return // 현재 터치된 곳은 초점을 맞출 수 없는 곳입니다.
+            }
+            else if (coordinates.location(in: self.view).y > cameraToolsView.frame.minY) {
                 return // 현재 터치된 곳은 초점을 맞출 수 없는 곳입니다.
             }
             
