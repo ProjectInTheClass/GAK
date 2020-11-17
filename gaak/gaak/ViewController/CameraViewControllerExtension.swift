@@ -408,7 +408,8 @@ extension CameraViewController {
                 
                 settingToolbar.isTranslucent = true
                 settingToolbar.backgroundColor = .black
-                
+                settingToolbar.barTintColor = .black
+
                 cameraToolsView.backgroundColor = CustomColor.uiColor("black")
                 
                 previewViewHeight.constant = view.frame.width * (4.0/3.0)
@@ -429,6 +430,10 @@ extension CameraViewController {
                 // 3:4
                 settingToolbar.isTranslucent = true
                 settingToolbar.backgroundColor = .clear
+                settingToolbar.barTintColor = .red
+                settingToolbar.tintColor = .clear
+                blindView.backgroundColor = .clear
+                
                 cameraToolsView.backgroundColor = CustomColor.uiColor("clear")
                 cameraToolsView.tintColor = .white
                 gridViewHeight.constant = previewViewHeight.constant
@@ -1186,8 +1191,8 @@ extension CameraViewController {
                     
                     // 배경화면 색 변경
                     self.view.backgroundColor = #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
-                    settingToolbar.backgroundColor = (oldPhone == true && screenRatioSwitchedStatus == 2) ? .clear : #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
-                    settingToolbar.barTintColor = (oldPhone == true && screenRatioSwitchedStatus == 2) ? .clear : #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
+                    settingToolbar.backgroundColor = (oldPhone == true && screenRatioSwitchedStatus != 0) ? .clear : #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
+                    settingToolbar.barTintColor = (oldPhone == true && screenRatioSwitchedStatus != 0) ? .clear : #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
                     blindView.backgroundColor = #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
                     cameraToolsView.backgroundColor = screenRatioSwitchedStatus == 2 ? .clear : #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
                     self.photosButton.isHidden = true
@@ -1261,8 +1266,8 @@ extension CameraViewController {
                     
                     // 배경화면 색 원상복구
                     self.view.backgroundColor = .black
-                    settingToolbar.backgroundColor = screenRatioSwitchedStatus == 2 ? .clear : .black
-                    settingToolbar.barTintColor = screenRatioSwitchedStatus == 2 ? .clear : .black
+                    settingToolbar.backgroundColor = screenRatioSwitchedStatus != 0 ? .clear : .black
+                    settingToolbar.barTintColor = screenRatioSwitchedStatus != 0 ? .clear : .black
                     blindView.backgroundColor = .black
                     cameraToolsView.backgroundColor = screenRatioSwitchedStatus == 2 ? .clear : .black
                     self.photosButton.isHidden = false
