@@ -465,6 +465,7 @@ extension CameraViewController {
                 cameraToolsView.backgroundColor = CustomColor.uiColor("clear")
                 cameraToolsView.tintColor = .white
                 gridViewHeight.constant = previewViewHeight.constant
+                settingToolbarHeight.constant = (view.frame.width * (4.0/3.0) - view.frame.width)/2.0
 
                 cameraToolsView.snp.updateConstraints {
                     $0.height.equalTo(safeAreaHeight - ((view.frame.size.width)*(4.0/3.0)))
