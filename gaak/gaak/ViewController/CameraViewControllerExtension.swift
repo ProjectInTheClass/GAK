@@ -37,7 +37,7 @@ extension CameraViewController {
                 self.countTimer.invalidate()
                 
                 self.isCounting = false
-                self.captureButtonInner.image = #imageLiteral(resourceName: "shutter_inner_true")
+                // self.captureButtonInner.image = #imageLiteral(resourceName: "shutter_inner_true")
                 // self.captureButtonInner.tintColor = .systemRed
                 // !!!주의!!! 이 곳의 x_o_temp 이미지를 원래대로 돌려야 함.
                     
@@ -46,16 +46,18 @@ extension CameraViewController {
                 
                 return
             }
+            
+            self.isCounting = true
 
             Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [self] timer in
                 self.countTimer = timer
                 
                 self.isCounting = true
                 
+                
                 // 실행중에는 캡쳐버튼의 UI가 x로 변함.
                 self.captureButtonInner.image = #imageLiteral(resourceName: "xCircle")
                 self.captureButtonInner.alpha = 1.0
-                
                 
                 // 각도기능 멈춤
                 motionKit.stopDeviceMotionUpdates()
