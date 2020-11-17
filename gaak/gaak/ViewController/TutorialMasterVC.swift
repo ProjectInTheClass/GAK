@@ -21,7 +21,7 @@ class TutorialMasterVC: UIViewController {
     
     // Assets
     var contentTitles = ["STEP 1", "STEP 2", "STEP 3", "STEP 4"]
-    var contentImages = ["Onboarding_1 – 1", "Onboarding_1", "Onboarding_2", "Onboarding_3"]
+    var contentImages = ["Onboarding_1", "Onboarding_2", "Onboarding_3", "Onboarding_4"]
     var contentImages_oldPhone = ["temp_oldPhoneImage", "temp_oldPhoneImage", "temp_oldPhoneImage", "temp_oldPhoneImage"]
     
     override var prefersStatusBarHidden: Bool {
