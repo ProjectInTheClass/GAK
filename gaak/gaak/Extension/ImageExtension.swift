@@ -10,6 +10,42 @@ import UIKit
 
 extension UIImage {
     
+    // 이미지 회전
+    func imageRotatedByDegrees(degrees: CGFloat) -> UIImage {
+        
+        // calculate the size of the rotated view's containing box for our drawing space
+        let rotatedViewBox = UIView(frame: CGRect(origin: .zero, size: size))
+        let t = CGAffineTransform(rotationAngle: degrees.toRadians());
+        rotatedViewBox.transform = t
+        let rotatedSize = rotatedViewBox.frame.size
+        
+        // Create the bitmap context
+        UIGraphicsBeginImageContext(rotatedSize)
+        if let bitmap = UIGraphicsGetCurrentContext() {
+            
+            bitmap.translateBy(x: rotatedSize.width / 2.0, y: rotatedSize.height / 2.0)
+            
+            //   // Rotate the image context
+            bitmap.rotate(by: degrees.toRadians())
+            
+            // Now, draw the rotated/scaled image into the context
+            bitmap.scaleBy(x: 1.0, y: -1.0)
+            
+            if let cgImage = self.cgImage {
+                bitmap.draw(cgImage, in: CGRect(x: -size.width / 2, y: -size.height / 2, width: size.width, height: size.height))
+            }
+            
+            guard let newImage = UIGraphicsGetImageFromCurrentImageContext() else { debugPrint("Failed to rotate image. Returning the same as input..."); return self }
+            UIGraphicsEndImageContext()
+            
+            return newImage
+        }else {
+            debugPrint("Failed to create graphics context. Returning the same as input...")
+            return self
+        }
+        
+    }
+    
     // target의 정한 사이즈 만큼 resize
     func resizeImage(targetSize: CGSize) -> UIImage {
         
@@ -191,4 +227,16 @@ extension UIImage {
     
     
     
+}
+public extension CGFloat {
+    
+    func toRadians() -> CGFloat {
+        //return self / (180 * .pi)
+        return self * .pi / 180
+    }
+    
+    func toDegrees() -> CGFloat {
+        //return self * (180 * .pi)
+        return self * .pi * 180
+    }
 }
