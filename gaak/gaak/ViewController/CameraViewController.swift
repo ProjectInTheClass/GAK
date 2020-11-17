@@ -40,7 +40,9 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     )
     let motionKit = MotionKit() // core motion 수직수평계(중력가속도)측정을 위한 킷
     
-    var screenRatioSwitchedStatus: Int = 0 // 화면 비율 구분을 위한 저장 프로퍼티
+    let ud = UserDefaults.standard // 튜토리얼 및 간단한 유저데이터
+
+    var screenRatioSwitchedStatus: Int = 1 // 화면 비율 구분을 위한 저장 프로퍼티
     var currentPosition: AVCaptureDevice.Position? // 카메라 포지션을 저장할 프로퍼티
     var rectOfpreviewImage: CGRect? // previewImage의 CGRect
     var cameraViewPhotoSize: CameraViewPhotoSize? // 카메라 뷰에 담길 촬영 포토 사이즈를 위한 프로퍼티
@@ -249,7 +251,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         previewView.session = captureSession
         sessionQueue.async { // AVCaptureSession을 구성하는건 세션큐에서 할거임
             self.setupSession()
-            self.startSession()
+            // self.startSession()
         }
         //setupUI() // <- 여기에 스플래시 스크린을 넣어야 함! 어차피 setupUI()는 viewDidAppear에서 호출됨!
         
@@ -262,7 +264,13 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         tvc = TutorialMasterVC() // 튜토리얼마스터VC 클래스
         
         navigationController?.isNavigationBarHidden = true // 네비게이션 바 비활성화를 미리 해줘야 함
-        startSession() // 카메라 기능 다시 활성화
+        
+        
+        startSession() // 카메라 기능 활성화
+        
+        setGravityAccelerator() // 각도 기능 활성화
+        
+        
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -276,7 +284,13 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         setupUI() /// 따라서 setupUI()를 한 번 더 선언함.
         
         // 수평수직계 셋업
-        setGravityAccelerator()
+        // ud.bool의 최초 default 값은 false -> 따라서 ! 반대로 취급함.
+        // print(ud.bool(forKey: "haptic"))
+        
+        
+        
+        
+
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -418,7 +432,7 @@ extension CameraViewController {
     
     // MARK: OnBoarding Tutorial 실행여부 확인
     func checkTutorial() {
-        let ud = UserDefaults.standard
+
         if ud.bool(forKey: UserInfoKey.tutorial) == false && needTutorial == true {
             print("before ud=\(ud.bool(forKey: UserInfoKey.tutorial))")
             needTutorial = false

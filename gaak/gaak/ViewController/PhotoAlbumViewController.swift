@@ -46,10 +46,14 @@ class PhotoAlbumViewController: UIViewController, PHPhotoLibraryChangeObserver {
         
     }
     
+    override var prefersStatusBarHidden: Bool {
+        return true // 아이폰 상단 정보 (시간, 배터리 등)을 숨겨줌
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        self.view.backgroundColor = .black
         // delegate, datasource set
         //self.photoAlbumCollectionView.delegate = self
         //self.photoAlbumCollectionView.dataSource = self
@@ -61,6 +65,7 @@ class PhotoAlbumViewController: UIViewController, PHPhotoLibraryChangeObserver {
         setFlowLayout()
         
         setData()
+        
         
     }
     
@@ -115,15 +120,12 @@ class PhotoAlbumViewController: UIViewController, PHPhotoLibraryChangeObserver {
         super.viewWillAppear(animated)
         
         navigationController?.isNavigationBarHidden = false
+        navigationController?.navigationBar.barTintColor = .black
+        navigationController?.navigationBar.tintColor = .white
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-            self.photoAlbumCollectionView.reloadData()
-            print("debug here")
-        })
         
     }
     

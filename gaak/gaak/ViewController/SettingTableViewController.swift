@@ -12,7 +12,7 @@ import Foundation
 
 class SettingTableViewController: UITableViewController {
 
-
+    let ud = UserDefaults.standard
 
     let settings: [Setting] = [
         Setting(content: "GAK 홈페이지"),
@@ -20,16 +20,50 @@ class SettingTableViewController: UITableViewController {
         Setting(content: "개인정보처리방침"),
         Setting(content: "오픈소스 라이선스"),
         Setting(content: "버전: 1.0"),
+        Setting(content: "진동(햅틱) On/Off")
     ]
-    
+     
+    // 스위치 컨트롤 버튼 생성
+    lazy var controlSwitch: UISwitch = {
+        // Create a Switch.
+        let swicth: UISwitch = UISwitch()
+        swicth.layer.position = CGPoint(x: 100, y: 0)
+        
+        // Display the border of Swicth.
+        swicth.tintColor = UIColor.orange
+        
+        // Set Switch to On.
+        swicth.isOn = true
+        
+        // Set the event to be called when switching On / Off of Switch.
+        swicth.addTarget(self, action: #selector(onClickSwitch(sender:)), for: UIControl.Event.valueChanged)
 
-    let HapticCellIdentifier = ["햅틱기능 ON/OFF"]
+        return swicth
+    }()
+    
+    // 스위치 컨트롤 버튼 Action
+    @objc func onClickSwitch(sender: UISwitch) {
+        // UserDeaults 객체의 인스턴스를 가져온다.
+        // 값을 저장한다.
+        ud.set(!sender.isOn, forKey: "haptic")
+        
+        if sender.isOn {
+            // Action
+        } else {
+            // Action
+        }
+    }
+    
+    
+    override var prefersStatusBarHidden: Bool {
+        return true // 아이폰 상단 정보 (시간, 배터리 등)을 숨겨줌
+    }
 
     // TableViewCell의 header 이미지를 조절
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let header = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 40))
+        let header = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 60))
         
         header.backgroundColor = UIColor( #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1) )
         
@@ -42,57 +76,66 @@ class SettingTableViewController: UITableViewController {
         header.addSubview(headerLabel)
         
         tableView.tableHeaderView = header
+        
+        self.view.backgroundColor = .black
+    }
+    
+    // MARK:- View Controller Lifecycle
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.isNavigationBarHidden = false
+        navigationController?.navigationBar.barTintColor = .black
+        navigationController?.navigationBar.tintColor = .white
+        
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
     }
 
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return settings.count
-            
-        case 1:
-            return HapticCellIdentifier.count
-            
-        default:
-            return 0
-        }
+        
+        return settings.count
+        
     }
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "SettingCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "SettingCell", for: indexPath)
+        
+        let setting = settings[indexPath.row]
+        cell.textLabel?.text = "\(setting.content)"
+        
+        if (indexPath.row == 5) {
             
-            let setting = settings[indexPath.row]
-            cell.textLabel?.text = "\(setting.content)"
+            //controlSwitch.frame = CGRect(
             
-            return cell
+            let hapticSwitch: UISwitch = UISwitch()
+            hapticSwitch.layer.position = CGPoint(x: cell.frame.maxX - 75, y: cell.frame.height/2)
             
-        } else if indexPath.section == 1{
-            let HapticCell: HapticCellTableViewCell = tableView.dequeueReusableCell(withIdentifier: "HapticCell", for: indexPath) as! HapticCellTableViewCell
+            // Display the border of Swicth.
+            hapticSwitch.tintColor = UIColor.orange
             
-            let Haptic = HapticCellIdentifier[indexPath.row]
-            HapticCell.leftLabel?.text = "\(Haptic)"
-            HapticCell.selectionStyle = .none
+            // Set Switch to On.
+            hapticSwitch.isOn = !ud.bool(forKey: "haptic")
             
-            return HapticCell
+            // Set the event to be called when switching On / Off of Switch.
+            hapticSwitch.addTarget(self, action: #selector(onClickSwitch(sender:)), for: UIControl.Event.valueChanged)
             
-        } else {
-            let HapticCell: HapticCellTableViewCell = tableView.dequeueReusableCell(withIdentifier: "HapticCell", for: indexPath) as! HapticCellTableViewCell
-            
-            let Haptic = HapticCellIdentifier[indexPath.row]
-            HapticCell.leftLabel?.text = "\(Haptic)"
-            HapticCell.selectionStyle = .none
-            
-            return HapticCell
+            cell.addSubview(hapticSwitch)
+
         }
+        return cell
     }
+
 //    세션별 헤더는 없는게 더 괜찮은 것 같다.
 //    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
 //        return section == 0 ? "[GAK 소개]" : "[GAK 기능설정]"

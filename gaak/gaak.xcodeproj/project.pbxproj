@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		4C50866D25610E7B00DC8C86 /* TutorialMasterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C50866C25610E7B00DC8C86 /* TutorialMasterVC.swift */; };
 		4C50867025610EAC00DC8C86 /* TutorialContentsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C50866F25610EAC00DC8C86 /* TutorialContentsVC.swift */; };
-		4C5CAED12562735F008130F6 /* HapticCellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5CAED02562735F008130F6 /* HapticCellTableViewCell.swift */; };
 		4C5D679C2554269600245E67 /* SF-Pro-Text-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4C5D678A2554269400245E67 /* SF-Pro-Text-Semibold.otf */; };
 		4C5D679D2554269600245E67 /* SF-Pro-Text-MediumItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4C5D678B2554269400245E67 /* SF-Pro-Text-MediumItalic.otf */; };
 		4C5D679E2554269600245E67 /* SF-Pro-Text-HeavyItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4C5D678C2554269400245E67 /* SF-Pro-Text-HeavyItalic.otf */; };
@@ -53,7 +52,6 @@
 /* Begin PBXFileReference section */
 		4C50866C25610E7B00DC8C86 /* TutorialMasterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialMasterVC.swift; sourceTree = "<group>"; };
 		4C50866F25610EAC00DC8C86 /* TutorialContentsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialContentsVC.swift; sourceTree = "<group>"; };
-		4C5CAED02562735F008130F6 /* HapticCellTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticCellTableViewCell.swift; sourceTree = "<group>"; };
 		4C5D678A2554269400245E67 /* SF-Pro-Text-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Semibold.otf"; sourceTree = "<group>"; };
 		4C5D678B2554269400245E67 /* SF-Pro-Text-MediumItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-MediumItalic.otf"; sourceTree = "<group>"; };
 		4C5D678C2554269400245E67 /* SF-Pro-Text-HeavyItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-HeavyItalic.otf"; sourceTree = "<group>"; };
@@ -170,7 +168,6 @@
 				9FD322C3252C94CE000B611D /* PhotoAlbumViewController.swift */,
 				9FE00E52252CA5FD000E6F9A /* ImageZoomViewController.swift */,
 				4C5D67B52554341D00245E67 /* SettingTableViewController.swift */,
-				4C5CAED02562735F008130F6 /* HapticCellTableViewCell.swift */,
 				4C50866C25610E7B00DC8C86 /* TutorialMasterVC.swift */,
 				4C50866F25610EAC00DC8C86 /* TutorialContentsVC.swift */,
 			);
@@ -376,7 +373,6 @@
 				4C9EEAB72540437600E31C12 /* GridView.swift in Sources */,
 				9F22AD9E2544114E006EE203 /* CoreMotionExtension.swift in Sources */,
 				9F5ACFA1250F518600516A9B /* PreviewView.swift in Sources */,
-				4C5CAED12562735F008130F6 /* HapticCellTableViewCell.swift in Sources */,
 				9FD322C4252C94CE000B611D /* PhotoAlbumViewController.swift in Sources */,
 				9FD87EC925273ED6001FF3F9 /* ImageExtension.swift in Sources */,
 				4C5D67B62554341D00245E67 /* SettingTableViewController.swift in Sources */,

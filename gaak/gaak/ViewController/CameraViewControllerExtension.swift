@@ -21,6 +21,8 @@ extension CameraViewController {
     
     // 촬영 버튼 Tap !
     @IBAction func tapCaptureButton(_ sender: Any) {
+        Haptic.play("o", delay: 0.1)
+
         capturePhotoWithOptions()
     }
     
@@ -1089,8 +1091,13 @@ extension CameraViewController {
                 self.currentAngleH = 0
                 
                 if (isImpactH && !isSkyShot){
-                    Haptic.play("oo--OOOO-", delay: 0.1) // made by 인재
-                    // Haptic.play("OO--Oo", delay: 0.1) // made by 동현
+                    if( !ud.bool(forKey: "haptic") ) {
+                        //print("haptic is on")
+                        
+                        Haptic.play("oo--OOOO-", delay: 0.1) // made by 인재
+                        // Haptic.play("OO--Oo", delay: 0.1) // made by 동현
+                    }
+                    
                     isImpactH = false
                 }
             }
@@ -1133,8 +1140,12 @@ extension CameraViewController {
                 self.currentAngleV = 0
                 
                 if isImpactV {
-                    //Haptic.play("o-Oo", delay: 0.1) // made by 인재
-                    Haptic.play("OO-Oo", delay: 0.1)  // made by 동현
+                    if( !ud.bool(forKey: "haptic") ) {
+                        //print("haptic is on")
+                        
+                        //Haptic.play("o-Oo", delay: 0.1) // made by 인재
+                        Haptic.play("OO-Oo", delay: 0.1)  // made by 동현
+                    }
                     
                     isImpactV = false
                 }
@@ -1212,7 +1223,11 @@ extension CameraViewController {
 //                        self.captureButtonOuter.image = #imageLiteral(resourceName: "shutter_right_out circle")
                         
                         if isImpactY {
-                            Haptic.play("OO-Oo", delay: 0.1)
+                            if( !ud.bool(forKey: "haptic") ) {
+                                //print("haptic is on")
+                                
+                                Haptic.play("OO-Oo", delay: 0.1)
+                            }
                             isImpactY = false
                             
                             // sktShotFocus()

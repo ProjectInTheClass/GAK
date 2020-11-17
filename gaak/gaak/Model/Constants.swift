@@ -120,8 +120,6 @@ enum TopAlert: String {
 }
 
 struct UserInfoKey {
-    // id, account, name 키 정보를 static으로 선언할 수 있음.
-    
+    // id, account, name 키 정보를 static으로 선언할 수 있음
     static let tutorial = "TUTORIAL"
 }
-
