@@ -67,7 +67,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     var pageStatus = 0 // 페이지 컨트롤 인터랙션을 위한 프로퍼티
     let pageSize = 3 // 레이아웃 모드의 개수
     
-    var deviceOrientation: Int = 1
+    var deviceOrientation: Int = 1 // 1: .portrait, 3: .landscapeRight, 4: .landscapeLeft
     
     //OnBording Screen을 위한 프로퍼티
     var tvc: TutorialMasterVC! // 온보드(튜토리얼)뷰 마스터 컨트롤러

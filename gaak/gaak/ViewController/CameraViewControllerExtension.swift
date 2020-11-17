@@ -106,7 +106,21 @@ extension CameraViewController {
         let videoPreviewLayerOrientation = self.previewView.videoPreviewLayer.connection?.videoOrientation
         self.sessionQueue.async {
             let connection = self.photoOutput.connection(with: .video)
+//            connection?.videoOrientation = videoPreviewLayerOrientation!
+            
+            if self.deviceOrientation == 1 {
+                connection?.videoOrientation = .portrait
+            }
+            else if self.deviceOrientation == 3 {
+                connection?.videoOrientation = .landscapeLeft
+            }
+            else if self.deviceOrientation == 4 {
+                connection?.videoOrientation = .landscapeRight
+            }
+            
             connection?.videoOrientation = videoPreviewLayerOrientation!
+
+            //connection?.videoOrientation =
             //connection?.videoOrientation = .portrait
             
             // 캡쳐 세션에 요청하는것
@@ -164,7 +178,21 @@ extension CameraViewController {
             croppedImage = cropImage2(image: image, rect: rectRatio, scale: 1.0) ?? image
         }
         
-        self.savePhotoLibrary(image: resizeImage(image: croppedImage, newWidth: 1080))
+        // 가로모드 분류! .portrait .landscapeLeft .landscapeRight
+        let rotatedImage: UIImage!
+        switch deviceOrientation {
+        case 3: // .landscapeLenft
+            rotatedImage = croppedImage.imageRotatedByDegrees(degrees: +90)
+        case 4: // .landscapeLenft
+            rotatedImage = croppedImage.imageRotatedByDegrees(degrees: -90)
+        default:
+            rotatedImage = croppedImage
+        }
+        
+        
+        //self.savePhotoLibrary(image: resizeImage(image: croppedImage, newWidth: 1080))
+        self.savePhotoLibrary(image: resizeImage(image: rotatedImage, newWidth: 1080))
+        
     }
     
     //MARK: 저장2. 라이브러리에 저장
@@ -437,6 +465,7 @@ extension CameraViewController {
                 cameraToolsView.backgroundColor = CustomColor.uiColor("clear")
                 cameraToolsView.tintColor = .white
                 gridViewHeight.constant = previewViewHeight.constant
+                settingToolbarHeight.constant = (view.frame.width * (4.0/3.0) - view.frame.width)/2.0
 
                 cameraToolsView.snp.updateConstraints {
                     $0.height.equalTo(safeAreaHeight - ((view.frame.size.width)*(4.0/3.0)))
