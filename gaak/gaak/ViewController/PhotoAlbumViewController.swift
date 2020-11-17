@@ -43,12 +43,12 @@ class PhotoAlbumViewController: UIViewController, PHPhotoLibraryChangeObserver {
         OperationQueue.main.addOperation {
             self.photoAlbumCollectionView.reloadSections(IndexSet(0...))
         }
+        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationController?.isNavigationBarHidden = false
         
         // delegate, datasource set
         //self.photoAlbumCollectionView.delegate = self
@@ -60,6 +60,24 @@ class PhotoAlbumViewController: UIViewController, PHPhotoLibraryChangeObserver {
         // Init Flow Layout !
         setFlowLayout()
         
+        setData()
+        
+    }
+    
+    func setFlowLayout() {
+        let space:CGFloat = 1.0
+        
+        // the size of the main view, wihich is dependent upon screen size.
+        let dimension = (view.frame.size.width - (2 * space)) / 3.0
+        // 행 또는 열 내의 Item 사이의 공간을 제어합니다.
+        collectionViewFlowLayout.minimumInteritemSpacing = space
+        // 행 또는 열 사이의 공간을 제어합니다.
+        collectionViewFlowLayout.minimumLineSpacing = space
+        // cell(item) 사이즈를 제어합니다.
+        collectionViewFlowLayout.itemSize = CGSize(width: dimension, height: dimension)
+    }
+    
+    func setData() {
         PHPhotoLibrary.authorizationStatus()
         
         authorizationStatus = PHPhotoLibrary.authorizationStatus()
@@ -92,26 +110,21 @@ class PhotoAlbumViewController: UIViewController, PHPhotoLibraryChangeObserver {
         }
     }
     
-    func setFlowLayout() {
-        let space:CGFloat = 1.0
-        
-        // the size of the main view, wihich is dependent upon screen size.
-        let dimension = (view.frame.size.width - (2 * space)) / 3.0
-        // 행 또는 열 내의 Item 사이의 공간을 제어합니다.
-        collectionViewFlowLayout.minimumInteritemSpacing = space
-        // 행 또는 열 사이의 공간을 제어합니다.
-        collectionViewFlowLayout.minimumLineSpacing = space
-        // cell(item) 사이즈를 제어합니다.
-        collectionViewFlowLayout.itemSize = CGSize(width: dimension, height: dimension)
-    }
-    
     // MARK:- View Controller Lifecycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        navigationController?.isNavigationBarHidden = false
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+            self.photoAlbumCollectionView.reloadData()
+            print("debug here")
+        })
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {

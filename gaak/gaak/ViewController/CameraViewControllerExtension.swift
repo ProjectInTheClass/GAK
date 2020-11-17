@@ -316,14 +316,16 @@ extension CameraViewController {
     // MARK: 그리드 상태 + 버튼 UI 컨트롤
     // gesture recognizer
     @IBAction func gridButton(_ sender: Any) {
-        isOn_Grid = !isOn_Grid
+        
         if isOn_Grid {
-            gridviewView.isHidden = false
-            gridButton.setImage(#imageLiteral(resourceName: "Grid_off"), for: .normal)
-        } else {
             gridviewView.isHidden = true
+            gridButton.setImage(#imageLiteral(resourceName: "Grid_off"), for: .normal)
+        } else if !isOn_Grid {
+            gridviewView.isHidden = false
             gridButton.setImage(#imageLiteral(resourceName: "Grid_on"), for: .normal)
         }
+        
+        isOn_Grid = !isOn_Grid
     }
     
     // MARK: 연속촬영 상태 + 버튼 UI 컨트롤
