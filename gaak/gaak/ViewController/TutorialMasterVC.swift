@@ -22,7 +22,7 @@ class TutorialMasterVC: UIViewController {
     // Assets
     var contentTitles = ["STEP 1", "STEP 2", "STEP 3", "STEP 4"]
     var contentImages = ["Onboarding_1", "Onboarding_2", "Onboarding_3", "Onboarding_4"]
-    var contentImages_oldPhone = ["temp_oldPhoneImage", "temp_oldPhoneImage", "temp_oldPhoneImage", "temp_oldPhoneImage"]
+    var contentImages_oldPhone = ["oldPhone_Onboarding_1", "oldPhone_Onboarding_2", "oldPhone_Onboarding_3", "oldPhone_Onboarding_4"]
     
     override var prefersStatusBarHidden: Bool {
         return true // 아이폰 상단 정보 (시간, 배터리 등)을 숨겨줌
