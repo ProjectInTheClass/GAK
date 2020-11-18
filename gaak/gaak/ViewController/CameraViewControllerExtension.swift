@@ -34,8 +34,12 @@ extension CameraViewController {
             var countDown = setTime
             
             if(isCounting == true) { // 타이머 동작 중간에 취소할때 동작함.
-                self.timeLeft.text = String(self.setTime) // * reset
-                self.timeLeft.isHidden = false // * reSet 하고 다시 보여줌
+                
+                DispatchQueue.main.async {
+                    self.timeLeft.text = String(self.setTime) // * reset
+                    self.timeLeft.isHidden = false // * reSet 하고 다시 보여줌
+                }
+                
                 self.countTimer.invalidate()
                 
                 self.isCounting = false
@@ -55,7 +59,6 @@ extension CameraViewController {
                 self.countTimer = timer
                 
                 self.isCounting = true
-                
                 
                 // 실행중에는 캡쳐버튼의 UI가 x로 변함.
                 self.captureButtonInner.image = #imageLiteral(resourceName: "xCircle")
@@ -104,20 +107,12 @@ extension CameraViewController {
     
     func capturePhoto() {
         let videoPreviewLayerOrientation = self.previewView.videoPreviewLayer.connection?.videoOrientation
-        self.sessionQueue.async {
+        
+        
+        /// test
+        //self.sessionQueue.async {
+        DispatchQueue.global(qos: .userInitiated).async {
             let connection = self.photoOutput.connection(with: .video)
-//            connection?.videoOrientation = videoPreviewLayerOrientation!
-            
-            if self.deviceOrientation == 1 {
-                connection?.videoOrientation = .portrait
-            }
-            else if self.deviceOrientation == 3 {
-                connection?.videoOrientation = .landscapeLeft
-            }
-            else if self.deviceOrientation == 4 {
-                connection?.videoOrientation = .landscapeRight
-            }
-            
             connection?.videoOrientation = videoPreviewLayerOrientation!
 
             //connection?.videoOrientation =
@@ -126,9 +121,12 @@ extension CameraViewController {
             // 캡쳐 세션에 요청하는것
             let setting = AVCapturePhotoSettings()
             setting.flashMode = self.getCurrentFlashMode(self.isOn_flash)
+            
             self.photoOutput.capturePhoto(with: setting, delegate: self)
 
         }
+        ///
+        
     }
 
 //  [old] func capturePhoto() 으로 변경되었음.
@@ -661,10 +659,13 @@ extension CameraViewController {
         
         self.view.addSubview(pageControl)
         
-        pageControl.snp.makeConstraints { (make) in
-            make.leading.trailing.equalTo(self.view)
-            make.bottom.equalTo(self.cameraToolsView).inset(155)
-            make.height.equalTo(20)
+        if !isLaunched {
+            pageControl.snp.makeConstraints { (make) in
+                make.left.right.equalTo(self.view)
+                make.bottom.equalTo(self.cameraToolsView).inset(155)
+                make.height.equalTo(20)
+            }
+            isLaunched = true
         }
         pageControl.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
         
@@ -684,8 +685,10 @@ extension CameraViewController {
 //
 //            let transform: CGAffineTransform
 //
-            self.pageControl.snp.remakeConstraints { (make) in
-                make.leading.trailing.equalTo(self.view).offset(-60 * sender.currentPage)
+            //self.pageControl.snp.removeConstraints()
+            self.pageControl.snp.updateConstraints { (make) in
+                make.left.equalTo(self.view).offset(-60 * sender.currentPage)
+                // make.right.equalTo(self.view).offset(-60 * sender.currentPage)
                 make.bottom.equalTo(self.cameraToolsView).inset(155)
                 make.height.equalTo(20)
             }
@@ -990,6 +993,7 @@ extension CameraViewController {
     
     // MARK: 앨범버튼 썸네일 설정
     func setLatestPhoto(){
+        
         PHPhotoLibrary.authorizationStatus()
         
         authorizationStatus = PHPhotoLibrary.authorizationStatus()
@@ -1004,6 +1008,7 @@ extension CameraViewController {
                 self.assetsFetchResults = PHAsset.fetchAssets(with: PHAssetMediaType.image, options: options)
                 
                 let asset: PHAsset = self.assetsFetchResults![0]
+                
                 self.imageManger?.requestImage(for: asset,
                                                targetSize: CGSize(width: 50, height: 50),
                                                contentMode: PHImageContentMode.aspectFill,
@@ -1019,9 +1024,7 @@ extension CameraViewController {
                                                         $0.width.height.equalTo(50)
                                                     }
                                                 } } )
-                
                 //self.photoAlbumCollectionView?.reloadData()
-
            
             case .denied:
                 print(authorizationStatusOfPhoto)
@@ -1039,6 +1042,8 @@ extension CameraViewController {
             }
         }
     }
+    
+    
 
     // MARK: 수평, 수직계 Indicator
     func setGravityAccelerator() {
@@ -1052,34 +1057,35 @@ extension CameraViewController {
             self.deviceOrientation = deviceOrientation.rawValue
             let duration = 0.3
             
-            if self.deviceOrientation == 1 {
-                // portrait
-                UIView.animate(withDuration: duration) {
-                    self.captureButtonView.transform = CGAffineTransform.identity
+            DispatchQueue.main.async {
+                if self.deviceOrientation == 1 {
+                    // portrait
+                    UIView.animate(withDuration: duration) {
+                        self.captureButtonView.transform = CGAffineTransform.identity
+                    }
                 }
-            }
-            else if (self.deviceOrientation == 3){
-                // landscapeRight
-                UIView.animate(withDuration: duration) {
-                    self.captureButtonView.transform = CGAffineTransform(rotationAngle: -.pi/2)
+                else if (self.deviceOrientation == 3){
+                    // landscapeRight
+                    UIView.animate(withDuration: duration) {
+                        self.captureButtonView.transform = CGAffineTransform(rotationAngle: -.pi/2)
+                    }
                 }
-            }
-            else if self.deviceOrientation == 4 {
-                // landscapeLeft
-                UIView.animate(withDuration: duration) {
-                    self.captureButtonView.transform = CGAffineTransform(rotationAngle: +.pi/2)
+                else if self.deviceOrientation == 4 {
+                    // landscapeLeft
+                    UIView.animate(withDuration: duration) {
+                        self.captureButtonView.transform = CGAffineTransform(rotationAngle: +.pi/2)
+                    }
                 }
-            }
-            
-            UIView.animate(withDuration: 1) {
-                self.view.layoutIfNeeded()
-            }
+                
+                UIView.animate(withDuration: 1) {
+                    self.view.layoutIfNeeded()
+                }
+            } //</DispatchQueue>
         }
 
         motionKit.getGravityAccelerationFromDeviceMotion(interval: 0.02) { [self] (x, y, z) in
             // x(H)가 좌-1 우+1, z(V)가 앞-1 뒤+1
             var transform: CATransform3D
-
             
             /* Horizontal part */
             

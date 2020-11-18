@@ -91,7 +91,7 @@ import UIKit
                 if newDeviceOrientation != self.currentDeviceOrientation {
                     self.currentDeviceOrientation = newDeviceOrientation ?? .portrait
                     if let deviceOrientationHandler = self.deviceOrientationAction {
-                        DispatchQueue.main.async {
+                        DispatchQueue.global(qos: .background).async {
                             print("current device orientation: \(String(describing: newDeviceOrientation?.rawValue))")
                             deviceOrientationHandler!(self.currentDeviceOrientation)
                         }

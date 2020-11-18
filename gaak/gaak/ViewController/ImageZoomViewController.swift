@@ -32,7 +32,9 @@ class ImageZoomViewController: UIViewController, UIScrollViewDelegate {
         scrollView.delegate = self
         
         
-        // optional error is occured !
+        // self.imageManger?.allowsCachingHighQualityImages
+        // 이거하면 고화질로 가져온다는거 같음
+
         imageManager.requestImage(for: asset,
                                   targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight),
                                   contentMode: .aspectFill,

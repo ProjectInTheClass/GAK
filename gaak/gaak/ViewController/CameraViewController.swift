@@ -28,9 +28,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     var oldPhone: Bool = false
     let captureSession = AVCaptureSession() // 캡쳐세션을 만들었고
     var captureDevice: AVCaptureDevice? // AVCaptureDevice 객체는 물리적 캡처 장치와 해당 장치와 관련된 속성을 나타냅니다. 캡처 장치를 사용하여 기본 하드웨어의 속성을 구성합니다. 캡처 장치는 또한 AVCaptureSession 객체에 입력 데이터 (예 : 오디오 또는 비디오)를 제공합니다.
-
     var videoDeviceInput: AVCaptureDeviceInput! // 디바이스 인풋(을 담을 변수 생성, but 아직 카메라가 연결되지는 않음.)
-    
     let photoOutput = AVCapturePhotoOutput()
     let sessionQueue = DispatchQueue(label: "session Queue")
     let videoDeviceDiscoverySession = AVCaptureDevice.DiscoverySession(
@@ -41,6 +39,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     let motionKit = MotionKit() // core motion 수직수평계(중력가속도)측정을 위한 킷
     
     let ud = UserDefaults.standard // 튜토리얼 및 간단한 유저데이터
+    var isLaunched: Bool = false
 
     var screenRatioSwitchedStatus: Int = 1 // 화면 비율 구분을 위한 저장 프로퍼티
     var currentPosition: AVCaptureDevice.Position? // 카메라 포지션을 저장할 프로퍼티
@@ -448,5 +447,10 @@ extension CameraViewController {
 // ScrollView, PageControll
 extension CameraViewController: UIScrollViewDelegate {
     
-    
+    // 코드 수행시간 측정
+    public func measureTime(_ closure: () -> ()) -> TimeInterval {
+        let startDate = Date()
+        closure()
+        return Date().timeIntervalSince(startDate)
+    }
 }
