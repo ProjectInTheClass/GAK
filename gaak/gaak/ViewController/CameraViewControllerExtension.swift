@@ -1230,6 +1230,8 @@ extension CameraViewController {
                     settingToolbar.barTintColor = (oldPhone == true && screenRatioSwitchedStatus != 0) ? .clear : #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
                     blindView.backgroundColor = #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
                     cameraToolsView.backgroundColor = screenRatioSwitchedStatus == 2 ? .clear : #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
+                    self.layoutView.isHidden = true
+                    self.pageControl.isHidden = true
                     self.photosButton.isHidden = true
                     self.captureButtonInner.image = UIImage()
                     self.captureButtonOuter.image = #imageLiteral(resourceName: "Shutter_top view")
@@ -1305,12 +1307,13 @@ extension CameraViewController {
                     settingToolbar.barTintColor = screenRatioSwitchedStatus != 0 ? .clear : .black
                     blindView.backgroundColor = .black
                     cameraToolsView.backgroundColor = screenRatioSwitchedStatus == 2 ? .clear : .black
+                    self.layoutView.isHidden = false
+                    self.pageControl.isHidden = false
                     self.photosButton.isHidden = false
                     //self.captureButtonInner.image = #imageLiteral(resourceName: "pin")
                     //self.captureButtonOuter.image = #imageLiteral(resourceName: "ic_camera_rear")
                     self.anglePin.isHidden = false
                     self.anglePinStatus.isHidden = false
-                    
                     
                     self.skyShotOuter.tintColor = .clear
                     self.skyShotInner.tintColor = .clear
