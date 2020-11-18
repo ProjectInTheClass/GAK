@@ -21,9 +21,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>gaak caamera app uses the camera to take photos and video</string>
+	<string>GAK uses the camera to take perfect pictures of your gorgeous moments</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>gaak camera app saves captured photos and videos to your photo library</string>
+	<string>GAK saves captured photos to your photo library</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>SF-Pro-Text-Black.otf</string>
