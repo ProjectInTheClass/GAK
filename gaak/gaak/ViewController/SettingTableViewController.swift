@@ -63,7 +63,7 @@ class SettingTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let header = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 60))
+        let header = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 45))
         
         header.backgroundColor = UIColor( #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1) )
         
