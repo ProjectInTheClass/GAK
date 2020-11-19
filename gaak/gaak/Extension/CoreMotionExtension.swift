@@ -1,19 +1,8 @@
-//
-//  MotionKit.swift
-//  MotionKit
-//
-//  Created by Haroon on 14/02/2015.
-//  Launched under the Creative Commons License. You're free to use MotionKit.
-//
-//  The original Github repository is https://github.com/MHaroonBaig/MotionKit
-//
-
 import Foundation
 import CoreMotion
 import UIKit
 
-//_______________________________________________________________________________________________________________
-// this helps retrieve values from the sensors.
+
 @objc protocol MotionKitDelegate {
     @objc optional  func retrieveAccelerometerValues (x: Double, y:Double, z:Double, absoluteValue: Double)
     @objc optional  func retrieveGyroscopeValues     (x: Double, y:Double, z:Double, absoluteValue: Double)
