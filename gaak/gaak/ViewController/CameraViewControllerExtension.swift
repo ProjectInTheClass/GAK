@@ -1010,7 +1010,7 @@ extension CameraViewController {
                 let asset: PHAsset = self.assetsFetchResults![0]
                 
                 self.imageManger?.requestImage(for: asset,
-                                               targetSize: CGSize(width: 50, height: 50),
+                                               targetSize: CGSize(width: 48, height: 48),
                                                contentMode: PHImageContentMode.aspectFill,
                                                options: nil,
                                                resultHandler: { (result : UIImage?, info) in
@@ -1021,7 +1021,7 @@ extension CameraViewController {
                                                     self.photosButton.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
                                                     self.photosButton.layer.borderWidth = 1
                                                     self.photosButton.snp.makeConstraints {
-                                                        $0.width.height.equalTo(50)
+                                                        $0.width.height.equalTo(48)
                                                     }
                                                 } } )
                 //self.photoAlbumCollectionView?.reloadData()

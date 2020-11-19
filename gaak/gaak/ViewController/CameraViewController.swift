@@ -269,6 +269,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         
         setGravityAccelerator() // 각도 기능 활성화
         
+        print(self.view.frame.height)
         
     }
 
