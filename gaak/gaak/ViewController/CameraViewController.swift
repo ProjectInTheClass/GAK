@@ -25,7 +25,8 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     // - AVCapturePhotoOutput // Video도 따로 할 수 있음
     // - Queue // 디스패치 큐, 각 기능들이 수행될 때 다른 기능의 수행동작을 막지 않기 위해 사용
     // - AVCaptureDevice DiscoverySession // 폰에서 카메라를 가져올때 도와주는 요소
-    var oldPhone: Bool = false
+    var oldPhone: Bool = false //
+    var realOldPhone: Bool = false
     let captureSession = AVCaptureSession() // 캡쳐세션을 만들었고
     var captureDevice: AVCaptureDevice? // AVCaptureDevice 객체는 물리적 캡처 장치와 해당 장치와 관련된 속성을 나타냅니다. 캡처 장치를 사용하여 기본 하드웨어의 속성을 구성합니다. 캡처 장치는 또한 AVCaptureSession 객체에 입력 데이터 (예 : 오디오 또는 비디오)를 제공합니다.
     var videoDeviceInput: AVCaptureDeviceInput! // 디바이스 인풋(을 담을 변수 생성, but 아직 카메라가 연결되지는 않음.)
@@ -160,7 +161,9 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
             // Set pageControl's location
             self.pageControl.snp.remakeConstraints { (make) in
                 make.leading.trailing.equalTo(self.view).offset(-60 * pageControl.currentPage)
-                make.bottom.equalTo(self.cameraToolsView).inset(155)
+                
+                if realOldPhone { make.bottom.equalTo(self.cameraToolsView).inset(147) }
+                else { make.bottom.equalTo(self.cameraToolsView).inset(155) }
                 make.height.equalTo(20)
             }
             UIView.animate(withDuration: 0.3) {
@@ -186,7 +189,8 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
             // Set pageControl's location
             self.pageControl.snp.remakeConstraints { (make) in
                 make.leading.trailing.equalTo(self.view).offset(-60 * pageControl.currentPage)
-                make.bottom.equalTo(self.cameraToolsView).inset(155)
+                if realOldPhone { make.bottom.equalTo(self.cameraToolsView).inset(147) }
+                else { make.bottom.equalTo(self.cameraToolsView).inset(155) }
                 make.height.equalTo(20)
             }
             UIView.animate(withDuration: 0.3) {
@@ -312,7 +316,8 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         setLatestPhoto() // 앨범버튼 썸네일 설정
         
         oldPhone = self.view.frame.width/self.view.frame.height > 0.5 ? true : false
-
+        realOldPhone = self.view.frame.height < 700 ? true : false
+        
         setToolbarsUI() // 상, 하단 툴 바 설정
         
         setLayoutMode()
