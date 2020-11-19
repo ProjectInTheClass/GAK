@@ -1,14 +1,17 @@
 {
   "images" : [
     {
+      "filename" : "oldPhone_Onboarding_1.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "oldPhone_Onboarding_1@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "oldPhone_Onboarding_1@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
