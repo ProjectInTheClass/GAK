@@ -150,26 +150,26 @@ class SettingTableViewController: UITableViewController {
         
         tableView.deselectRow(at: indexPath, animated: true)
         
-        if indexPath.section == 0{
+//        if indexPath.section == 0{
             switch indexPath.row{
             
             case 0:
-                if let url = URL(string: "https://codershigh.github.io/WebSite/#/") {
+                if let url = URL(string: "https://projectintheclass.github.io/gaak/") {
                     UIApplication.shared.open(url)
                 }
                 
             case 1:
-                if let url = URL(string: "https://www.notion.so/gaak/b7bb2b4c005b48eb9bc08406116e1041") {
+                if let url = URL(string: "https://www.notion.so/gaak/GAK-71bb9a4903dd4f4a8dd78884ca817111") {
                     UIApplication.shared.open(url)
                 }
                 
             case 2:
-                if let url = URL(string: "https://www.notion.so/gaak/Gaak-023f9aefb51747a0807e861ea527b68c") {
+                if let url = URL(string: "https://www.notion.so/gaak/be8788e87447493b9f4bc9675908ee40") {
                     UIApplication.shared.open(url)
                 }
                 
             case 3:
-                if let url = URL(string: "https://www.notion.so/gaak/425cfe05d58f4afdba9e39f3673db926") {
+                if let url = URL(string: "https://www.notion.so/gaak/f915f322eaf447f89e593839139e5beb") {
                     UIApplication.shared.open(url)
                 }
                 
@@ -178,4 +178,4 @@ class SettingTableViewController: UITableViewController {
             }
         }
     }
-}
+//}
