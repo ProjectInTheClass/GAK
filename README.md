@@ -15,15 +15,41 @@
    렌즈를 음식과 수평 방향으로 기울이기만 해도 모드가 변경돼요!
 
  ## How To Use GAK
+ <div class="row">
+                        <div class="col-3 col-12-narrower">
+                            <span class="image featured"><img src="images/경로탭.png" alt="" /></span>
+                        </div>
+                        <div class="col-3 col-12-narrower">
+                            <span class="image featured"><img src="images/이동탭.png" alt="" /></span>
+                        </div>
+                        <div class="col-3 col-12-narrower">
+                            <span class="image featured"><img src="images/지하철탭.png" alt="" /></span>
+                        </div>
+                        <div class="col-3 col-12-narrower">
+                            <span class="image featured"><img src="images/버스탭.png" alt="" /></span>
+                        </div>
+                    </div>
+                    
+ <div class="row">
+ <div class="col-3 col-12-narrower">
  <img src="Sandbox/GitHubImage/6.5ver_screenshot01.png" width="20%" height="15%" title="px(픽셀) 크기 설정" alt="RubberDuck"></img>
+ </div>
  
+ <div class="col-3 col-12-narrower">
  <img src="Sandbox/GitHubImage/6.5ver_screenshot02.png" width="20%" height="15%" title="px(픽셀) 크기 설정" alt="RubberDuck"></img>
+ </div>
  
+ <div class="col-3 col-12-narrower">
  <img src="Sandbox/GitHubImage/6.5ver_screenshot03.png" width="20%" height="15%" title="px(픽셀) 크기 설정" alt="RubberDuck"></img>
+ </div>
  
+ <div class="col-3 col-12-narrower">
  <img src="Sandbox/GitHubImage/6.5ver_screenshot04.png" width="20%" height="15%" title="px(픽셀) 크기 설정" alt="RubberDuck"></img>
+ </div>
  
- <img src="Sandbox/GitHubImage/6.5ver_screenshot05.png" width="20%" height="15%" title="px(픽셀) 크기 설정" alt="RubberDuck"></img>
+ <div class="col-3 col-12-narrower">
+ <img src="Sandbox/GitHubImage/6.5ver_screenshot05.png" width="20%" height="15%" title="px(픽셀) 크기 설정" alt="RubberDuck"></img> 
+ </div>
 
 ## Team
 
