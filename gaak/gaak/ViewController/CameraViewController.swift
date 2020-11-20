@@ -349,7 +349,7 @@ extension CameraViewController {
         // Add video input //
         do {
             /// defaultVideoDevice -> captureDevice
-//            var defaultVideoDevice: AVCaptureDevice?
+            //var defaultVideoDevice: AVCaptureDevice?
             if let dualCameraDevice = AVCaptureDevice.default(.builtInDualCamera, for: .video, position: .back) {
                 captureDevice = dualCameraDevice
             } else if let backCameraDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) {
@@ -432,7 +432,6 @@ extension CameraViewController {
 }
 
 /* MARK: 레이아웃 모드 */
-// 아직 기능이 완성되지 않아 여기에 배치되어있음.
 // ScrollView, PageControll
 extension CameraViewController: UIScrollViewDelegate {
     

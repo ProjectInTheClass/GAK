@@ -52,7 +52,6 @@ class GridView: UIView {
         shapeLayer.strokeColor = UIColor.black.cgColor
         shapeLayer.lineDashPattern = [1, 1]
         shapeLayer.frame = bounds
-//        shapeLayer.fillColor = UIColor.orange.cgColor
         shapeLayer.fillColor = UIColor.clear.cgColor
         // 클리어로 채우기 구현하지 않고, 스토리보드의 이미지 뷰의 투명도를 조절했습니다.
         return shapeLayer
