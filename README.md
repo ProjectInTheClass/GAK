@@ -14,8 +14,16 @@
 - 완벽하게 음식 사진을 찍고 싶은 분들! 항공샷 모드를 활용하세요.<br>
    렌즈를 음식과 수평 방향으로 기울이기만 해도 모드가 변경돼요!
 
- ## GAK Main Screen
- <img src="/Prototype/대표화면_고화질.png" width="20%" height="15%" title="px(픽셀) 크기 설정" alt="RubberDuck"></img>
+ ## How To Use GAK
+ <img src="/sandbox/GitHubImage/6.5ver_screenshot01.png" width="20%" height="15%" title="px(픽셀) 크기 설정" alt="RubberDuck"></img>
+ 
+ <img src="/sandbox/GitHubImage/6.5ver_screenshot02.png" width="20%" height="15%" title="px(픽셀) 크기 설정" alt="RubberDuck"></img>
+ 
+ <img src="/sandbox/GitHubImage/6.5ver_screenshot03.png" width="20%" height="15%" title="px(픽셀) 크기 설정" alt="RubberDuck"></img>
+ 
+ <img src="/sandbox/GitHubImage/6.5ver_screenshot04.png" width="20%" height="15%" title="px(픽셀) 크기 설정" alt="RubberDuck"></img>
+ 
+ <img src="/sandbox/GitHubImage/6.5ver_screenshot05.png" width="20%" height="15%" title="px(픽셀) 크기 설정" alt="RubberDuck"></img>
 
 ## Team
 
