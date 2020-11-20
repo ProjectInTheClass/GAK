@@ -76,7 +76,7 @@ class TutorialMasterVC: UIViewController {
         
         /// page indicator
         pageControl = UIPageControl.appearance()
-        pageControl.pageIndicatorTintColor = .gray
+        pageControl.pageIndicatorTintColor = .white
         pageControl.currentPageIndicatorTintColor = #colorLiteral(red: 1.0, green: 0.847, blue: 0.0, alpha: 1.0)
         pageControl.backgroundColor = .clear
     }
