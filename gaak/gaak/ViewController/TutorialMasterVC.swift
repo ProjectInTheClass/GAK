@@ -52,7 +52,6 @@ class TutorialMasterVC: UIViewController {
         pageVC.view.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
         
         // pageView 컨트롤러를 마스터 뷰 컨트롤러의 자식으로 설정
-        /// 3단계 암기할 것
         self.addChild(pageVC)
         self.view.addSubview(pageVC.view)
         pageVC.didMove(toParent: self) // 자식 뷰 컨트롤러에게 부모 뷰 컨트롤러가 바뀌었음을 알림
@@ -78,7 +77,7 @@ class TutorialMasterVC: UIViewController {
         /// page indicator
         pageControl = UIPageControl.appearance()
         pageControl.pageIndicatorTintColor = .gray
-        pageControl.currentPageIndicatorTintColor = .white
+        pageControl.currentPageIndicatorTintColor = #colorLiteral(red: 1.0, green: 0.847, blue: 0.0, alpha: 1.0)
         pageControl.backgroundColor = .clear
     }
 
