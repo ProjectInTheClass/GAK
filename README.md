@@ -19,22 +19,13 @@
  <div class="row">
  <div class="col-3 col-12-narrower">
  <span class="image featured"><img src="Sandbox/GitHubImage/6.5ver_screenshot01.png" width="20%" height="15%" title="px(픽셀) 크기 설정" alt="RubberDuck"></img></span>
- </div>
- 
- <div class="col-3 col-12-narrower">
+ </div><div class="col-3 col-12-narrower">
  <span class="image featured"><img src="Sandbox/GitHubImage/6.5ver_screenshot02.png" width="20%" height="15%" title="px(픽셀) 크기 설정" alt="RubberDuck"></img></span>
- </div>
- 
- <div class="col-3 col-12-narrower">
+ </div><div class="col-3 col-12-narrower">
  <span class="image featured"><img src="Sandbox/GitHubImage/6.5ver_screenshot03.png" width="20%" height="15%" title="px(픽셀) 크기 설정" alt="RubberDuck"></img></span>
- </div>
- 
- <div class="col-3 col-12-narrower">
+ </div><div class="col-3 col-12-narrower">
  <span class="image featured"><img src="Sandbox/GitHubImage/6.5ver_screenshot04.png" width="20%" height="15%" title="px(픽셀) 크기 설정" alt="RubberDuck"></img></span>
- </div>
- 
- <div class="col-3 col-12-narrower">
- <span class="image featured"> <img src="Sandbox/GitHubImage/6.5ver_screenshot05.png" width="20%" height="15%" title="px(픽셀) 크기 설정" alt="RubberDuck"></img> </span>
+</div><div class="col-3 col-12-narrower"> <span class="image featured"> <img src="Sandbox/GitHubImage/6.5ver_screenshot05.png" width="20%" height="15%" title="px(픽셀) 크기 설정" alt="RubberDuck"></img> </span>
  </div>
  </section>
  
