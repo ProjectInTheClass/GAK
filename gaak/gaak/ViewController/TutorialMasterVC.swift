@@ -77,11 +77,11 @@ class TutorialMasterVC: UIViewController {
         
         /// page indicator
         pageControl = UIPageControl.appearance()
-        pageControl.pageIndicatorTintColor = .gray
-        pageControl.currentPageIndicatorTintColor = .white
+        pageControl.pageIndicatorTintColor = .white
+        pageControl.currentPageIndicatorTintColor = #colorLiteral(red: 1.0, green: 0.847, blue: 0.0, alpha: 1.0)
         pageControl.backgroundColor = .clear
     }
-
+    
     /// 표현하려는 컨텐츠 뷰에 내용을 세팅한 후, DataSource이벤트에서 사용될 뷰컨트롤러 반환
     func getContentVC(atIndex idx: Int) -> UIViewController? {
 
