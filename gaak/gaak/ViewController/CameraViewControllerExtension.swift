@@ -1137,6 +1137,10 @@ extension CameraViewController {
                 self.horizonIndicatorOuter.tintColor = #colorLiteral(red: 0.0, green: 0.886, blue: 0.576, alpha: 1.0)
                 self.currentAngleH = 0
                 
+                horizonIndicatorInner.snp.updateConstraints {
+                    $0.width.equalTo(15)
+                }
+                
                 if (isImpactH && !isSkyShot){
                     if( !ud.bool(forKey: "haptic") ) {
                         //print("haptic is on")
@@ -1151,6 +1155,11 @@ extension CameraViewController {
             else { // 임계값 이탈
                 self.horizonIndicatorInner.tintColor = #colorLiteral(red: 0.9568, green: 0.305, blue: 0.305, alpha: 1)
                 self.horizonIndicatorOuter.tintColor = #colorLiteral(red: 0.9568, green: 0.305, blue: 0.305, alpha: 1)
+                
+                horizonIndicatorInner.snp.updateConstraints {
+                    $0.width.equalTo(12)
+                }
+                
                 if (!isImpactH) {
                     Haptic.play("-", delay: 0.1)
                     isImpactH = true

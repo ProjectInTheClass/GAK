@@ -267,7 +267,8 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         navigationController?.isNavigationBarHidden = true // 네비게이션 바 비활성화를 미리 해줘야 함
         
         startSession() // 카메라 기능 활성화
-        
+        setGravityAccelerator() // 각도 기능 활성화
+
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -279,7 +280,6 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         /* 노치가 있는 폰에서는 safeArea를 고려해서 UI를 배치해야하는데
          viewDidAppear 에서부터 safeArea를 선언할 수 있음. */
         setupUI() /// 따라서 setupUI()를 한 번 더 선언함.
-        setGravityAccelerator() // 각도 기능 활성화
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -295,8 +295,6 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         oldPhone = self.view.frame.width/self.view.frame.height > 0.5 ? true : false
         realOldPhone = self.view.frame.height < 700 ? true : false
         navigationController?.isNavigationBarHidden = true
-
-        if realOldPhone {  }
         
         
         moreView.isHidden = true // 더보기(상단툴바) 버튼 UI 설정 // 안 보이게 해놓고

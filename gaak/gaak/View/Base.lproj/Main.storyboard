@@ -326,11 +326,11 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="90" height="90"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="eT7-TK-W6Z" userLabel="indicator point">
-                                                        <rect key="frame" x="38.5" y="-11" width="13" height="12"/>
+                                                        <rect key="frame" x="35" y="-14.5" width="20" height="19"/>
                                                         <color key="tintColor" systemColor="systemRedColor"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="13" id="6fR-BC-J5C"/>
-                                                            <constraint firstAttribute="width" constant="13" id="LNJ-zI-Q6P"/>
+                                                            <constraint firstAttribute="width" priority="750" constant="13" id="LNJ-zI-Q6P"/>
+                                                            <constraint firstAttribute="width" secondItem="eT7-TK-W6Z" secondAttribute="height" multiplier="1:1" id="Os6-8n-i1n"/>
                                                         </constraints>
                                                     </imageView>
                                                 </subviews>
