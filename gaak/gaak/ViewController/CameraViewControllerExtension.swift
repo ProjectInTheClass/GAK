@@ -656,9 +656,12 @@ extension CameraViewController {
         
         self.view.addSubview(pageControl)
         
-        if !isLaunched {
+        if !isLaunched { // 최초 레이아웃뷰 위치 정의
             pageControl.snp.makeConstraints { (make) in
-                make.left.right.equalTo(self.view)
+                //make.left.right.equalTo(self.view)
+                make.leading.trailing.equalTo(self.view).offset(-60 * self.pageControl.currentPage)
+
+                
                 if self.realOldPhone { make.bottom.equalTo(self.cameraToolsView).inset(147) }
                 else { make.bottom.equalTo(self.cameraToolsView).inset(155) }
                 make.height.equalTo(20)
@@ -673,9 +676,11 @@ extension CameraViewController {
     // MARK: PageControl
     // 페이지 컨트롤 인터랙션 with 레이아웃뷰
     @objc @IBAction func pageControlSelectionAction(_ sender: UIPageControl) {
-        
-        let seconds = 0.1
-        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+
+        let seconds = 0.2
+        //DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+        DispatchQueue.main.asyncAfter(wallDeadline: .now() + seconds) {
+            
             self.scrollView.setContentOffset(CGPoint(x: (sender.currentPage) * Int(self.scrollView.frame.maxX), y: 0), animated: true)
             
 //            self.pageControl.transform = CGAffineTransform(translationX: -50, y: 0)
@@ -684,15 +689,17 @@ extension CameraViewController {
 //            let transform: CGAffineTransform
 //
             //self.pageControl.snp.removeConstraints()
-            self.pageControl.snp.updateConstraints { (make) in
-                make.left.equalTo(self.view).offset(-60 * sender.currentPage)
+            self.pageControl.snp.remakeConstraints { (make) in
+                
+                //make.left.equalTo(self.view).offset(-60 * sender.currentPage)
+                make.leading.trailing.equalTo(self.view).offset(-60 * self.pageControl.currentPage)
+                
                 if self.realOldPhone { make.bottom.equalTo(self.cameraToolsView).inset(147) }
                 else { make.bottom.equalTo(self.cameraToolsView).inset(155) }
                 make.height.equalTo(20)
             }
-            UIView.animate(withDuration: 0.3) {
-                self.view.layoutIfNeeded()
-            }
+            self.view.layoutIfNeeded()
+            self.pageControl.layoutIfNeeded()
                 
             
             //print("IBAction \(self.pageControl.currentPage)  \(sender.currentPage)")
