@@ -649,9 +649,6 @@ extension CameraViewController {
             
             scrollView.addSubview(layoutImage)
             
-            // subview 추가
-            //scrollView.addSubview(...)
-            
         }
         // Add UIScrollView, UIPageControl on view
         self.layoutView.addSubview(self.scrollView)
@@ -662,7 +659,8 @@ extension CameraViewController {
         if !isLaunched {
             pageControl.snp.makeConstraints { (make) in
                 make.left.right.equalTo(self.view)
-                make.bottom.equalTo(self.cameraToolsView).inset(155)
+                if self.realOldPhone { make.bottom.equalTo(self.cameraToolsView).inset(147) }
+                else { make.bottom.equalTo(self.cameraToolsView).inset(155) }
                 make.height.equalTo(20)
             }
             isLaunched = true
@@ -688,8 +686,8 @@ extension CameraViewController {
             //self.pageControl.snp.removeConstraints()
             self.pageControl.snp.updateConstraints { (make) in
                 make.left.equalTo(self.view).offset(-60 * sender.currentPage)
-                // make.right.equalTo(self.view).offset(-60 * sender.currentPage)
-                make.bottom.equalTo(self.cameraToolsView).inset(155)
+                if self.realOldPhone { make.bottom.equalTo(self.cameraToolsView).inset(147) }
+                else { make.bottom.equalTo(self.cameraToolsView).inset(155) }
                 make.height.equalTo(20)
             }
             UIView.animate(withDuration: 0.3) {
