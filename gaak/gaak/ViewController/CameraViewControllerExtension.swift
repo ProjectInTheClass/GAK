@@ -698,8 +698,10 @@ extension CameraViewController {
                 else { make.bottom.equalTo(self.cameraToolsView).inset(155) }
                 make.height.equalTo(20)
             }
-            self.view.layoutIfNeeded()
-            self.pageControl.layoutIfNeeded()
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+                //self.pageControl.layoutIfNeeded()
+            }
                 
             
             //print("IBAction \(self.pageControl.currentPage)  \(sender.currentPage)")
@@ -1162,9 +1164,6 @@ extension CameraViewController {
                 CGFloat(self.currentAngleH * Float.pi / 180), 0, 0, 1
             )
             self.horizonIndicator.transform3D = transform
-            
-            
-            
             
             /* Vertical part */
             

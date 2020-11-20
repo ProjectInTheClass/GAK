@@ -256,8 +256,6 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
             self.setupSession()
             // self.startSession()
         }
-        //setupUI() // <- 여기에 스플래시 스크린을 넣어야 함! 어차피 setupUI()는 viewDidAppear에서 호출됨!
-        
         
     }
     
@@ -268,10 +266,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         
         navigationController?.isNavigationBarHidden = true // 네비게이션 바 비활성화를 미리 해줘야 함
         
-        
         startSession() // 카메라 기능 활성화
-        
-        setGravityAccelerator() // 각도 기능 활성화
         
     }
 
@@ -284,15 +279,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         /* 노치가 있는 폰에서는 safeArea를 고려해서 UI를 배치해야하는데
          viewDidAppear 에서부터 safeArea를 선언할 수 있음. */
         setupUI() /// 따라서 setupUI()를 한 번 더 선언함.
-        
-        // 수평수직계 셋업
-        // ud.bool의 최초 default 값은 false -> 따라서 ! 반대로 취급함.
-        // print(ud.bool(forKey: "haptic"))
-        
-        
-        
-        
-
+        setGravityAccelerator() // 각도 기능 활성화
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -305,20 +292,20 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     
     //MARK: setupUI()
     func setupUI() {
-        
+        oldPhone = self.view.frame.width/self.view.frame.height > 0.5 ? true : false
+        realOldPhone = self.view.frame.height < 700 ? true : false
         navigationController?.isNavigationBarHidden = true
 
-        // 더보기(상단바) 버튼 UI 설정
-        moreView.isHidden = true // 안 보이게 해놓고
+        if realOldPhone {  }
+        
+        
+        moreView.isHidden = true // 더보기(상단툴바) 버튼 UI 설정 // 안 보이게 해놓고
         
         setLatestPhoto() // 앨범버튼 썸네일 설정
         
-        oldPhone = self.view.frame.width/self.view.frame.height > 0.5 ? true : false
-        realOldPhone = self.view.frame.height < 700 ? true : false
-        
         setToolbarsUI() // 상, 하단 툴 바 설정
         
-        setLayoutMode()
+        setLayoutMode() // 레이아웃(사진가이드) 뷰 설정
     }
     
     // MARK:- Get Screen Ratio
