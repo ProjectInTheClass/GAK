@@ -25,7 +25,7 @@ src="Sandbox/GitHubImage/6.5ver_screenshot05.png" width="19%" title="px(픽셀) 
 ## Team
 
 ### 김동현
-Developer, "한 눈에 사용법을 알 수 있는 깔끔한 앱을 만들도록 하겠습니다."
+Dev, "완벽한 사진에 집착하는 개발자입니다."
 
 ### 서인재
 UX, "누구나 쉽게 이용가능한 앱을 만들고싶습니다!!!" 
