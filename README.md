@@ -21,6 +21,9 @@ src="Sandbox/GitHubImage/6.5ver_screenshot03.png" width="19%" title="px(픽셀) 
 src="Sandbox/GitHubImage/6.5ver_screenshot04.png" width="19%" title="px(픽셀) 크기 설정" alt="RubberDuck"> <img 
 src="Sandbox/GitHubImage/6.5ver_screenshot05.png" width="19%" title="px(픽셀) 크기 설정" alt="RubberDuck">
  
+
+## Bug Report
+앱에 문제를 발견하시면 Issue를 추가해서 도움을 주실 수 있습니다.
  
 ## Team
 
