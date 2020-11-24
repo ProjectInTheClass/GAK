@@ -144,7 +144,7 @@ class SettingTableViewController: UITableViewController {
             switch indexPath.row{
             
             case 0:
-                if let url = URL(string: "https://projectintheclass.github.io/gaak/") {
+                if let url = URL(string: "https://projectintheclass.github.io/GAK/") {
                     UIApplication.shared.open(url)
                 }
                 
