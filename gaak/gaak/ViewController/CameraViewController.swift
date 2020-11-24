@@ -103,7 +103,11 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         // Set pageControl Properties
         pageControl.isUserInteractionEnabled = true
         pageControl.backgroundColor = UIColor.clear
-        pageControl.allowsContinuousInteraction = false
+        if #available(iOS 14.0, *) {
+            pageControl.allowsContinuousInteraction = false
+        } else {
+            // Fallback on earlier versions
+        }
         
         // Set the number of pages to page control.
         pageControl.numberOfPages = pageSize
