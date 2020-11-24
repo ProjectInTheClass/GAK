@@ -110,8 +110,8 @@ extension CameraViewController {
         
         
         /// test
-        //self.sessionQueue.async {
-        DispatchQueue.global(qos: .userInitiated).async {
+        self.sessionQueue.async {
+        //DispatchQueue.main.async {
             let connection = self.photoOutput.connection(with: .video)
             connection?.videoOrientation = videoPreviewLayerOrientation!
 
