@@ -426,7 +426,6 @@ extension CameraViewController {
     func checkTutorial() {
 
         if ud.bool(forKey: UserInfoKey.tutorial) == false && needTutorial == true {
-            print("before ud=\(ud.bool(forKey: UserInfoKey.tutorial))")
             needTutorial = false
             tvc.modalPresentationStyle = .fullScreen
             

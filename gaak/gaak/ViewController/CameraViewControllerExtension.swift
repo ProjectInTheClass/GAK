@@ -905,36 +905,47 @@ extension CameraViewController {
                 self.imageManger = PHCachingImageManager()
                 let options = PHFetchOptions()
                 options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-                
                 self.assetsFetchResults = PHAsset.fetchAssets(with: PHAssetMediaType.image, options: options)
-                
-                let asset: PHAsset = self.assetsFetchResults![0]
-                
-                self.imageManger?.requestImage(for: asset,
-                                               targetSize: CGSize(width: 48, height: 48),
-                                               contentMode: PHImageContentMode.aspectFill,
-                                               options: nil,
-                                               resultHandler: { (result : UIImage?, info) in
-                                                DispatchQueue.main.async {
-                                                    self.photosButton.setImage(result, for: .normal)
-                                                    self.photosButton.layer.cornerRadius = 10
-                                                    self.photosButton.layer.masksToBounds = true
-                                                    self.photosButton.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-                                                    self.photosButton.layer.borderWidth = 1
-                                                    self.photosButton.snp.makeConstraints {
-                                                        $0.width.height.equalTo(48)
-                                                    }
-                                                } } )
+
+                if self.assetsFetchResults.count == 0 {
+                    DispatchQueue.main.async {
+                        self.photosButton.setImage(#imageLiteral(resourceName: "photos"), for: .normal)
+                        self.photosButton.layer.cornerRadius = 10
+                        self.photosButton.layer.masksToBounds = true
+                        self.photosButton.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+                        self.photosButton.layer.borderWidth = 1
+                    }
+                    return
+                }
+                else {
+                    let asset: PHAsset = self.assetsFetchResults![0]
+                    
+                    self.imageManger?.requestImage(for: asset,
+                                                   targetSize: CGSize(width: 48, height: 48),
+                                                   contentMode: PHImageContentMode.aspectFill,
+                                                   options: nil,
+                                                   resultHandler: { (result : UIImage?, info) in
+                                                    DispatchQueue.main.async {
+                                                        self.photosButton.setImage(result, for: .normal)
+                                                        self.photosButton.layer.cornerRadius = 10
+                                                        self.photosButton.layer.masksToBounds = true
+                                                        self.photosButton.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+                                                        self.photosButton.layer.borderWidth = 1
+                                                        self.photosButton.snp.makeConstraints {
+                                                            $0.width.height.equalTo(48)
+                                                        }
+                                                    } } )
+                }
            
             case .denied:
-                print(authorizationStatusOfPhoto)
+                print("authorization denied(authorizationStatusOfPhoto: \(authorizationStatusOfPhoto)")
             case .notDetermined:
-                print(authorizationStatusOfPhoto)
+                print("authorization notDetermined(authorizationStatusOfPhoto: \(authorizationStatusOfPhoto)")
                 PHPhotoLibrary.requestAuthorization({ (authorizationStatus) in
                     print(authorizationStatus.rawValue)
                 })
             case .restricted:
-                print(authorizationStatusOfPhoto)
+                print("authorization restricted(authorizationStatusOfPhoto: \(authorizationStatusOfPhoto)")
             case .limited:
                 print("접근제한(.limited): \(authorizationStatusOfPhoto)")
             @unknown default:

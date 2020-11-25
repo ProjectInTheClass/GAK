@@ -25,7 +25,10 @@ class TutorialContentsVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
 
-        guard let img = UIImage(named: imageFile) else {return}
+        guard let img = UIImage(named: imageFile) else {
+            print("Here is TutorialContentsVC: viewWillAppear")
+            return
+        }
 
         bgImageView.image = img
 
