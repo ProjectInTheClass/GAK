@@ -1014,6 +1014,17 @@ extension CameraViewController {
                 
                 self.assetsFetchResults = PHAsset.fetchAssets(with: PHAssetMediaType.image, options: options)
                 
+                if self.assetsFetchResults.count == 0 {
+                    DispatchQueue.main.async {
+                        self.photosButton.setImage(#imageLiteral(resourceName: "photos"), for: .normal)
+                        self.photosButton.layer.cornerRadius = 10
+                        self.photosButton.layer.masksToBounds = true
+                        self.photosButton.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+                        self.photosButton.layer.borderWidth = 1
+                    }
+                    return
+                }
+                
                 let asset: PHAsset = self.assetsFetchResults![0]
                 
                 self.imageManger?.requestImage(for: asset,
