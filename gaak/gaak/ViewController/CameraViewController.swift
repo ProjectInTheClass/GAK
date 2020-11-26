@@ -272,8 +272,10 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         
         startSession() // 카메라 기능 활성화
         setGravityAccelerator() // 각도 기능 활성화
-
+        
     }
+    
+//    var feedbackGenerator: UINotificationFeedbackGenerator?
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -283,8 +285,16 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         
         /* 노치가 있는 폰에서는 safeArea를 고려해서 UI를 배치해야하는데
          viewDidAppear 에서부터 safeArea를 선언할 수 있음. */
-        setupUI() /// 따라서 setupUI()를 한 번 더 선언함.
+        setupUI()
+        
+//        setupHapticGenerator()
     }
+//
+//    private func setupHapticGenerator(){
+//        print("setupHapticGenerator has called")
+//        self.feedbackGenerator = UINotificationFeedbackGenerator()
+//        self.feedbackGenerator?.prepare()
+//    }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
@@ -300,6 +310,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         print("didReceiveMemotyWarning")
         // Dispose of any resources that can be recreated
     }
+    
     
     //MARK: setupUI()
     func setupUI() {

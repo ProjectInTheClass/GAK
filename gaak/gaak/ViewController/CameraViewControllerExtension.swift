@@ -54,8 +54,9 @@ extension CameraViewController {
             }
             
             self.isCounting = true
-
+            
             Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [self] timer in
+                
                 self.countTimer = timer
                 
                 self.isCounting = true
