@@ -294,6 +294,13 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
 
     }
     
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        
+        print("didReceiveMemotyWarning")
+        // Dispose of any resources that can be recreated
+    }
+    
     //MARK: setupUI()
     func setupUI() {
         oldPhone = self.view.frame.width/self.view.frame.height > 0.5 ? true : false
