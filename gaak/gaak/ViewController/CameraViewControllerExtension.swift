@@ -29,18 +29,20 @@ extension CameraViewController {
     func capturePhotoWithOptions(){
         //off(default) == 0 || 3초 == 1 || 5초 == 2 || 10초 == 3
         //var timerID: Timer
+        
         if (timerStatus != 0) {
             
             var countDown = setTime
             
             if(isCounting == true) { // 타이머 동작 중간에 취소할때 동작함.
+                guard self.countTimer != nil else { return }
                 
                 DispatchQueue.main.async {
                     self.timeLeft.text = String(self.setTime) // * reset
                     self.timeLeft.isHidden = false // * reSet 하고 다시 보여줌
                 }
                 
-                self.countTimer.invalidate()
+                self.countTimer?.invalidate()
                 
                 self.isCounting = false
                 // self.captureButtonInner.image = #imageLiteral(resourceName: "shutter_inner_true")
@@ -85,7 +87,7 @@ extension CameraViewController {
                 else if (countDown == 0) {
                     self.timeLeft.text = String(self.setTime) // * reset
                     self.timeLeft.isHidden = false // * reSet 하고 다시 보여줌
-                    self.countTimer.invalidate()
+                    self.countTimer?.invalidate()
                     self.isCounting = false
 
                     self.captureButtonInner.image = #imageLiteral(resourceName: "shutter_inner_true")

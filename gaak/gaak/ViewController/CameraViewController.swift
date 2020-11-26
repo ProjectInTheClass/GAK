@@ -52,7 +52,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     var authorizationStatus: PHAuthorizationStatus? // 포토앨범 썸네일 1장 불러오기 위한 프로퍼티-3
     var timerStatus: Int = 0 // 타이머 0초, 3초, 5초, 10초 구분을 위한 프로퍼티
     var setTime: Int = 0 // 타이머 카운트다운을 위한 프로퍼티
-    var countTimer: Timer! // 동적 타이머 프로퍼티를 컨트롤하기 위한 정적 프로퍼티
+    var countTimer: Timer? // 동적 타이머 프로퍼티를 컨트롤하기 위한 정적 프로퍼티
     var isCounting: Bool = false // 타이머가 동작중인지 확인하는 프로퍼티
     var isOn_flash: Bool = false // 플래시 상태 프로퍼티
     var isOn_Grid = true //그리드 뷰 && 버튼 활성화 비활성화 flow controll value
