@@ -64,17 +64,20 @@ extension CameraViewController {
                 self.isCounting = true
                 
                 // 실행중에는 캡쳐버튼의 UI가 x로 변함.
-                self.captureButtonInner.image = #imageLiteral(resourceName: "xCircle")
-                self.captureButtonInner.alpha = 1.0
+                DispatchQueue.main.async {
+                    self.captureButtonInner.image = #imageLiteral(resourceName: "xCircle")
+                    self.captureButtonInner.alpha = 1.0
+                }
                 
                 // 각도기능 멈춤
                 motionKit.stopDeviceMotionUpdates()
                 self.captureButtonInner.transform = CGAffineTransform.identity
                 
-                self.timeLeft.text = String(countDown - 1)
-                
-                UIView.transition(with: self.timeLeft, duration: 0.3, options: .transitionCrossDissolve, animations: .none, completion: nil)
-                
+                DispatchQueue.main.async {
+                    self.timeLeft.text = String(countDown)
+                    
+                    UIView.transition(with: self.timeLeft, duration: 0.3, options: .transitionCrossDissolve, animations: .none, completion: nil)
+                }
                 if(countDown == 1){
                     if self.isOn_continuousCapture {
                         for _ in 1...5{
@@ -85,12 +88,14 @@ extension CameraViewController {
                     self.timeLeft.isHidden = true // * 0일때는 사라짐
                 }
                 else if (countDown == 0) {
-                    self.timeLeft.text = String(self.setTime) // * reset
-                    self.timeLeft.isHidden = false // * reSet 하고 다시 보여줌
+                    DispatchQueue.main.async {
+                        self.timeLeft.text = String(self.setTime) // * reset
+                        self.timeLeft.isHidden = false // * reSet 하고 다시 보여줌
+                        self.captureButtonInner.image = #imageLiteral(resourceName: "shutter_inner_true")
+                    }
                     self.countTimer?.invalidate()
                     self.isCounting = false
 
-                    self.captureButtonInner.image = #imageLiteral(resourceName: "shutter_inner_true")
                     
                     // 각도 기능 재개
                     setGravityAccelerator()
