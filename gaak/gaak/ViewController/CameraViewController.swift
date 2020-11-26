@@ -52,7 +52,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     var authorizationStatus: PHAuthorizationStatus? // 포토앨범 썸네일 1장 불러오기 위한 프로퍼티-3
     var timerStatus: Int = 0 // 타이머 0초, 3초, 5초, 10초 구분을 위한 프로퍼티
     var setTime: Int = 0 // 타이머 카운트다운을 위한 프로퍼티
-    var countTimer: Timer! // 동적 타이머 프로퍼티를 컨트롤하기 위한 정적 프로퍼티
+    var countTimer: Timer? // 동적 타이머 프로퍼티를 컨트롤하기 위한 정적 프로퍼티
     var isCounting: Bool = false // 타이머가 동작중인지 확인하는 프로퍼티
     var isOn_flash: Bool = false // 플래시 상태 프로퍼티
     var isOn_Grid = true //그리드 뷰 && 버튼 활성화 비활성화 flow controll value
@@ -272,8 +272,10 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         
         startSession() // 카메라 기능 활성화
         setGravityAccelerator() // 각도 기능 활성화
-
+        
     }
+    
+//    var feedbackGenerator: UINotificationFeedbackGenerator?
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -283,8 +285,16 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         
         /* 노치가 있는 폰에서는 safeArea를 고려해서 UI를 배치해야하는데
          viewDidAppear 에서부터 safeArea를 선언할 수 있음. */
-        setupUI() /// 따라서 setupUI()를 한 번 더 선언함.
+        setupUI()
+        
+//        setupHapticGenerator()
     }
+//
+//    private func setupHapticGenerator(){
+//        print("setupHapticGenerator has called")
+//        self.feedbackGenerator = UINotificationFeedbackGenerator()
+//        self.feedbackGenerator?.prepare()
+//    }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
@@ -293,6 +303,14 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         motionKit.stopDeviceMotionUpdates() // 각도기능 멈춤
 
     }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        
+        print("didReceiveMemotyWarning")
+        // Dispose of any resources that can be recreated
+    }
+    
     
     //MARK: setupUI()
     func setupUI() {
@@ -353,7 +371,7 @@ extension CameraViewController {
         // Add video input //
         do {
             /// defaultVideoDevice -> captureDevice
-//            var defaultVideoDevice: AVCaptureDevice?
+            //var defaultVideoDevice: AVCaptureDevice?
             if let dualCameraDevice = AVCaptureDevice.default(.builtInDualCamera, for: .video, position: .back) {
                 captureDevice = dualCameraDevice
             } else if let backCameraDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) {
@@ -426,7 +444,6 @@ extension CameraViewController {
     func checkTutorial() {
 
         if ud.bool(forKey: UserInfoKey.tutorial) == false && needTutorial == true {
-            print("before ud=\(ud.bool(forKey: UserInfoKey.tutorial))")
             needTutorial = false
             tvc.modalPresentationStyle = .fullScreen
             
@@ -436,7 +453,6 @@ extension CameraViewController {
 }
 
 /* MARK: 레이아웃 모드 */
-// 아직 기능이 완성되지 않아 여기에 배치되어있음.
 // ScrollView, PageControll
 extension CameraViewController: UIScrollViewDelegate {
     

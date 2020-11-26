@@ -18,11 +18,6 @@ class PreviewView: UIView {
             fatalError("Expected `AVCaptureVideoPreviewLayer` type for layer. Check PreviewView.layerClass implementation.")
         }
         
-        /// 도대체 왜 이 부분이 호출되는 순간(촬영버튼)에는 잘 적용돼서 저장도 잘 되는데, 정작 previewView에서는 왜 안 되는걸까?
-        //layer.bounds = CGRect(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height)
-        //layer.position = CGPoint(x: self.bounds.midX, y: self.bounds.midY)
-        /// 그냥 미리보기 상태에서는 적용이 잘 안 되냐
-        
         layer.videoGravity = AVLayerVideoGravity.resizeAspectFill
         layer.connection?.videoOrientation = .portrait
         return layer

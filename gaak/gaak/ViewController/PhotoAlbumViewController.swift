@@ -32,7 +32,6 @@ class PhotoAlbumViewController: UIViewController, PHPhotoLibraryChangeObserver {
         return true
     } // <- 사용자가 직접 편집할 수 있게 함
     
-    // editing style을 설정하는 함수가 table view 함수에는 있는데 collection view 함수는 없음.. 혹시 에디팅을 추가하게 된다면 이 부분에 넣는게 좋을듯.
     
     // about PHPhotoLibraryChangeObserver
     func photoLibraryDidChange(_ changeInstance: PHChange) {

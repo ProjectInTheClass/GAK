@@ -29,18 +29,20 @@ extension CameraViewController {
     func capturePhotoWithOptions(){
         //off(default) == 0 || 3초 == 1 || 5초 == 2 || 10초 == 3
         //var timerID: Timer
+        
         if (timerStatus != 0) {
             
             var countDown = setTime
             
             if(isCounting == true) { // 타이머 동작 중간에 취소할때 동작함.
+                guard self.countTimer != nil else { return }
                 
                 DispatchQueue.main.async {
                     self.timeLeft.text = String(self.setTime) // * reset
                     self.timeLeft.isHidden = false // * reSet 하고 다시 보여줌
                 }
                 
-                self.countTimer.invalidate()
+                self.countTimer?.invalidate()
                 
                 self.isCounting = false
                 // self.captureButtonInner.image = #imageLiteral(resourceName: "shutter_inner_true")
@@ -54,24 +56,28 @@ extension CameraViewController {
             }
             
             self.isCounting = true
-
+            
             Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [self] timer in
+                
                 self.countTimer = timer
                 
                 self.isCounting = true
                 
                 // 실행중에는 캡쳐버튼의 UI가 x로 변함.
-                self.captureButtonInner.image = #imageLiteral(resourceName: "xCircle")
-                self.captureButtonInner.alpha = 1.0
+                DispatchQueue.main.async {
+                    self.captureButtonInner.image = #imageLiteral(resourceName: "xCircle")
+                    self.captureButtonInner.alpha = 1.0
+                }
                 
                 // 각도기능 멈춤
                 motionKit.stopDeviceMotionUpdates()
                 self.captureButtonInner.transform = CGAffineTransform.identity
                 
-                self.timeLeft.text = String(countDown - 1)
-                
-                UIView.transition(with: self.timeLeft, duration: 0.3, options: .transitionCrossDissolve, animations: .none, completion: nil)
-                
+                DispatchQueue.main.async {
+                    self.timeLeft.text = String(countDown)
+                    
+                    UIView.transition(with: self.timeLeft, duration: 0.3, options: .transitionCrossDissolve, animations: .none, completion: nil)
+                }
                 if(countDown == 1){
                     if self.isOn_continuousCapture {
                         for _ in 1...5{
@@ -82,12 +88,14 @@ extension CameraViewController {
                     self.timeLeft.isHidden = true // * 0일때는 사라짐
                 }
                 else if (countDown == 0) {
-                    self.timeLeft.text = String(self.setTime) // * reset
-                    self.timeLeft.isHidden = false // * reSet 하고 다시 보여줌
-                    self.countTimer.invalidate()
+                    DispatchQueue.main.async {
+                        self.timeLeft.text = String(self.setTime) // * reset
+                        self.timeLeft.isHidden = false // * reSet 하고 다시 보여줌
+                        self.captureButtonInner.image = #imageLiteral(resourceName: "shutter_inner_true")
+                    }
+                    self.countTimer?.invalidate()
                     self.isCounting = false
 
-                    self.captureButtonInner.image = #imageLiteral(resourceName: "shutter_inner_true")
                     
                     // 각도 기능 재개
                     setGravityAccelerator()
@@ -110,8 +118,8 @@ extension CameraViewController {
         
         
         /// test
-        //self.sessionQueue.async {
-        DispatchQueue.global(qos: .userInitiated).async {
+        self.sessionQueue.async {
+        //DispatchQueue.main.async {
             let connection = self.photoOutput.connection(with: .video)
             connection?.videoOrientation = videoPreviewLayerOrientation!
 
@@ -125,29 +133,10 @@ extension CameraViewController {
             self.photoOutput.capturePhoto(with: setting, delegate: self)
 
         }
-        ///
-        
     }
-
-//  [old] func capturePhoto() 으로 변경되었음.
-//    @IBAction func capturePhoto(_ sender: Any) {
-//        // TODO: photoOutput의 capturePhoto 메소드
-//        // orientation
-//        // photooutput
-//        let videoPreviewLayerOrientation = self.previewView.videoPreviewLayer.connection?.videoOrientation
-//        sessionQueue.async {
-//            let connection = self.photoOutput.connection(with: .video)
-//            connection?.videoOrientation = videoPreviewLayerOrientation!
-//            connection?.videoOrientation = .portrait
-//            // 캡쳐 세션에 요청하는것
-//            let setting = AVCapturePhotoSettings()
-//            self.photoOutput.capturePhoto(with: setting, delegate: self)
-//        }
-//    }
     
     // MARK: - 저장1. 화면비에 맞게 자르기
     // 사진 저장할 때 화면비에 맞게 잘라서 저장해주는 함수
-    /* 지금은 너무 코드가 더러움... 보기좋게 Constants를 만듥 것!! */
     
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         // TODO: capturePhoto delegate method 구현
@@ -155,7 +144,6 @@ extension CameraViewController {
         guard let imageData = photo.fileDataRepresentation() else { return }
         guard let image = UIImage(data: imageData) else { return }
 
-        // 여기부터 // 더러워지기 시작 // 아랫부분 수정할 것
         var croppedImage: UIImage = image
         
         if( screenRatioSwitchedStatus == 0 ) { // 1:1 비율일 때
@@ -187,8 +175,6 @@ extension CameraViewController {
             rotatedImage = croppedImage
         }
         
-        
-        //self.savePhotoLibrary(image: resizeImage(image: croppedImage, newWidth: 1080))
         self.savePhotoLibrary(image: resizeImage(image: rotatedImage, newWidth: 1080))
         
     }
@@ -207,8 +193,6 @@ extension CameraViewController {
                 }
             } else {
                 print(" error to save photo library")
-                // 다시 요청할 수도 있음
-                // ...
             }
         }
     }
@@ -221,7 +205,6 @@ extension CameraViewController {
         UIGraphicsEndImageContext()
         return croppedImage
     }
-    
     
     
     // Technique #2. UIKit에서 이미지 리사이징
@@ -336,7 +319,7 @@ extension CameraViewController {
             return
         }
         /// 물리적으로 touch 를 1번만 할 수는 없기에, 2번째에는 이게 활성화됨
-        /// 즉 장ㅊㅣ를 하나 더 만들어야함.
+        /// 즉 장치를 하나 더 만들어야함.
         if isOn_touchCapture {
             // isOn_touchCapture == true
             capturePhotoWithOptions()
@@ -402,7 +385,6 @@ extension CameraViewController {
 
             
             // getSizeBy... // 전후면 카메라 스위칭 될 때, 화면 비율을 넘기기 위한 함수임.
-            // 이거 필요없으면 나중에 삭제하는게 좋음 // extension으로 빼놨음.
             getSizeByScreenRatio(with: currentPosition, at: screenRatioSwitchedStatus)
         }
     }
@@ -410,7 +392,7 @@ extension CameraViewController {
     //MARK: 상하단 툴바 설정 + Draw Grid
     func setToolbarsUI(){
         
-        // 화면비 기준 측정 -> 기준은 0.5으로 하자.
+        // 화면비 기준 측정 -> 기준은 0.5으로 함.
         // ~iPhone 8+ = 0.5625 // 9:16 -> oldPhone
         // iPhons X ~ < 0.462
         
@@ -592,7 +574,6 @@ extension CameraViewController {
     // MARK: 레이아웃 모드 세팅
     func setLayoutMode() {
         // 전체 뷰의 백그라운드 컬러 변경
-        //self.view.backgroundColor = .white //clear로하면 스와이핑이 안됨. 실제 구현시에는 뷰자체를 클리어로 바꿀것, 코드로하지말고.
         let ratio = screenRatioSwitchedStatus
 
         
@@ -643,7 +624,6 @@ extension CameraViewController {
         
         for i in 0 ..< pageSize {
             let layoutImage: UIImageView = UIImageView(frame: CGRect(x: CGFloat(i) * width, y: 0, width: width, height: height))
-            //let layoutImage: UIImageView = UIImageView(frame: self.layoutView.bounds)
             
             layoutImage.image = UIImage(named: "GuideLine\(ratio)-\(i)")
             
@@ -683,11 +663,6 @@ extension CameraViewController {
             
             self.scrollView.setContentOffset(CGPoint(x: (sender.currentPage) * Int(self.scrollView.frame.maxX), y: 0), animated: true)
             
-//            self.pageControl.transform = CGAffineTransform(translationX: -50, y: 0)
-//            self.pageControl.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-//
-//            let transform: CGAffineTransform
-//
             //self.pageControl.snp.removeConstraints()
             self.pageControl.snp.remakeConstraints { (make) in
                 
@@ -702,25 +677,8 @@ extension CameraViewController {
                 self.view.layoutIfNeeded()
                 //self.pageControl.layoutIfNeeded()
             }
-                
-            
-            //print("IBAction \(self.pageControl.currentPage)  \(sender.currentPage)")
         }
     }
-
-    /* 페이지 넘길때 절반이상 넘어가야 다음 페이지로 넘김
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        // When the number of scrolls is one page worth.
-        if fmod(scrollView.contentOffset.x, scrollView.frame.maxX) == 0 {
-            // Switch the location of the page.
-            pageControl.currentPage = Int(scrollView.contentOffset.x / scrollView.frame.maxX)
-            
-            // control indicator tint color
-            pageControl.currentPageIndicatorTintColor = #colorLiteral(red: 1.0, green: 0.847, blue: 0.0, alpha: 1.0)
-            
-            pageControl.pageIndicatorTintColor = .white
-        }
-    } */
     
     //MARK: 카메라 전후 전환 icon
     func updateSwitchCameraIcon(position: AVCaptureDevice.Position) {
@@ -734,6 +692,7 @@ extension CameraViewController {
             break
         }
     }
+    
     //MARK: 카메라 전후 전환 func
     @IBAction func switchCamera(sender: Any) {
         // 카메라는 2개 이상이어야함
@@ -772,7 +731,7 @@ extension CameraViewController {
                         self.captureSession.addInput(videoDeviceInput)
                         self.videoDeviceInput = videoDeviceInput
                     } else { // 아니면 그냥 원래 있던거 다시 넣고
-                        self.captureSession.addInput(self.videoDeviceInput) // 이 조건문 다시보기
+                        self.captureSession.addInput(self.videoDeviceInput)
                     }
                     self.captureSession.commitConfiguration()
                     
@@ -854,6 +813,7 @@ extension CameraViewController {
 
         }
     }
+    
     // 초점 박스를 이동하는 메소드
     func changeFocusBoxCenter(for location: CGPoint )
     {
@@ -891,64 +851,6 @@ extension CameraViewController {
         self.focusBox.alpha = 0.25
 
     }
-    
-    // MARK: 항공샷 전용 Focus
-    // 아직 완성되지 않았음.
-    // Problem : focusPoint를 previewView의 중앙으로 설정해야하는데, device로 상대값이 아닌 절대값을 넘겨야하기 때문에, 상대값을 절대값으로 변경하는 함수가 필요함!
-    /*func skyShotFocus() {
-        
-        if let device = captureDevice {
-            
-            // 전면 카메라는 FocusPointOfInterest를 지원하지 않습니다.
-            if device.isFocusPointOfInterestSupported, device.isFocusModeSupported(AVCaptureDevice.FocusMode.autoFocus) {
-                
-                // !! 여기 focusPoint의 위치를 잘 설정해줘야 함
-                let focusPoint = self.previewView.center
-
-                do {
-                    try device.lockForConfiguration()
-
-                    // FocusPointOfInterest 를 통해 초점을 잡아줌.
-                    device.focusPointOfInterest = focusPoint
-                    device.focusMode = .autoFocus
-                    device.exposurePointOfInterest = focusPoint
-                    device.exposureMode = AVCaptureDevice.ExposureMode.continuousAutoExposure
-                    device.unlockForConfiguration()
-
-                    if focusBox != nil {
-                        // 초점 박스가 있으면 위치를 바꿔줌
-                        changeFocusBoxCenter(for: focusPoint)
-                    } else {
-                        // 초점 박스가 없으면 그려줌
-                        // 화면 사이즈 구하기
-                        let screenBounds = self.previewView.bounds
-                        
-                        // 화면 비율에 맞게 정사각형의 focus box 그리기
-                        var rectangleBounds = screenBounds
-                        rectangleBounds.size.width = screenBounds.size.width / 6
-                        rectangleBounds.size.height = screenBounds.size.width / 6
-                        
-                        // 터치된 좌표에 focusBox의 높이, 너비의 절반 값을 빼주어서 터치한 좌표를 중심으로 그려지게 설정
-                        rectangleBounds.origin.x = self.previewView.center.x - (rectangleBounds.size.width / 2)
-                        rectangleBounds.origin.y = self.previewView.center.y - (rectangleBounds.size.height / 2)
-                        
-                        self.focusBox = UIView(frame: rectangleBounds)
-                        self.focusBox.layer.borderColor = UIColor.init(red: 1.0, green: 1.0, blue: 0, alpha: 1).cgColor
-                        self.focusBox.layer.borderWidth = 1
-                        self.focusBox.alpha = 0.25
-                    }
-
-                    previewView.addSubview(self.focusBox)
-                    
-                    zoomFocusOutIn(view: self.focusBox, delay: 1)
-                    // fadeViewInThenOut(view: self.focusBox, delay: 1)
-                    
-                } catch{
-                    fatalError()
-                }
-            }
-        }
-    }*/
     
     // MARK: - Animation Focus Rect
     func zoomFocusOutIn(view: UIView, delay: TimeInterval) {
@@ -1013,6 +915,17 @@ extension CameraViewController {
                 options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
                 
                 self.assetsFetchResults = PHAsset.fetchAssets(with: PHAssetMediaType.image, options: options)
+
+                if self.assetsFetchResults.count == 0 {
+                    DispatchQueue.main.async {
+                        self.photosButton.setImage(#imageLiteral(resourceName: "photos"), for: .normal)
+                        self.photosButton.layer.cornerRadius = 10
+                        self.photosButton.layer.masksToBounds = true
+                        self.photosButton.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+                        self.photosButton.layer.borderWidth = 1
+                    }
+                    return
+                }
                 
                 if self.assetsFetchResults.count == 0 {
                     DispatchQueue.main.async {
@@ -1042,17 +955,17 @@ extension CameraViewController {
                                                         $0.width.height.equalTo(48)
                                                     }
                                                 } } )
-                //self.photoAlbumCollectionView?.reloadData()
+                
            
             case .denied:
-                print(authorizationStatusOfPhoto)
+                print("authorization denied(authorizationStatusOfPhoto: \(authorizationStatusOfPhoto)")
             case .notDetermined:
-                print(authorizationStatusOfPhoto)
+                print("authorization notDetermined(authorizationStatusOfPhoto: \(authorizationStatusOfPhoto)")
                 PHPhotoLibrary.requestAuthorization({ (authorizationStatus) in
                     print(authorizationStatus.rawValue)
                 })
             case .restricted:
-                print(authorizationStatusOfPhoto)
+                print("authorization restricted(authorizationStatusOfPhoto: \(authorizationStatusOfPhoto)")
             case .limited:
                 print("접근제한(.limited): \(authorizationStatusOfPhoto)")
             @unknown default:
@@ -1130,17 +1043,6 @@ extension CameraViewController {
             if self.isOn_AnglePin == true {
                 self.currentAngleH -= self.tempAngleH
             }
-            
-            // 그럼 고정했을땐 어떻게하지?
-//            if (self.deviceOrientation == 3){
-//                // landscape Right
-//                self.horizonIndicator.transform = CGAffineTransform(rotationAngle: -.pi/2)
-//            }
-//            else if (self.deviceOrientation == 4){
-//                // landscape Left
-//                self.horizonIndicator.transform = CGAffineTransform(rotationAngle: +.pi/2)
-//            }
-            
             
             // 색상 결정
             if (self.currentAngleH < 2 && self.currentAngleH > -2) { // 임계값 도달
@@ -1283,10 +1185,7 @@ extension CameraViewController {
                     // 임계값 수직수평 도달
                     if (-3 < self.currentAngleH && self.currentAngleH < 3 && -2 < currentAngleY && currentAngleY < 2) {
                         
-//                        self.captureButtonInner.alpha = 1
-//                        self.captureButtonInner.image = #imageLiteral(resourceName: "shutter_inner_true")
                         self.captureButtonOuter.alpha = 1
-//                        self.captureButtonOuter.image = #imageLiteral(resourceName: "shutter_right_out circle")
                         
                         if isImpactY {
                             if( !ud.bool(forKey: "haptic") ) {
@@ -1334,8 +1233,7 @@ extension CameraViewController {
                     self.layoutView.isHidden = false
                     self.pageControl.isHidden = false
                     self.photosButton.isHidden = false
-                    //self.captureButtonInner.image = #imageLiteral(resourceName: "pin")
-                    //self.captureButtonOuter.image = #imageLiteral(resourceName: "ic_camera_rear")
+
                     self.anglePin.isHidden = false
                     self.anglePinStatus.isHidden = false
                     
@@ -1402,9 +1300,7 @@ extension CameraViewController {
                                           width: .screenPercentage(0.53))),
                      location: .top, sender: self).show(.short)
             }
-            
         }
         isOn_AnglePin = !isOn_AnglePin
     }
-    
 }
